@@ -6,7 +6,15 @@
 <title>Allverktøy.no — Smarte verktøy for norske forbrukere</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="https://unpkg.com/lucide@0.344.0/dist/umd/lucide.min.js"></script>
+<!-- google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=g-cf4c5y36nc"></script>
+<script>
+  window.datalayer = window.datalayer || [];
+  function gtag(){datalayer.push(arguments);}
+  gtag('js', new date());
+  gtag('config', 'g-cf4c5y36nc');
+</script>
+<script src="https://unpkg.com/lucide@0344.0/dist/umd/lucide.min.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -244,6 +252,7 @@ select.input-field{cursor:pointer}
 <body>
 
 <!-- SIDEBAR -->
+<div id="vaer-banner" style="position:fixed;top:0;left:0;right:0;z-index:1000;background:var(--surface2);border-bottom:1px solid var(--border);padding:6px 16px;display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);display:none"><span id="vaer-temp" style="font-weight:600"></span><span id="vaer-beskrivelse"></span><span id="vaer-sted" style="color:var(--muted);font-size:11px;margin-left:4px"></span></div>
 <aside id="sidebar">
   <div class="logo">
     <div class="logo-name">Allverktøy<span>.no</span></div>
@@ -390,7 +399,8 @@ select.input-field{cursor:pointer}
 
   <div class="grid2" style="margin-bottom:20px">
     <div class="card" style="display:flex;flex-direction:column;gap:18px">
-      <div class="field"><label class="label-text">Spotpris (NOK/gram)</label><input class="input-field" type="number" id="gull-spot" value="960" step="10" oninput="calcGull()"><p class="hint">Aktuell spotpris ca. 960 NOK/g (april 2025)</p></div>
+      <div class="field"><label class="label-text">Spotpris (NOK/gram)</label><input class="input-field" type="number" id="gull-spot" value="960" step="10" oninput="calcGull()">
+<div id="gull-spot-status" style="font-size:12px;color:var(--muted);margin-top:4px;min-height:18px;padding:2px 0"></div><p class="hint">Aktuell spotpris ca. 960 NOK/g (april 2025)</p></div>
       <div class="field"><label class="label-text">Vekt (gram)</label><input class="input-field" type="number" id="gull-vekt" value="10" step="0.1" oninput="calcGull()"></div>
       <div class="field"><label class="label-text">Karathet</label>
         <select class="input-field" id="gull-karat" onchange="calcGull()">
@@ -930,6 +940,67 @@ function calcStrom(){
   document.getElementById('strom-breakdown').innerHTML=parts.map(p=>{const pc=Math.round(p.kwh/total*100),cost=Math.round(p.kwh*totalPris);return`<div style="margin-bottom:14px"><div style="display:flex;justify-content:space-between;font-size:0.83rem;margin-bottom:6px"><span style="font-weight:500;color:var(--text)">${p.label}</span><span style="color:var(--muted2)">${p.kwh.toLocaleString('no-NO')} kWh · ${kr(cost)} · ${pc}%</span></div><div style="height:8px;background:var(--surface3);border-radius:4px;overflow:hidden"><div style="height:100%;width:${pc}%;background:${p.color};border-radius:4px;transition:width .4s;box-shadow:0 0 8px rgba(59,130,246,0.3)"></div></div></div>`}).join('');
 }
 calcStrom();
+</script>
+<script>
+// === LIVE GULLPRIS (NOK/gram) ===
+async function hentLiveGullpris() {
+  const statusEl = document.getElementById('gull-spot-status');
+  try {
+    const xauResp = await fetch('https://forex-data-feed.swissquote.com/public-quotes/bboquotes/instrument/XAU/USD');
+    const xauData = await xauResp.json();
+    const xauUsd = xauData[0]?.topo?.last || xauData[0]?.last;
+    const nokResp = await fetch('https://api.frankfurter.dev/v2/rates?base=USD&quotes=NOK');
+    const nokData = await nokResp.json();
+    const usdNok = nokData.rates?.NOK;
+    if (xauUsd && usdNok) {
+      const nokPerGram = Math.round((xauUsd / 31.1035) * usdNok);
+      const input = document.getElementById('gull-spot');
+      if (input) { input.value = nokPerGram; input.dispatchEvent(new Event('input')); }
+      const now = new Date().toLocaleTimeString('nb-NO', {hour:'2-digit', minute:'2-digit'});
+      if (statusEl) statusEl.innerHTML = '📡 Live pris hentet kl. ' + now + ' · ' + nokPerGram + ' NOK/g';
+    }
+  } catch(e) {
+    if (statusEl) statusEl.textContent = '⚠️ Kunne ikke hente live pris';
+  }
+}
+document.addEventListener('DOMContentLoaded', () => {
+  hentLiveGullpris();
+  setInterval(hentLiveGullpris, 5 * 60 * 1000);
+});
+
+// === LIVE VÆR (MET Norway) ===
+const VAER_IKONER = {
+  clearsky:'☀️', partlycloudy:'⛅', cloudy:'☁️', fog:'🌫️',
+  lightrain:'🌦️', rain:'🌧️', heavyrain:'🌧️', sleet:'🌨️',
+  snow:'❄️', heavysnow:'❄️', thunder:'⛈️'
+};
+function oppdaterVaer(lat, lon, stedNavn) {
+  fetch('https://api.met.no/weatherapi/locationforecast/2.0/compact?lat='+lat+'&lon='+lon, {
+    headers: { 'User-Agent': 'allverktoy.no kontakt@allverktoy.no' }
+  })
+  .then(r => r.json())
+  .then(data => {
+    const current = data.properties.timeseries[0].data;
+    const temp = Math.round(current.instant.details.air_temperature);
+    const symbol = current.next_1_hours?.summary?.symbol_code || current.next_6_hours?.summary?.symbol_code || 'clearsky_day';
+    const base = symbol.split('_')[0];
+    const emoji = VAER_IKONER[base] || '🌡️';
+    document.getElementById('vaer-temp').textContent = temp + '°C';
+    document.getElementById('vaer-beskrivelse').textContent = emoji;
+    document.getElementById('vaer-sted').textContent = '📍 ' + stedNavn;
+    document.getElementById('vaer-banner').style.display = 'flex';
+  })
+  .catch(() => { document.getElementById('vaer-banner').style.display = 'none'; });
+}
+document.addEventListener('DOMContentLoaded', () => {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      pos => oppdaterVaer(pos.coords.latitude.toFixed(4), pos.coords.longitude.toFixed(4), 'Din posisjon'),
+      () => oppdaterVaer(59.91, 10.75, 'Oslo'),
+      { timeout: 5000 }
+    );
+  } else { oppdaterVaer(59.91, 10.75, 'Oslo'); }
+});
 </script>
 </body>
 </html>
