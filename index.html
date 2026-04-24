@@ -3,1514 +3,933 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Interaktiv gullverifiseringsveileder for privat gullkjøp i Norge. Stempelkontroll, magnettest, tetthetskalkulator, visuell inspeksjon, og advarsler om vanlige svindelmetoder.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%23d4af37' stroke='%238a6d17' stroke-width='2'/%3E%3Ctext x='16' y='21' text-anchor='middle' fill='%236d5413' font-size='14' font-weight='bold' font-family='serif'%3EAu%3C/text%3E%3C/svg%3E">
-<title>Gullverifiseringsveileder – Trygg gullhandel i Norge</title>
+<title>Allverktøy.no — Smarte verktøy for norske forbrukere</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@0.344.0/dist/umd/lucide.min.js"></script>
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  :root {
-    --gold: #d4af37;
-    --gold-dark: #a8871f;
-    --gold-light: #f4e4a1;
-    --bg: #1a1a1a;
-    --card: #2a2a2a;
-    --card-light: #333;
-    --text: #f0f0f0;
-    --text-dim: #b0b0b0;
-    --success: #4caf50;
-    --warning: #ff9800;
-    --danger: #f44336;
-    --border: #444;
-  }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background: linear-gradient(135deg, #1a1a1a 0%, #2c2416 100%);
-    color: var(--text);
-    line-height: 1.6;
-    min-height: 100vh;
-    padding: 20px;
-  }
-  .container { max-width: 1100px; margin: 0 auto; }
-  header {
-    text-align: center;
-    padding: 40px 20px;
-    border-bottom: 2px solid var(--gold);
-    margin-bottom: 30px;
-  }
-  h1 {
-    color: var(--gold);
-    font-size: 2.5em;
-    margin-bottom: 10px;
-    letter-spacing: 1px;
-  }
-  .subtitle { color: var(--text-dim); font-size: 1.1em; }
-  .gold-bar {
-    display: inline-block;
-    font-size: 3em;
-    margin-bottom: 15px;
-  }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080C14;
+  --surface:rgba(255,255,255,0.04);
+  --surface2:rgba(255,255,255,0.07);
+  --surface3:rgba(255,255,255,0.1);
+  --border:rgba(255,255,255,0.08);
+  --border2:rgba(255,255,255,0.14);
+  --text:#F1F5F9;
+  --muted:#64748B;
+  --muted2:#94A3B8;
+  --blue:#3B82F6;
+  --purple:#8B5CF6;
+  --green:#10B981;
+  --amber:#F59E0B;
+  --red:#EF4444;
+  --cyan:#06B6D4;
+  --grad:linear-gradient(135deg,#3B82F6,#8B5CF6);
+  --grad2:linear-gradient(135deg,#06B6D4,#3B82F6);
+  --grad3:linear-gradient(135deg,#10B981,#3B82F6);
+  --r:14px;--r2:20px;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+h1,h2,h3,h4{font-family:'Space Grotesk',system-ui,sans-serif;letter-spacing:-0.02em}
 
-  .hero-illustration {
-    max-width: 680px;
-    margin: 0 auto 20px;
-  }
-  .hero-illustration svg { width: 100%; height: auto; display: block; }
+/* ── BG GLOW ── */
+body::before{content:'';position:fixed;top:-200px;left:-100px;width:600px;height:600px;background:radial-gradient(circle,rgba(59,130,246,0.12),transparent 70%);pointer-events:none;z-index:0}
+body::after{content:'';position:fixed;bottom:-200px;right:-100px;width:500px;height:500px;background:radial-gradient(circle,rgba(139,92,246,0.1),transparent 70%);pointer-events:none;z-index:0}
 
-  .gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 16px;
-    margin: 25px 0 35px;
-  }
-  .gallery-item {
-    background: linear-gradient(135deg, #2a2416 0%, #1a1a1a 100%);
-    border: 1px solid var(--gold-dark);
-    border-radius: 12px;
-    padding: 18px 14px;
-    text-align: center;
-    transition: all 0.3s;
-    box-shadow: 0 4px 14px rgba(0,0,0,0.4);
-  }
-  .gallery-item:hover {
-    transform: translateY(-4px);
-    border-color: var(--gold);
-    box-shadow: 0 6px 22px rgba(212, 175, 55, 0.2);
-  }
-  .gallery-item svg {
-    width: 100%;
-    max-width: 140px;
-    height: auto;
-    margin-bottom: 10px;
-  }
-  .gallery-item h4 {
-    color: var(--gold);
-    font-size: 0.95em;
-    margin-bottom: 4px;
-  }
-  .gallery-item p {
-    color: var(--text-dim);
-    font-size: 0.8em;
-    margin: 0;
-  }
+/* ── SIDEBAR ── */
+aside{
+  width:260px;flex-shrink:0;
+  background:rgba(8,12,20,0.9);
+  backdrop-filter:blur(24px);
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;
+  position:sticky;top:0;height:100vh;z-index:10;
+}
+.logo{padding:24px 20px;border-bottom:1px solid var(--border)}
+.logo-name{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.25rem}
+.logo-name span{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.logo-sub{font-size:0.72rem;color:var(--muted);margin-top:3px;letter-spacing:0.02em}
+nav{flex:1;padding:12px;display:flex;flex-direction:column;gap:2px}
+.nav-item{
+  display:flex;align-items:center;gap:11px;
+  padding:11px 14px;border-radius:12px;
+  font-size:0.875rem;font-weight:500;color:var(--muted2);
+  cursor:pointer;border:none;background:none;text-align:left;width:100%;
+  transition:all 0.2s;font-family:inherit;
+}
+.nav-item svg{width:17px;height:17px;flex-shrink:0}
+.nav-item:hover{color:var(--text);background:var(--surface2)}
+.nav-item.active{color:#fff;background:var(--grad);box-shadow:0 4px 20px rgba(59,130,246,0.35)}
+.nav-item.active svg{color:#fff}
+.nav-footer{padding:16px 20px;border-top:1px solid var(--border);font-size:0.72rem;color:var(--muted)}
 
-  .illustration {
-    margin: 20px auto;
-    max-width: 480px;
-    text-align: center;
-  }
-  .illustration svg { width: 100%; height: auto; display: block; }
-  .illustration-caption {
-    color: var(--text-dim);
-    font-size: 0.85em;
-    font-style: italic;
-    margin-top: 8px;
-  }
+/* ── MAIN ── */
+main{flex:1;min-width:0;overflow-y:auto;position:relative;z-index:1}
+.content{max-width:920px;margin:0 auto;padding:48px 40px}
+@media(max-width:960px){.content{padding:24px 20px 80px}aside{display:none}}
 
-  .illustration-row {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 18px;
-    margin: 20px 0;
-  }
-  .illustration-row .illustration { margin: 0; }
+/* ── PAGES ── */
+.page{display:none}.page.active{display:block}
 
-  .stamp-card svg {
-    width: 80px;
-    height: 80px;
-    margin-bottom: 10px;
-  }
+/* ── GLASS CARD ── */
+.card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--r2);
+  padding:24px;
+  backdrop-filter:blur(12px);
+  transition:border-color 0.2s;
+}
+.card:hover{border-color:var(--border2)}
+.card-glow{box-shadow:0 0 0 1px rgba(59,130,246,0.3),0 8px 40px rgba(59,130,246,0.12)}
 
-  @keyframes shimmer {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.85; }
-  }
-  .shimmer { animation: shimmer 3s ease-in-out infinite; }
+/* ── INPUTS ── */
+.field{display:flex;flex-direction:column;gap:6px}
+.label-text{font-size:0.78rem;font-weight:600;color:var(--muted2);letter-spacing:0.04em;text-transform:uppercase}
+.input-field{
+  width:100%;background:rgba(255,255,255,0.06);
+  border:1px solid var(--border2);border-radius:12px;
+  padding:12px 16px;font-size:0.9rem;color:var(--text);
+  font-family:inherit;transition:all 0.2s;outline:none;
+}
+.input-field:focus{border-color:var(--blue);background:rgba(59,130,246,0.08);box-shadow:0 0 0 3px rgba(59,130,246,0.15)}
+select.input-field{cursor:pointer}
+.input-field option{background:#1a2035;color:var(--text)}
+.hint{font-size:0.72rem;color:var(--muted);margin-top:2px}
 
-  nav.steps {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 30px;
-    justify-content: center;
-  }
-  nav.steps button {
-    background: var(--card);
-    color: var(--text-dim);
-    border: 1px solid var(--border);
-    padding: 10px 16px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 0.9em;
-    transition: all 0.2s;
-  }
-  nav.steps button:hover { background: var(--card-light); color: var(--text); }
-  nav.steps button.active {
-    background: var(--gold);
-    color: #000;
-    border-color: var(--gold);
-    font-weight: 600;
-  }
-  nav.steps button.completed {
-    border-color: var(--success);
-    color: var(--success);
-  }
+/* ── BUTTONS ── */
+.btn{display:inline-flex;align-items:center;gap:8px;border:none;cursor:pointer;font-family:inherit;font-weight:600;transition:all 0.2s;border-radius:12px}
+.btn-primary{background:var(--grad);color:#fff;padding:13px 26px;font-size:0.9rem;box-shadow:0 4px 20px rgba(59,130,246,0.35)}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 8px 30px rgba(59,130,246,0.45)}
+.btn-secondary{background:var(--surface2);color:var(--text);border:1px solid var(--border2);padding:12px 22px;font-size:0.875rem}
+.btn-secondary:hover{background:var(--surface3)}
+.btn-sm{background:var(--surface2);color:var(--muted2);border:1px solid var(--border);padding:8px 14px;font-size:0.78rem;border-radius:10px}
+.btn-sm:hover{color:var(--text);border-color:var(--border2)}
 
-  .step {
-    display: none;
-    background: var(--card);
-    border-radius: 12px;
-    padding: 30px;
-    border: 1px solid var(--border);
-    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-  }
-  .step.active { display: block; }
-  .step h2 {
-    color: var(--gold);
-    margin-bottom: 20px;
-    font-size: 1.6em;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .step-number {
-    background: var(--gold);
-    color: #000;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    font-size: 0.9em;
-  }
-  .step h3 {
-    color: var(--gold-light);
-    margin: 20px 0 12px;
-    font-size: 1.2em;
-  }
-  .step p { margin-bottom: 12px; }
+/* ── GRID ── */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media(max-width:600px){.grid2,.grid3{grid-template-columns:1fr}}
 
-  .info-box {
-    background: var(--card-light);
-    border-left: 4px solid var(--gold);
-    padding: 15px 20px;
-    margin: 15px 0;
-    border-radius: 4px;
-  }
-  .warning-box {
-    background: rgba(244, 67, 54, 0.1);
-    border-left: 4px solid var(--danger);
-    padding: 15px 20px;
-    margin: 15px 0;
-    border-radius: 4px;
-  }
-  .warning-box strong { color: var(--danger); }
-  .success-box {
-    background: rgba(76, 175, 80, 0.1);
-    border-left: 4px solid var(--success);
-    padding: 15px 20px;
-    margin: 15px 0;
-    border-radius: 4px;
-  }
-  .caution-box {
-    background: rgba(255, 152, 0, 0.1);
-    border-left: 4px solid var(--warning);
-    padding: 15px 20px;
-    margin: 15px 0;
-    border-radius: 4px;
-  }
+/* ── HOME ── */
+.hero{margin-bottom:56px}
+.eyebrow{display:inline-flex;align-items:center;gap:7px;background:rgba(59,130,246,0.12);border:1px solid rgba(59,130,246,0.25);color:var(--blue);padding:5px 14px;border-radius:20px;font-size:0.75rem;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:22px}
+.hero h1{font-size:clamp(2.4rem,5vw,3.8rem);font-weight:700;line-height:1.12;margin-bottom:18px}
+.grad-text{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{color:var(--muted2);font-size:1.05rem;line-height:1.7;max-width:520px;margin-bottom:28px}
+.hero-ctas{display:flex;gap:12px;flex-wrap:wrap}
 
-  .table-wrap {
-    margin: 15px 0;
-    background: var(--card-light);
-    border-radius: 8px;
-    overflow: hidden;
-  }
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    background: var(--card-light);
-  }
-  th, td {
-    padding: 12px;
-    text-align: left;
-    border-bottom: 1px solid var(--border);
-  }
-  th {
-    background: rgba(212, 175, 55, 0.15);
-    color: var(--gold);
-    font-weight: 600;
-  }
-  tr:last-child td { border-bottom: none; }
+.tools-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-bottom:40px}
+.tool-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--r2);padding:24px;cursor:pointer;
+  transition:all 0.25s;position:relative;overflow:hidden;
+}
+.tool-card::before{content:'';position:absolute;inset:0;background:var(--grad);opacity:0;transition:opacity 0.25s}
+.tool-card:hover{border-color:var(--border2);transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,0.3)}
+.tool-card:hover::before{opacity:0.04}
+.tool-icon{width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:16px}
+.tool-icon svg{width:22px;height:22px}
+.tool-card h3{font-size:1rem;font-weight:700;margin-bottom:7px}
+.tool-card p{font-size:0.82rem;color:var(--muted2);line-height:1.6;margin-bottom:14px}
+.tool-arrow{display:inline-flex;align-items:center;gap:5px;font-size:0.8rem;font-weight:600;color:var(--blue)}
 
-  .checklist { list-style: none; padding: 0; margin: 15px 0; }
-  .checklist li {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    padding: 10px 14px;
-    background: var(--card-light);
-    margin-bottom: 6px;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background 0.2s;
-  }
-  .checklist li:hover { background: #3a3a3a; }
-  .checklist input[type="checkbox"] {
-    width: 20px;
-    height: 20px;
-    cursor: pointer;
-    accent-color: var(--gold);
-    flex-shrink: 0;
-    margin-top: 2px;
-  }
-  .checklist li.checked { opacity: 0.6; text-decoration: line-through; }
+.trust-card{background:linear-gradient(135deg,rgba(59,130,246,0.08),rgba(139,92,246,0.08));border-color:rgba(59,130,246,0.2)}
+.check-item{display:flex;align-items:center;gap:9px;font-size:0.875rem;color:var(--muted2)}
+.check-item svg{color:var(--green);width:16px;height:16px;flex-shrink:0}
 
-  .calculator {
-    background: var(--card-light);
-    padding: 25px;
-    border-radius: 10px;
-    margin: 20px 0;
-    border: 1px solid var(--gold-dark);
-  }
-  .input-group {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    margin-bottom: 15px;
-  }
-  .input-group label {
-    color: var(--gold-light);
-    font-weight: 500;
-  }
-  .input-group input {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    color: var(--text);
-    padding: 10px 14px;
-    border-radius: 6px;
-    font-size: 1em;
-  }
-  .input-group input:focus {
-    outline: none;
-    border-color: var(--gold);
-  }
-  .calc-btn {
-    background: var(--gold);
-    color: #000;
-    border: none;
-    padding: 12px 24px;
-    border-radius: 6px;
-    font-size: 1em;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s;
-  }
-  .calc-btn:hover { background: var(--gold-dark); color: var(--text); }
-  .result {
-    margin-top: 20px;
-    padding: 18px;
-    border-radius: 8px;
-    font-size: 1.05em;
-    display: none;
-  }
-  .result.show { display: block; }
-  .result.good { background: rgba(76, 175, 80, 0.15); border: 1px solid var(--success); }
-  .result.warn { background: rgba(255, 152, 0, 0.15); border: 1px solid var(--warning); }
-  .result.bad { background: rgba(244, 67, 54, 0.15); border: 1px solid var(--danger); }
+/* ── RESULT CARDS ── */
+.result-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px;transition:border-color 0.2s}
+.result-card.highlight{background:linear-gradient(135deg,rgba(59,130,246,0.15),rgba(139,92,246,0.1));border-color:rgba(59,130,246,0.3);box-shadow:0 4px 20px rgba(59,130,246,0.1)}
+.result-label{font-size:0.73rem;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);margin-bottom:6px}
+.result-number{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.75rem;color:var(--text)}
+.result-card.highlight .result-number{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.result-sub{font-size:0.75rem;color:var(--muted2);margin-top:5px}
 
-  .stamp-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 15px;
-    margin: 20px 0;
-  }
-  .stamp-card {
-    background: var(--card-light);
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    border: 2px solid var(--border);
-    transition: all 0.2s;
-  }
-  .stamp-card:hover {
-    border-color: var(--gold);
-    transform: translateY(-2px);
-  }
-  .stamp-number {
-    font-size: 2em;
-    color: var(--gold);
-    font-weight: 700;
-    margin-bottom: 5px;
-  }
-  .stamp-karat { color: var(--text-dim); margin-bottom: 8px; }
-  .stamp-purity { font-size: 0.9em; }
+/* ── PROGRESS ── */
+.progress-banner{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--r2);padding:20px 24px;margin-bottom:20px;
+  backdrop-filter:blur(12px);
+  position:sticky;top:0;z-index:20;
+}
+.progress-big{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.8rem;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.progress-bg{height:6px;background:var(--surface3);border-radius:3px;overflow:hidden;margin:10px 0 12px}
+.progress-fill{height:100%;background:var(--grad);border-radius:3px;transition:width 0.4s ease;box-shadow:0 0 10px rgba(59,130,246,0.5)}
+.stat-chip{display:inline-flex;align-items:center;gap:6px;font-size:0.8rem;font-weight:500}
+.stat-chip svg{width:13px;height:13px}
 
-  .nav-buttons {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 30px;
-    gap: 10px;
-  }
-  .nav-buttons button {
-    background: var(--card-light);
-    color: var(--text);
-    border: 1px solid var(--border);
-    padding: 12px 24px;
-    border-radius: 6px;
-    font-size: 1em;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .nav-buttons button:hover:not(:disabled) {
-    background: var(--gold);
-    color: #000;
-    border-color: var(--gold);
-  }
-  .nav-buttons button:disabled { opacity: 0.4; cursor: not-allowed; }
+/* ── CHECKLIST ── */
+.cat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;margin-bottom:12px;backdrop-filter:blur(12px)}
+.cat-header{display:flex;align-items:center;gap:12px;padding:18px 22px 14px}
+.cat-icon{font-size:1.25rem}
+.cat-title{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:1rem}
+.cat-prog{font-size:0.78rem;color:var(--muted);margin-left:auto;font-weight:500}
+.cl-item{display:flex;align-items:center;gap:14px;padding:13px 22px;border-top:1px solid var(--border);transition:background 0.15s;cursor:default}
+.cl-item:hover{background:var(--surface2)}
+.cl-item-text{flex:1;font-size:0.85rem;color:var(--muted2);line-height:1.5}
+.cl-btns{display:flex;gap:7px;flex-shrink:0}
+.cl-btn{width:38px;height:38px;border-radius:10px;border:1px solid var(--border2);background:var(--surface2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;color:var(--muted)}
+.cl-btn svg{width:16px;height:16px}
+.cl-btn:hover.ok-btn{border-color:var(--green);color:var(--green);background:rgba(16,185,129,0.1)}
+.cl-btn:hover.warn-btn{border-color:var(--amber);color:var(--amber);background:rgba(245,158,11,0.1)}
+.cl-btn:hover.bad-btn{border-color:var(--red);color:var(--red);background:rgba(239,68,68,0.1)}
+.cl-btn.active-ok{background:var(--green);border-color:var(--green);color:#fff;box-shadow:0 0 12px rgba(16,185,129,0.4)}
+.cl-btn.active-warn{background:var(--amber);border-color:var(--amber);color:#fff;box-shadow:0 0 12px rgba(245,158,11,0.4)}
+.cl-btn.active-bad{background:var(--red);border-color:var(--red);color:#fff;box-shadow:0 0 12px rgba(239,68,68,0.4)}
+.cat-notes{padding:12px 22px 18px;background:rgba(0,0,0,0.2);border-top:1px solid var(--border)}
+.cat-notes label{display:flex;align-items:center;gap:5px;font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;color:var(--muted);margin-bottom:7px}
+.cat-notes label svg{width:12px;height:12px}
+.cat-notes textarea{width:100%;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:10px;padding:9px 13px;font-size:0.83rem;font-family:inherit;resize:none;min-height:54px;color:var(--text);outline:none;transition:border-color 0.2s}
+.cat-notes textarea:focus{border-color:var(--blue)}
 
-  .progress-bar {
-    height: 6px;
-    background: var(--card);
-    border-radius: 3px;
-    margin-bottom: 25px;
-    overflow: hidden;
-  }
-  .progress-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--gold-dark), var(--gold));
-    transition: width 0.3s;
-    width: 0%;
-  }
+/* ── BADGE ── */
+.badge{display:inline-block;font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;padding:2px 8px;border-radius:20px}
+.badge-normal{background:rgba(100,116,139,0.2);color:var(--muted2)}
+.badge-warning{background:rgba(245,158,11,0.15);color:var(--amber)}
+.badge-critical{background:rgba(239,68,68,0.15);color:var(--red)}
 
-  footer {
-    text-align: center;
-    color: var(--text-dim);
-    padding: 30px 10px;
-    margin-top: 40px;
-    border-top: 1px solid var(--border);
-    font-size: 0.9em;
-  }
+/* ── SUMMARY ── */
+.summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.summary-val{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:2.2rem}
 
-  @media (max-width: 600px) {
-    h1 { font-size: 1.8em; }
-    .step { padding: 20px; }
-    nav.steps button { padding: 8px 12px; font-size: 0.8em; }
-    .nav-buttons button { padding: 10px 16px; font-size: 0.9em; }
-  }
+/* ── CALCULATOR SECTIONS ── */
+.section-label{font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border)}
+
+.page-eyebrow{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px}
+.page-desc{color:var(--muted2);font-size:0.9rem;margin-top:6px;margin-bottom:28px;line-height:1.7}
+
+/* ── CHARTS ── */
+.bar-row{margin-bottom:10px}
+.bar-labels{display:flex;justify-content:space-between;font-size:0.78rem;margin-bottom:5px;color:var(--muted2)}
+.bar-labels span:first-child{color:var(--text);font-weight:600}
+.bar-track{height:30px;background:var(--surface2);border-radius:8px;overflow:hidden;display:flex}
+.bar-avdrag{background:linear-gradient(90deg,#3B82F6,#6366F1);display:flex;align-items:center;justify-content:center}
+.bar-renter{background:linear-gradient(90deg,#F59E0B,#EF4444);display:flex;align-items:center;justify-content:center;flex:1}
+.bar-inner-label{font-size:0.67rem;font-weight:700;color:#fff;padding:0 8px;white-space:nowrap;overflow:hidden}
+
+.amort-toggle{width:100%;display:flex;align-items:center;justify-content:space-between;padding:18px 22px;background:none;border:none;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:1rem;color:var(--text);cursor:pointer}
+.amort-toggle svg{width:18px;height:18px;color:var(--muted);transition:transform 0.2s}
+.amort-toggle.open svg{transform:rotate(180deg)}
+.amort-table{width:100%;border-collapse:collapse;font-size:0.82rem}
+.amort-table th{text-align:left;padding:10px 16px;font-weight:600;color:var(--muted2);background:rgba(0,0,0,0.2);border-top:1px solid var(--border);font-size:0.75rem;text-transform:uppercase;letter-spacing:0.04em}
+.amort-table th:not(:first-child){text-align:right}
+.amort-table td{padding:9px 16px;border-top:1px solid var(--border);color:var(--muted2)}
+.amort-table td:not(:first-child){text-align:right}
+.amort-table td:nth-child(3){color:var(--amber)}
+.amort-table td:nth-child(4){color:var(--text);font-weight:600}
+
+/* ── INFO BOXES ── */
+.info-box{background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.2);border-radius:12px;padding:14px 18px;font-size:0.84rem;color:var(--muted2);line-height:1.65}
+.info-box strong{color:var(--blue);display:block;margin-bottom:4px;font-size:0.875rem}
+.warn-box{background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.2);border-radius:12px;padding:14px 18px;font-size:0.84rem;color:var(--muted2);line-height:1.65}
+.warn-box strong{color:var(--amber);display:block;margin-bottom:4px}
+
+/* ── MOBILE NAV ── */
+.mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;z-index:50;background:rgba(8,12,20,0.95);backdrop-filter:blur(20px);border-top:1px solid var(--border);overflow-x:auto;padding:6px}
+.mobile-nav-inner{display:flex;gap:2px;min-width:max-content}
+.mnav-item{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 12px;border-radius:10px;cursor:pointer;border:none;background:none;font-size:0.65rem;font-weight:600;color:var(--muted);white-space:nowrap;font-family:inherit;letter-spacing:0.02em;text-transform:uppercase}
+.mnav-item svg{width:18px;height:18px}
+.mnav-item.active{background:var(--grad);color:#fff}
+@media(max-width:960px){.mobile-nav{display:block}}
+
+/* ── FORBRUKERRADET LINK ── */
+.ext-link{display:flex;align-items:center;gap:16px;padding:18px 22px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);text-decoration:none;color:inherit;transition:all 0.2s;margin-top:12px}
+.ext-link:hover{border-color:var(--border2);transform:translateY(-1px);box-shadow:0 8px 30px rgba(0,0,0,0.3)}
 </style>
 </head>
 <body>
-<div class="container">
-  <header>
-    <div class="hero-illustration">
-      <svg viewBox="0 0 680 260" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#f4e4a1"/>
-            <stop offset="40%" stop-color="#d4af37"/>
-            <stop offset="100%" stop-color="#a8871f"/>
-          </linearGradient>
-          <linearGradient id="goldShine" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stop-color="#fff6cc" stop-opacity="0.8"/>
-            <stop offset="50%" stop-color="#f4e4a1" stop-opacity="0.3"/>
-            <stop offset="100%" stop-color="#a8871f" stop-opacity="0"/>
-          </linearGradient>
-          <radialGradient id="coinGrad" cx="35%" cy="30%">
-            <stop offset="0%" stop-color="#fff6cc"/>
-            <stop offset="50%" stop-color="#d4af37"/>
-            <stop offset="100%" stop-color="#8a6d17"/>
-          </radialGradient>
-          <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
-            <feGaussianBlur stdDeviation="3"/>
-          </filter>
-        </defs>
 
-        <!-- Back bar -->
-        <g transform="translate(60, 130) rotate(-8)">
-          <rect x="0" y="0" width="180" height="70" rx="6" fill="url(#goldGrad)" stroke="#8a6d17" stroke-width="1.5"/>
-          <rect x="0" y="0" width="180" height="30" rx="6" fill="url(#goldShine)"/>
-          <text x="90" y="32" text-anchor="middle" fill="#6d5413" font-size="11" font-weight="bold" font-family="serif">FINE GOLD</text>
-          <text x="90" y="48" text-anchor="middle" fill="#6d5413" font-size="9" font-family="serif">999.9</text>
-          <text x="90" y="62" text-anchor="middle" fill="#6d5413" font-size="8" font-family="serif">100 g</text>
-        </g>
-
-        <!-- Front bar -->
-        <g transform="translate(130, 150) rotate(4)">
-          <rect x="0" y="0" width="220" height="85" rx="7" fill="url(#goldGrad)" stroke="#8a6d17" stroke-width="1.5"/>
-          <rect x="0" y="0" width="220" height="38" rx="7" fill="url(#goldShine)"/>
-          <text x="110" y="32" text-anchor="middle" fill="#6d5413" font-size="13" font-weight="bold" font-family="serif">PAMP SUISSE</text>
-          <text x="110" y="52" text-anchor="middle" fill="#6d5413" font-size="10" font-family="serif">1 oz FINE GOLD</text>
-          <text x="110" y="68" text-anchor="middle" fill="#6d5413" font-size="9" font-family="serif">999.9</text>
-        </g>
-
-        <!-- Gold coin left -->
-        <g transform="translate(400, 145)">
-          <circle cx="0" cy="0" r="52" fill="url(#coinGrad)" stroke="#8a6d17" stroke-width="2"/>
-          <circle cx="0" cy="0" r="44" fill="none" stroke="#8a6d17" stroke-width="0.8"/>
-          <circle cx="-12" cy="-8" r="18" fill="none" stroke="#8a6d17" stroke-width="1.2" opacity="0.6"/>
-          <text x="0" y="-28" text-anchor="middle" fill="#6d5413" font-size="7" font-family="serif">KRUGERRAND</text>
-          <text x="0" y="35" text-anchor="middle" fill="#6d5413" font-size="7" font-family="serif">1 OZ FINE GOLD</text>
-          <path d="M -8,-5 Q 0,-12 8,-5 Q 4,5 0,3 Q -4,5 -8,-5 Z" fill="#8a6d17" opacity="0.5"/>
-        </g>
-
-        <!-- Gold coin right -->
-        <g transform="translate(495, 115)">
-          <circle cx="0" cy="0" r="42" fill="url(#coinGrad)" stroke="#8a6d17" stroke-width="2"/>
-          <circle cx="0" cy="0" r="35" fill="none" stroke="#8a6d17" stroke-width="0.6"/>
-          <text x="0" y="-20" text-anchor="middle" fill="#6d5413" font-size="6" font-family="serif">CANADA</text>
-          <polygon points="0,-5 3,-1 7,-1 4,2 5,6 0,4 -5,6 -4,2 -7,-1 -3,-1" fill="#8a6d17" opacity="0.6"/>
-          <text x="0" y="25" text-anchor="middle" fill="#6d5413" font-size="6" font-family="serif">9999</text>
-        </g>
-
-        <!-- Necklace chain -->
-        <g transform="translate(560, 180)" opacity="0.9">
-          <path d="M 0,0 Q 20,-10 40,0 Q 60,10 80,0 Q 100,-10 120,0" stroke="url(#goldGrad)" stroke-width="3.5" fill="none" stroke-linecap="round"/>
-          <circle cx="5" cy="-2" r="2" fill="#d4af37"/>
-          <circle cx="25" cy="-5" r="2" fill="#d4af37"/>
-          <circle cx="45" cy="-2" r="2" fill="#d4af37"/>
-          <circle cx="65" cy="5" r="2" fill="#d4af37"/>
-          <circle cx="85" cy="-2" r="2" fill="#d4af37"/>
-          <circle cx="105" cy="-5" r="2" fill="#d4af37"/>
-        </g>
-
-        <!-- Ring -->
-        <g transform="translate(40, 70)">
-          <ellipse cx="0" cy="0" rx="28" ry="10" fill="none" stroke="url(#goldGrad)" stroke-width="7"/>
-          <ellipse cx="0" cy="-2" rx="26" ry="8" fill="none" stroke="#fff6cc" stroke-width="1.5" opacity="0.5"/>
-        </g>
-
-        <!-- Sparkles -->
-        <g fill="#fff6cc" class="shimmer">
-          <path d="M 200,30 L 204,38 L 212,42 L 204,46 L 200,54 L 196,46 L 188,42 L 196,38 Z" opacity="0.8"/>
-          <path d="M 520,50 L 523,56 L 529,59 L 523,62 L 520,68 L 517,62 L 511,59 L 517,56 Z" opacity="0.7"/>
-          <path d="M 350,80 L 352,85 L 357,87 L 352,89 L 350,94 L 348,89 L 343,87 L 348,85 Z" opacity="0.6"/>
-        </g>
-      </svg>
-    </div>
-    <h1>Gullverifiseringsveileder</h1>
-    <p class="subtitle">Trinnvis guide for trygt privat gullkjøp i Norge</p>
-  </header>
-
-  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-
-  <nav class="steps" id="stepNav">
-    <button data-step="0" class="active">Start</button>
-    <button data-step="1">1. Stempler</button>
-    <button data-step="2">2. Magnettest</button>
-    <button data-step="3">3. Tetthet</button>
-    <button data-step="4">4. Visuell</button>
-    <button data-step="5">5. Proff-analyse</button>
-    <button data-step="6">6. Svindler</button>
-    <button data-step="7">Sjekkliste</button>
+<!-- SIDEBAR -->
+<aside id="sidebar">
+  <div class="logo">
+    <div class="logo-name">Allverktøy<span>.no</span></div>
+    <div class="logo-sub">Smarte verktøy for norske forbrukere</div>
+  </div>
+  <nav>
+    <button class="nav-item" data-page="hjem" onclick="go('hjem')"><i data-lucide="home"></i>Hjem</button>
+    <button class="nav-item" data-page="bruktbil" onclick="go('bruktbil')"><i data-lucide="car"></i>Kjøp bruktbil</button>
+    <button class="nav-item" data-page="gull" onclick="go('gull')"><i data-lucide="coins"></i>Kjøp gull</button>
+    <button class="nav-item" data-page="billan" onclick="go('billan')"><i data-lucide="car-front"></i>Billånkalkulator</button>
+    <button class="nav-item" data-page="boliglan" onclick="go('boliglan')"><i data-lucide="building-2"></i>Boliglånkalkulator</button>
+    <button class="nav-item" data-page="investering" onclick="go('investering')"><i data-lucide="trending-up"></i>Investeringskalkulator</button>
+    <button class="nav-item" data-page="strom" onclick="go('strom')"><i data-lucide="zap"></i>Strømkalkulator</button>
   </nav>
+  <div class="nav-footer">© 2025 Allverktøy.no</div>
+</aside>
 
-  <!-- STEG 0: INTRODUKSJON -->
-  <section class="step active" id="step0">
-    <h2><span class="step-number">0</span> Før du starter</h2>
-    <p>Denne veilederen hjelper deg å verifisere gull ved privatkjøp i Norge. Gjennomgå alle testene – <strong>ingen enkelttest er tilstrekkelig alene</strong>. Kombinasjonen gir best sikkerhet.</p>
+<main>
+<div class="content">
 
-    <h3>Hva slags gull kan du møte?</h3>
-    <div class="gallery">
-      <div class="gallery-item">
-        <svg viewBox="0 0 140 120" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="barG1" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#f4e4a1"/>
-              <stop offset="50%" stop-color="#d4af37"/>
-              <stop offset="100%" stop-color="#a8871f"/>
-            </linearGradient>
-          </defs>
-          <rect x="20" y="30" width="100" height="60" rx="4" fill="url(#barG1)" stroke="#8a6d17" stroke-width="1.5"/>
-          <rect x="20" y="30" width="100" height="22" rx="4" fill="#fff6cc" opacity="0.35"/>
-          <text x="70" y="52" text-anchor="middle" fill="#6d5413" font-size="8" font-weight="bold" font-family="serif">FINE GOLD</text>
-          <text x="70" y="68" text-anchor="middle" fill="#6d5413" font-size="7" font-family="serif">999.9</text>
-          <text x="70" y="82" text-anchor="middle" fill="#6d5413" font-size="6" font-family="serif">1 oz</text>
-        </svg>
-        <h4>Gullbarrer</h4>
-        <p>LBMA-godkjente fra PAMP, Valcambi, Heraeus</p>
+<!-- ══ HJEM ══ -->
+<div class="page" id="page-hjem">
+  <div class="hero">
+    <div class="eyebrow"><i data-lucide="shield" style="width:13px;height:13px"></i> Helt gratis · Ingen registrering</div>
+    <h1>Alle verktøyene du trenger<br>for <span class="grad-text">smarte valg</span></h1>
+    <p class="hero-sub">Gratis kalkulatorer og kjøpsguider på norsk — for tryggere beslutninger om økonomi, bil og bolig.</p>
+    <div class="hero-ctas">
+      <button class="btn btn-primary" onclick="go('bruktbil')">Kom i gang <i data-lucide="arrow-right" style="width:16px;height:16px"></i></button>
+      <button class="btn btn-secondary" onclick="document.getElementById('tools').scrollIntoView()">Se alle verktøy</button>
+    </div>
+  </div>
+
+  <div id="tools">
+    <div class="section-label">Verktøy</div>
+    <div class="tools-grid">
+      <div class="tool-card" onclick="go('bruktbil')">
+        <div class="tool-icon" style="background:linear-gradient(135deg,rgba(59,130,246,0.2),rgba(59,130,246,0.05))"><i data-lucide="car" style="color:#3B82F6"></i></div>
+        <h3>Kjøp bruktbil</h3>
+        <p>36-punkts besiktelsessjekkliste og komplett kjøpsguide for norsk bruktbilmarked.</p>
+        <div class="tool-arrow">Åpne <i data-lucide="arrow-right" style="width:13px;height:13px"></i></div>
       </div>
-
-      <div class="gallery-item">
-        <svg viewBox="0 0 140 120" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <radialGradient id="coinG1" cx="35%" cy="30%">
-              <stop offset="0%" stop-color="#fff6cc"/>
-              <stop offset="50%" stop-color="#d4af37"/>
-              <stop offset="100%" stop-color="#8a6d17"/>
-            </radialGradient>
-          </defs>
-          <circle cx="70" cy="60" r="45" fill="url(#coinG1)" stroke="#8a6d17" stroke-width="2"/>
-          <circle cx="70" cy="60" r="38" fill="none" stroke="#8a6d17" stroke-width="0.8"/>
-          <path d="M 58,55 Q 70,45 82,55 Q 78,68 70,66 Q 62,68 58,55 Z" fill="#8a6d17" opacity="0.5"/>
-          <text x="70" y="30" text-anchor="middle" fill="#6d5413" font-size="6" font-family="serif">1 OZ</text>
-          <text x="70" y="92" text-anchor="middle" fill="#6d5413" font-size="6" font-family="serif">FINE GOLD</text>
-        </svg>
-        <h4>Gullmynter</h4>
-        <p>Krugerrand, Maple Leaf, American Eagle</p>
+      <div class="tool-card" onclick="go('gull')">
+        <div class="tool-icon" style="background:linear-gradient(135deg,rgba(245,158,11,0.2),rgba(245,158,11,0.05))"><i data-lucide="coins" style="color:#F59E0B"></i></div>
+        <h3>Kjøp gull</h3>
+        <p>Gullverdikalkulator og 24-punkts verifiseringssjekkliste for privat gullkjøp.</p>
+        <div class="tool-arrow">Åpne <i data-lucide="arrow-right" style="width:13px;height:13px"></i></div>
       </div>
-
-      <div class="gallery-item">
-        <svg viewBox="0 0 140 120" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="ringG1" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stop-color="#f4e4a1"/>
-              <stop offset="100%" stop-color="#a8871f"/>
-            </linearGradient>
-          </defs>
-          <ellipse cx="70" cy="75" rx="42" ry="15" fill="none" stroke="url(#ringG1)" stroke-width="10"/>
-          <ellipse cx="70" cy="72" rx="40" ry="13" fill="none" stroke="#fff6cc" stroke-width="1.5" opacity="0.4"/>
-          <polygon points="70,45 63,58 77,58" fill="#b8d8e8" stroke="#8a6d17" stroke-width="1"/>
-          <polygon points="70,45 63,58 70,55" fill="#d9edf7" opacity="0.7"/>
-          <circle cx="70" cy="55" r="2" fill="#fff" opacity="0.9"/>
-        </svg>
-        <h4>Gullringer</h4>
-        <p>Gifteringer, forlovelsesringer, signetringer</p>
+      <div class="tool-card" onclick="go('billan')">
+        <div class="tool-icon" style="background:linear-gradient(135deg,rgba(6,182,212,0.2),rgba(6,182,212,0.05))"><i data-lucide="car-front" style="color:#06B6D4"></i></div>
+        <h3>Billånkalkulator</h3>
+        <p>Månedsbetaling, total kostnad, effektiv rente og full nedbetalingsplan.</p>
+        <div class="tool-arrow">Åpne <i data-lucide="arrow-right" style="width:13px;height:13px"></i></div>
       </div>
-
-      <div class="gallery-item">
-        <svg viewBox="0 0 140 120" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="chainG1" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stop-color="#a8871f"/>
-              <stop offset="50%" stop-color="#f4e4a1"/>
-              <stop offset="100%" stop-color="#a8871f"/>
-            </linearGradient>
-          </defs>
-          <g transform="translate(10, 35)">
-            <ellipse cx="15" cy="10" rx="8" ry="5" fill="none" stroke="url(#chainG1)" stroke-width="3"/>
-            <ellipse cx="30" cy="15" rx="8" ry="5" fill="none" stroke="url(#chainG1)" stroke-width="3"/>
-            <ellipse cx="45" cy="10" rx="8" ry="5" fill="none" stroke="url(#chainG1)" stroke-width="3"/>
-            <ellipse cx="60" cy="15" rx="8" ry="5" fill="none" stroke="url(#chainG1)" stroke-width="3"/>
-            <ellipse cx="75" cy="10" rx="8" ry="5" fill="none" stroke="url(#chainG1)" stroke-width="3"/>
-            <ellipse cx="90" cy="15" rx="8" ry="5" fill="none" stroke="url(#chainG1)" stroke-width="3"/>
-            <ellipse cx="105" cy="10" rx="8" ry="5" fill="none" stroke="url(#chainG1)" stroke-width="3"/>
-            <path d="M 60,20 Q 60,40 60,55" stroke="url(#chainG1)" stroke-width="2" fill="none"/>
-            <path d="M 55,55 L 65,55 L 67,65 L 60,72 L 53,65 Z" fill="url(#chainG1)" stroke="#8a6d17" stroke-width="0.8"/>
-          </g>
-        </svg>
-        <h4>Kjeder & smykker</h4>
-        <p>Halskjeder, armbånd, anheng</p>
+      <div class="tool-card" onclick="go('boliglan')">
+        <div class="tool-icon" style="background:linear-gradient(135deg,rgba(16,185,129,0.2),rgba(16,185,129,0.05))"><i data-lucide="building-2" style="color:#10B981"></i></div>
+        <h3>Boliglånkalkulator</h3>
+        <p>Stresstest, belåningsgrad, ekstra innbetaling og norske låneregler.</p>
+        <div class="tool-arrow">Åpne <i data-lucide="arrow-right" style="width:13px;height:13px"></i></div>
       </div>
-
-      <div class="gallery-item">
-        <svg viewBox="0 0 140 120" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="barG2" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stop-color="#f4e4a1"/>
-              <stop offset="100%" stop-color="#a8871f"/>
-            </linearGradient>
-          </defs>
-          <rect x="35" y="75" width="70" height="25" rx="2" fill="url(#barG2)" stroke="#8a6d17" stroke-width="1"/>
-          <rect x="40" y="55" width="60" height="22" rx="2" fill="url(#barG2)" stroke="#8a6d17" stroke-width="1"/>
-          <rect x="45" y="37" width="50" height="20" rx="2" fill="url(#barG2)" stroke="#8a6d17" stroke-width="1"/>
-          <rect x="50" y="20" width="40" height="18" rx="2" fill="url(#barG2)" stroke="#8a6d17" stroke-width="1"/>
-          <text x="70" y="92" text-anchor="middle" fill="#6d5413" font-size="6" font-weight="bold">100g</text>
-          <text x="70" y="70" text-anchor="middle" fill="#6d5413" font-size="5" font-weight="bold">50g</text>
-          <text x="70" y="51" text-anchor="middle" fill="#6d5413" font-size="5" font-weight="bold">20g</text>
-          <text x="70" y="32" text-anchor="middle" fill="#6d5413" font-size="5" font-weight="bold">10g</text>
-        </svg>
-        <h4>Investeringsgull</h4>
-        <p>Ulike størrelser fra 1 g til 1 kg</p>
+      <div class="tool-card" onclick="go('investering')">
+        <div class="tool-icon" style="background:linear-gradient(135deg,rgba(139,92,246,0.2),rgba(139,92,246,0.05))"><i data-lucide="trending-up" style="color:#8B5CF6"></i></div>
+        <h3>Investeringskalkulator</h3>
+        <p>Sammensatt rente, månedlig sparing, skatt og inflasjonsjustert avkastning.</p>
+        <div class="tool-arrow">Åpne <i data-lucide="arrow-right" style="width:13px;height:13px"></i></div>
       </div>
-
-      <div class="gallery-item">
-        <svg viewBox="0 0 140 120" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="watchG1" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#f4e4a1"/>
-              <stop offset="100%" stop-color="#a8871f"/>
-            </linearGradient>
-          </defs>
-          <rect x="35" y="25" width="20" height="15" fill="url(#watchG1)" stroke="#8a6d17" stroke-width="1"/>
-          <rect x="85" y="25" width="20" height="15" fill="url(#watchG1)" stroke="#8a6d17" stroke-width="1"/>
-          <rect x="35" y="80" width="20" height="15" fill="url(#watchG1)" stroke="#8a6d17" stroke-width="1"/>
-          <rect x="85" y="80" width="20" height="15" fill="url(#watchG1)" stroke="#8a6d17" stroke-width="1"/>
-          <circle cx="70" cy="60" r="28" fill="url(#watchG1)" stroke="#8a6d17" stroke-width="2"/>
-          <circle cx="70" cy="60" r="22" fill="#fff" opacity="0.9"/>
-          <line x1="70" y1="60" x2="70" y2="45" stroke="#1a1a1a" stroke-width="2"/>
-          <line x1="70" y1="60" x2="82" y2="60" stroke="#1a1a1a" stroke-width="1.5"/>
-          <circle cx="70" cy="60" r="1.5" fill="#1a1a1a"/>
-        </svg>
-        <h4>Gullur & klokker</h4>
-        <p>Ofte kombinasjon av gull og stål</p>
+      <div class="tool-card" onclick="go('strom')">
+        <div class="tool-icon" style="background:linear-gradient(135deg,rgba(234,179,8,0.2),rgba(234,179,8,0.05))"><i data-lucide="zap" style="color:#EAB308"></i></div>
+        <h3>Strømkalkulator</h3>
+        <p>Estimat for årlig strømforbruk og kostnad basert på bolig, oppvarming og utstyr.</p>
+        <div class="tool-arrow">Åpne <i data-lucide="arrow-right" style="width:13px;height:13px"></i></div>
       </div>
     </div>
 
-
-    <div class="info-box">
-      <strong>Dette trenger du:</strong>
-      <ul style="margin-top: 10px; padding-left: 20px;">
-        <li>Sterk neodym-magnet</li>
-        <li>Presisjonsvekt (0,01 g nøyaktighet)</li>
-        <li>Målesylinder eller digital skyvelære</li>
-        <li>Lupe (minst 10× forstørrelse)</li>
-        <li>Godt lys, gjerne dagslys</li>
-        <li>Rent vann og en beholder for fortrengningstest</li>
-      </ul>
-    </div>
-
-    <div class="warning-box">
-      <strong>Viktig advarsel:</strong> Kjøp aldri gull kontant fra ukjente uten verifisering. Ved usikkerhet – gå alltid til en autorisert gullsmed eller en etablert edelmetallforhandler (f.eks. K.A. Rasmussen eller Scandinavian Bullion) for endelig verifisering før betaling.
-    </div>
-
-    <h3>Norsk regelverk i korthet</h3>
-    <p>I Norge er <strong>finhetsstempling i dag frivillig</strong>, men produsenter som stempler må følge norske regler om ansvarsmerke og korrekt angivelse av finhet. Den gamle obligatoriske Edelmetallkontrollen ble avviklet, og ansvar for tilsyn ligger i dag hos Justervesenet og bransjeorganisasjonen Norges Gullsmedforbund. Gull solgt privat – særlig utenlandske varer – kan mangle norske kontrollstempler uten at det er problematisk, men da blir egentesting viktigere.</p>
-
-    <div class="nav-buttons">
-      <button disabled>Tilbake</button>
-      <button onclick="goStep(1)">Start verifisering →</button>
-    </div>
-  </section>
-
-  <!-- STEG 1: STEMPLER -->
-  <section class="step" id="step1">
-    <h2><span class="step-number">1</span> Stempelkontroll</h2>
-    <p>Gullstempler (renhets- eller finhetsstempler) angir gullinnholdet i tusendeler. Bruk lupe og sjekk på et flatt område – ofte på låsen, innsiden av ringer, eller bunnen av barrer.</p>
-
-    <div class="illustration">
-      <svg viewBox="0 0 480 220" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="ringInspect" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stop-color="#f4e4a1"/>
-            <stop offset="100%" stop-color="#a8871f"/>
-          </linearGradient>
-          <radialGradient id="loupeGlass" cx="40%" cy="40%">
-            <stop offset="0%" stop-color="#ffffff" stop-opacity="0.6"/>
-            <stop offset="70%" stop-color="#d9edf7" stop-opacity="0.2"/>
-            <stop offset="100%" stop-color="#1a1a1a" stop-opacity="0"/>
-          </radialGradient>
-        </defs>
-
-        <!-- Ring with stamp inside -->
-        <g transform="translate(130, 140)">
-          <ellipse cx="0" cy="0" rx="70" ry="22" fill="none" stroke="url(#ringInspect)" stroke-width="14"/>
-          <ellipse cx="0" cy="-3" rx="68" ry="19" fill="none" stroke="#fff6cc" stroke-width="2" opacity="0.4"/>
-          <!-- Tiny stamp -->
-          <text x="-6" y="3" fill="#6d5413" font-size="5" font-weight="bold" font-family="serif">750</text>
-        </g>
-
-        <!-- Loupe -->
-        <g transform="translate(300, 80)">
-          <!-- Handle -->
-          <rect x="60" y="95" width="55" height="10" rx="3" fill="#3a3a3a" stroke="#1a1a1a" stroke-width="1" transform="rotate(35, 87, 100)"/>
-          <!-- Ring of loupe -->
-          <circle cx="40" cy="60" r="50" fill="none" stroke="#d4af37" stroke-width="4"/>
-          <circle cx="40" cy="60" r="46" fill="url(#loupeGlass)" stroke="#8a6d17" stroke-width="1"/>
-          <!-- Magnified view inside -->
-          <circle cx="40" cy="60" r="44" fill="#f4e4a1" opacity="0.2"/>
-          <text x="40" y="55" text-anchor="middle" fill="#6d5413" font-size="20" font-weight="bold" font-family="serif">750</text>
-          <text x="40" y="75" text-anchor="middle" fill="#6d5413" font-size="10" font-family="serif">18K</text>
-          <!-- Glass reflection -->
-          <ellipse cx="25" cy="45" rx="14" ry="8" fill="#ffffff" opacity="0.25"/>
-        </g>
-
-        <!-- Arrow from ring to loupe -->
-        <path d="M 160,115 Q 220,90 270,100" stroke="#d4af37" stroke-width="1.5" fill="none" stroke-dasharray="4,3" opacity="0.6"/>
-      </svg>
-      <p class="illustration-caption">Bruk lupe med minst 10× forstørrelse for å lese stempler på smykker</p>
-    </div>
-
-    <div class="stamp-grid">
-      <div class="stamp-card">
-        <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
-          <defs><radialGradient id="c999" cx="35%" cy="30%"><stop offset="0%" stop-color="#fff6cc"/><stop offset="60%" stop-color="#f4d03f"/><stop offset="100%" stop-color="#a8871f"/></radialGradient></defs>
-          <circle cx="40" cy="40" r="34" fill="url(#c999)" stroke="#8a6d17" stroke-width="2"/>
-          <circle cx="40" cy="40" r="28" fill="none" stroke="#8a6d17" stroke-width="0.7"/>
-          <text x="40" y="46" text-anchor="middle" fill="#6d5413" font-size="14" font-weight="bold" font-family="serif">999</text>
-        </svg>
-        <div class="stamp-number">999</div><div class="stamp-karat">24 karat</div><div class="stamp-purity">99,9 % rent gull</div>
+    <div class="card trust-card" style="display:flex;gap:32px;align-items:center;justify-content:space-between;flex-wrap:wrap">
+      <div>
+        <h3 style="margin-bottom:5px">Bygget for tryggere beslutninger</h3>
+        <p style="font-size:0.85rem;color:var(--muted2)">Basert på norsk lov, markedsdata og åpne beregninger.</p>
       </div>
-      <div class="stamp-card">
-        <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
-          <defs><radialGradient id="c916" cx="35%" cy="30%"><stop offset="0%" stop-color="#fff6cc"/><stop offset="60%" stop-color="#e6c547"/><stop offset="100%" stop-color="#9e7d1c"/></radialGradient></defs>
-          <circle cx="40" cy="40" r="34" fill="url(#c916)" stroke="#8a6d17" stroke-width="2"/>
-          <circle cx="40" cy="40" r="28" fill="none" stroke="#8a6d17" stroke-width="0.7"/>
-          <text x="40" y="46" text-anchor="middle" fill="#6d5413" font-size="14" font-weight="bold" font-family="serif">916</text>
-        </svg>
-        <div class="stamp-number">916</div><div class="stamp-karat">22 karat</div><div class="stamp-purity">91,6 % gull</div>
-      </div>
-      <div class="stamp-card">
-        <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
-          <defs><radialGradient id="c750" cx="35%" cy="30%"><stop offset="0%" stop-color="#fff0b0"/><stop offset="60%" stop-color="#d4af37"/><stop offset="100%" stop-color="#8a6d17"/></radialGradient></defs>
-          <circle cx="40" cy="40" r="34" fill="url(#c750)" stroke="#8a6d17" stroke-width="2"/>
-          <circle cx="40" cy="40" r="28" fill="none" stroke="#8a6d17" stroke-width="0.7"/>
-          <text x="40" y="46" text-anchor="middle" fill="#6d5413" font-size="14" font-weight="bold" font-family="serif">750</text>
-        </svg>
-        <div class="stamp-number">750</div><div class="stamp-karat">18 karat</div><div class="stamp-purity">75,0 % gull</div>
-      </div>
-      <div class="stamp-card">
-        <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
-          <defs><radialGradient id="c585" cx="35%" cy="30%"><stop offset="0%" stop-color="#ffe8a8"/><stop offset="60%" stop-color="#c4a030"/><stop offset="100%" stop-color="#7a5f15"/></radialGradient></defs>
-          <circle cx="40" cy="40" r="34" fill="url(#c585)" stroke="#8a6d17" stroke-width="2"/>
-          <circle cx="40" cy="40" r="28" fill="none" stroke="#8a6d17" stroke-width="0.7"/>
-          <text x="40" y="46" text-anchor="middle" fill="#6d5413" font-size="14" font-weight="bold" font-family="serif">585</text>
-        </svg>
-        <div class="stamp-number">585</div><div class="stamp-karat">14 karat</div><div class="stamp-purity">58,5 % gull</div>
-      </div>
-      <div class="stamp-card">
-        <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
-          <defs><radialGradient id="c375" cx="35%" cy="30%"><stop offset="0%" stop-color="#ffdca0"/><stop offset="60%" stop-color="#b89328"/><stop offset="100%" stop-color="#6d5413"/></radialGradient></defs>
-          <circle cx="40" cy="40" r="34" fill="url(#c375)" stroke="#8a6d17" stroke-width="2"/>
-          <circle cx="40" cy="40" r="28" fill="none" stroke="#8a6d17" stroke-width="0.7"/>
-          <text x="40" y="46" text-anchor="middle" fill="#6d5413" font-size="14" font-weight="bold" font-family="serif">375</text>
-        </svg>
-        <div class="stamp-number">375</div><div class="stamp-karat">9 karat</div><div class="stamp-purity">37,5 % gull</div>
+      <div style="display:flex;flex-direction:column;gap:9px">
+        <div class="check-item"><i data-lucide="check"></i> Basert på norsk regelverk</div>
+        <div class="check-item"><i data-lucide="check"></i> Oppdatert for 2025</div>
+        <div class="check-item"><i data-lucide="check"></i> Fungerer uten nettilkobling</div>
       </div>
     </div>
+  </div>
+</div>
 
-    <h3>Hva du skal se etter</h3>
-    <div class="table-wrap"><table>
-      <tr><th>Element</th><th>Betydning</th></tr>
-      <tr><td>Finhetstall (f.eks. 750)</td><td>Gullinnhold i tusendeler</td></tr>
-      <tr><td>Produsentstempel</td><td>Ansvarsmerke fra smed eller verksted</td></tr>
-      <tr><td>Vekt (for barrer)</td><td>F.eks. "1 oz" eller "10 g"</td></tr>
-      <tr><td>Serienummer</td><td>Obligatorisk på LBMA-godkjente barrer fra 1 g+</td></tr>
-      <tr><td>Produsentnavn</td><td>PAMP, Valcambi, Heraeus, Perth Mint, Umicore, Argor-Heraeus</td></tr>
-    </table></div>
+<!-- ══ BRUKTBIL ══ -->
+<div class="page" id="page-bruktbil">
+  <div class="page-eyebrow">Kjøp bruktbil</div>
+  <h1 style="font-size:2rem;margin-bottom:6px">Sjekkliste for besiktigelse</h1>
+  <p class="page-desc">36 punkter å sjekke på stedet. Marker hvert punkt som OK, usikkert eller problem. Lagres automatisk.</p>
 
-    <div class="caution-box">
-      <strong>Vær oppmerksom på:</strong>
-      <ul style="margin-top: 8px; padding-left: 20px;">
-        <li><strong>GF</strong> = Gold Filled (gullbelagt tykt lag)</li>
-        <li><strong>GP</strong> = Gold Plated (tynn gullbelegging)</li>
-        <li><strong>HGE</strong> = Heavy Gold Electroplate</li>
-        <li><strong>RGP</strong> = Rolled Gold Plate</li>
-        <li>Disse er <em>ikke</em> massivt gull – ofte bare mikrometer tykke lag</li>
-      </ul>
-    </div>
-
-    <div class="warning-box">
-      <strong>Svindelvarsel:</strong> Falske stempler er vanlig. Et stempel i seg selv beviser ingenting – spesielt ikke på smykker kjøpt privat eller fra utlandet. Stempelet skal være skarpt, jevnt preget, og plassert der det hører hjemme.
-    </div>
-
-    <div class="nav-buttons">
-      <button onclick="goStep(0)">← Tilbake</button>
-      <button onclick="goStep(2)">Videre til magnettest →</button>
-    </div>
-  </section>
-
-  <!-- STEG 2: MAGNETTEST -->
-  <section class="step" id="step2">
-    <h2><span class="step-number">2</span> Magnettest</h2>
-    <p>Rent gull er <strong>diamagnetisk</strong> – det tiltrekkes ikke av magneter. Dette er en enkel, men begrenset test.</p>
-
-    <div class="illustration">
-      <svg viewBox="0 0 480 180" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="magBarG" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#f4e4a1"/>
-            <stop offset="50%" stop-color="#d4af37"/>
-            <stop offset="100%" stop-color="#a8871f"/>
-          </linearGradient>
-        </defs>
-        <!-- Table surface -->
-        <line x1="20" y1="140" x2="460" y2="140" stroke="#555" stroke-width="1.5"/>
-
-        <!-- Gold bar on table -->
-        <g transform="translate(280, 100)">
-          <rect x="0" y="0" width="140" height="40" rx="4" fill="url(#magBarG)" stroke="#8a6d17" stroke-width="1.5"/>
-          <rect x="0" y="0" width="140" height="15" rx="4" fill="#fff6cc" opacity="0.4"/>
-          <text x="70" y="26" text-anchor="middle" fill="#6d5413" font-size="9" font-weight="bold" font-family="serif">FINE GOLD 999.9</text>
-        </g>
-
-        <!-- Horseshoe magnet -->
-        <g transform="translate(100, 60)">
-          <!-- Magnet body -->
-          <path d="M 20,0 L 20,50 Q 20,70 40,70 Q 60,70 60,50 L 60,0 L 80,0 L 80,50 Q 80,90 40,90 Q 0,90 0,50 L 0,0 Z" fill="#c0392b" stroke="#7b241c" stroke-width="2"/>
-          <!-- Pole markings -->
-          <rect x="0" y="0" width="20" height="15" fill="#ecf0f1"/>
-          <rect x="60" y="0" width="20" height="15" fill="#ecf0f1"/>
-          <text x="10" y="11" text-anchor="middle" fill="#1a1a1a" font-size="9" font-weight="bold">N</text>
-          <text x="70" y="11" text-anchor="middle" fill="#1a1a1a" font-size="9" font-weight="bold">S</text>
-          <!-- Highlight -->
-          <path d="M 5,20 Q 8,50 15,70" stroke="#e74c3c" stroke-width="2" fill="none" opacity="0.6"/>
-        </g>
-
-        <!-- Magnetic field lines (with "no effect" slash) -->
-        <g stroke="#4caf50" stroke-width="1.5" fill="none" opacity="0.5" stroke-dasharray="3,2">
-          <path d="M 190,80 Q 230,75 270,90"/>
-          <path d="M 190,100 Q 230,100 270,110"/>
-        </g>
-        <!-- Big red X indicating no attraction -->
-        <g transform="translate(230, 50)">
-          <circle cx="0" cy="0" r="18" fill="#4caf50" opacity="0.15" stroke="#4caf50" stroke-width="2"/>
-          <path d="M -8,0 L -2,6 L 8,-6" stroke="#4caf50" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-        </g>
-
-        <text x="240" y="165" text-anchor="middle" fill="#4caf50" font-size="11" font-weight="bold">Ekte gull: ingen tiltrekning</text>
-      </svg>
-      <p class="illustration-caption">Rent gull reagerer ikke på en sterk neodym-magnet</p>
-    </div>
-
-    <h3>Slik gjør du</h3>
-    <ol style="padding-left: 20px; margin: 15px 0;">
-      <li style="margin-bottom: 8px;">Bruk en <strong>sterk neodym-magnet</strong> (ikke kjøleskapmagnet).</li>
-      <li style="margin-bottom: 8px;">Hold magneten nær gullgjenstanden under en vinkel.</li>
-      <li style="margin-bottom: 8px;">Observer om gullet trekkes mot magneten eller henger fast.</li>
-      <li style="margin-bottom: 8px;">Test også ved å la magneten gli langs overflaten.</li>
-    </ol>
-
-    <div class="success-box">
-      <strong>Godt tegn:</strong> Ingen tiltrekning. Gullet forblir passivt. Kan være ekte gull, men ikke konklusivt alene.
-    </div>
-
-    <div class="warning-box">
-      <strong>Dårlig tegn:</strong> Magnetisk tiltrekning = <em>ikke</em> rent gull. Kan være jernkjerne, nikkelholdig legering eller gullbelagt stål.
-    </div>
-
-    <div class="caution-box">
-      <strong>Begrensning:</strong> Mange metaller som brukes i falskt gull er <em>også</em> ikke-magnetiske – f.eks. <strong>wolfram, bly, kobber og messing</strong>. Derfor er magnettesten kun en grov førstetest. Wolfram har nesten identisk tetthet som gull og er den mest brukte falskingsmetoden i barrer – denne testen vil <strong>ikke</strong> fange opp det.
-    </div>
-
-    <div class="nav-buttons">
-      <button onclick="goStep(1)">← Tilbake</button>
-      <button onclick="goStep(3)">Videre til tetthetstest →</button>
-    </div>
-  </section>
-
-  <!-- STEG 3: TETTHETSTEST -->
-  <section class="step" id="step3">
-    <h2><span class="step-number">3</span> Tetthetsberegning (Arkimedes-prinsippet)</h2>
-    <p>Gull har svært høy tetthet – 19,32 g/cm³ for rent gull. Ved å veie gjenstanden og måle volumet (via vannfortrengning) kan du beregne tetthet og sammenligne med referanseverdier.</p>
-
-    <div class="illustration-row">
-      <div class="illustration">
-        <svg viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <radialGradient id="coinScale" cx="35%" cy="30%">
-              <stop offset="0%" stop-color="#fff6cc"/>
-              <stop offset="50%" stop-color="#d4af37"/>
-              <stop offset="100%" stop-color="#8a6d17"/>
-            </radialGradient>
-          </defs>
-          <!-- Scale base -->
-          <rect x="30" y="140" width="140" height="60" rx="6" fill="#2c3e50" stroke="#1a1a1a" stroke-width="1.5"/>
-          <rect x="35" y="145" width="130" height="35" rx="4" fill="#1a1a1a"/>
-          <!-- Display -->
-          <text x="100" y="168" text-anchor="middle" fill="#4caf50" font-size="14" font-family="monospace" font-weight="bold">31.10 g</text>
-          <!-- Plate -->
-          <ellipse cx="100" cy="130" rx="70" ry="8" fill="#95a5a6" stroke="#34495e" stroke-width="1.5"/>
-          <ellipse cx="100" cy="128" rx="70" ry="7" fill="#bdc3c7"/>
-          <!-- Gold coin on plate -->
-          <ellipse cx="100" cy="110" rx="28" ry="6" fill="#6d5413" opacity="0.3"/>
-          <circle cx="100" cy="105" r="28" fill="url(#coinScale)" stroke="#8a6d17" stroke-width="1.5"/>
-          <circle cx="100" cy="105" r="23" fill="none" stroke="#8a6d17" stroke-width="0.6"/>
-          <text x="100" y="108" text-anchor="middle" fill="#6d5413" font-size="7" font-weight="bold">1 oz</text>
-          <!-- Buttons -->
-          <circle cx="50" cy="190" r="4" fill="#7f8c8d"/>
-          <circle cx="150" cy="190" r="4" fill="#7f8c8d"/>
-        </svg>
-        <p class="illustration-caption">1. Vei tørr gjenstand på presisjonsvekt</p>
+  <div class="progress-banner">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
+      <div style="flex:1;min-width:220px">
+        <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:4px">
+          <span class="progress-big" id="cl-done">0</span>
+          <span style="color:var(--muted2);font-size:0.85rem">av 36 punkter sjekket</span>
+        </div>
+        <div class="progress-bg"><div class="progress-fill" id="cl-bar" style="width:0%"></div></div>
+        <div style="display:flex;gap:16px;flex-wrap:wrap">
+          <span class="stat-chip" style="color:var(--green)"><i data-lucide="check"></i><span id="cl-ok">0</span> OK</span>
+          <span class="stat-chip" style="color:var(--amber)"><i data-lucide="alert-triangle"></i><span id="cl-unsure">0</span> usikker</span>
+          <span class="stat-chip" style="color:var(--red)"><i data-lucide="x"></i><span id="cl-bad">0</span> problem</span>
+        </div>
       </div>
-
-      <div class="illustration">
-        <svg viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="water" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stop-color="#7fc7e8" stop-opacity="0.7"/>
-              <stop offset="100%" stop-color="#3498db" stop-opacity="0.85"/>
-            </linearGradient>
-            <radialGradient id="coinSubmerged" cx="35%" cy="30%">
-              <stop offset="0%" stop-color="#fff6cc"/>
-              <stop offset="60%" stop-color="#c4a030"/>
-              <stop offset="100%" stop-color="#6d5413"/>
-            </radialGradient>
-          </defs>
-          <!-- Cylinder glass -->
-          <path d="M 60,30 L 60,200 Q 60,210 70,210 L 130,210 Q 140,210 140,200 L 140,30" fill="none" stroke="#d9edf7" stroke-width="2.5"/>
-          <path d="M 55,30 L 145,30" stroke="#d9edf7" stroke-width="3"/>
-          <!-- Water -->
-          <path d="M 62,80 L 62,200 Q 62,208 70,208 L 130,208 Q 138,208 138,200 L 138,80 Q 100,72 62,80 Z" fill="url(#water)"/>
-          <!-- Submerged coin -->
-          <circle cx="100" cy="155" r="22" fill="url(#coinSubmerged)" stroke="#6d5413" stroke-width="1.5" opacity="0.85"/>
-          <circle cx="100" cy="155" r="18" fill="none" stroke="#6d5413" stroke-width="0.5"/>
-          <!-- Water line ripples -->
-          <path d="M 62,82 Q 80,78 100,82 Q 120,86 138,82" stroke="#ffffff" stroke-width="1" fill="none" opacity="0.6"/>
-          <!-- Measurement marks -->
-          <g stroke="#d9edf7" stroke-width="1">
-            <line x1="140" y1="100" x2="148" y2="100"/>
-            <line x1="140" y1="120" x2="148" y2="120"/>
-            <line x1="140" y1="140" x2="148" y2="140"/>
-            <line x1="140" y1="160" x2="148" y2="160"/>
-            <line x1="140" y1="180" x2="148" y2="180"/>
-          </g>
-          <text x="155" y="103" fill="#d9edf7" font-size="8">60</text>
-          <text x="155" y="123" fill="#d9edf7" font-size="8">55</text>
-          <text x="155" y="143" fill="#d9edf7" font-size="8">50</text>
-          <text x="155" y="163" fill="#d9edf7" font-size="8">45</text>
-          <text x="155" y="183" fill="#d9edf7" font-size="8">40</text>
-          <!-- Label -->
-          <text x="100" y="20" text-anchor="middle" fill="#d9edf7" font-size="9">ml</text>
-        </svg>
-        <p class="illustration-caption">2. Mål volum via vannfortrengning</p>
-      </div>
-
-      <div class="illustration">
-        <svg viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="formulaBg" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stop-color="#2c2416"/>
-              <stop offset="100%" stop-color="#3a2f1a"/>
-            </linearGradient>
-          </defs>
-          <!-- Paper -->
-          <rect x="20" y="30" width="160" height="160" rx="8" fill="url(#formulaBg)" stroke="#d4af37" stroke-width="2"/>
-          <text x="100" y="60" text-anchor="middle" fill="#d4af37" font-size="11" font-weight="bold">Tetthet (ρ)</text>
-          <line x1="50" y1="70" x2="150" y2="70" stroke="#d4af37" stroke-width="1" opacity="0.5"/>
-          <text x="100" y="100" text-anchor="middle" fill="#f4e4a1" font-size="13">masse (m)</text>
-          <line x1="45" y1="112" x2="155" y2="112" stroke="#f4e4a1" stroke-width="1.5"/>
-          <text x="100" y="132" text-anchor="middle" fill="#f4e4a1" font-size="13">volum (V)</text>
-          <text x="100" y="165" text-anchor="middle" fill="#4caf50" font-size="18" font-weight="bold">19,32 g/cm³</text>
-          <text x="100" y="180" text-anchor="middle" fill="#b0b0b0" font-size="8">= rent gull</text>
-        </svg>
-        <p class="illustration-caption">3. Beregn: ρ = m ÷ V</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-sm" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Eksporter</button>
+        <button class="btn btn-sm" onclick="resetCL()"><i data-lucide="rotate-ccw" style="width:14px;height:14px"></i> Nullstill</button>
       </div>
     </div>
+  </div>
 
-    <h3>Metode</h3>
-    <ol style="padding-left: 20px; margin: 15px 0;">
-      <li style="margin-bottom: 8px;">Vei gjenstanden tørr. Noter vekt (gram).</li>
-      <li style="margin-bottom: 8px;">Fyll en målesylinder med vann. Noter startvolum (ml).</li>
-      <li style="margin-bottom: 8px;">Senk gjenstanden helt ned. Noter nytt volum.</li>
-      <li style="margin-bottom: 8px;">Differansen = volumet av gjenstanden i cm³ (1 ml = 1 cm³).</li>
-      <li style="margin-bottom: 8px;">Tetthet = vekt ÷ volum.</li>
-    </ol>
+  <div id="cl-cats"></div>
 
-    <div class="calculator">
-      <h3 style="margin-top: 0;">Tetthetskalkulator</h3>
-      <div class="input-group">
-        <label for="weight">Vekt (gram)</label>
-        <input type="number" id="weight" step="0.01" placeholder="f.eks. 31.10">
+  <div class="card" style="background:linear-gradient(135deg,rgba(59,130,246,0.1),rgba(139,92,246,0.08));border-color:rgba(59,130,246,0.25);margin-top:8px">
+    <h3 style="margin-bottom:16px">Sammendrag</h3>
+    <div class="summary-grid">
+      <div style="text-align:center"><div class="summary-val" style="color:var(--green)" id="sum-ok">0</div><div style="font-size:0.75rem;color:var(--muted);margin-top:4px;text-transform:uppercase;letter-spacing:.05em;font-weight:600">OK</div></div>
+      <div style="text-align:center"><div class="summary-val" style="color:var(--amber)" id="sum-unsure">0</div><div style="font-size:0.75rem;color:var(--muted);margin-top:4px;text-transform:uppercase;letter-spacing:.05em;font-weight:600">Usikker</div></div>
+      <div style="text-align:center"><div class="summary-val" style="color:var(--red)" id="sum-bad">0</div><div style="font-size:0.75rem;color:var(--muted);margin-top:4px;text-transform:uppercase;letter-spacing:.05em;font-weight:600">Problem</div></div>
+    </div>
+    <p id="sum-warn" style="display:none;margin-top:16px;font-size:0.85rem;color:var(--red)"></p>
+  </div>
+
+  <a href="https://www.forbrukerradet.no/forside/bil/kjop-og-salg-av-bil/sjekkliste/" target="_blank" class="ext-link">
+    <div style="width:42px;height:42px;flex-shrink:0;border-radius:12px;background:#003087;display:flex;align-items:center;justify-content:center">
+      <img src="https://www.forbrukerradet.no/favicon.ico" width="24" height="24" alt="FR" onerror="this.style.display='none';this.parentElement.innerHTML='<span style=\'color:#fff;font-weight:800;font-size:0.75rem;font-family:Space Grotesk,sans-serif\'>FR</span>'">
+    </div>
+    <div style="flex:1">
+      <div style="font-weight:700;font-size:0.9rem;margin-bottom:2px">Forbrukerrådet — Sjekkliste ved bilkjøp</div>
+      <div style="font-size:0.78rem;color:var(--muted2)">forbrukerradet.no · Offisiell sjekkliste fra Forbrukerrådet</div>
+    </div>
+    <i data-lucide="external-link" style="width:16px;height:16px;color:var(--muted);flex-shrink:0"></i>
+  </a>
+</div>
+
+<!-- ══ GULL ══ -->
+<div class="page" id="page-gull">
+  <div class="page-eyebrow">Kjøp gull</div>
+  <h1 style="font-size:2rem;margin-bottom:6px">Gullverdikalkulator</h1>
+  <p class="page-desc">Beregn verdien på gull basert på vekt, karathet og spotpris.</p>
+
+  <div class="grid2" style="margin-bottom:20px">
+    <div class="card" style="display:flex;flex-direction:column;gap:18px">
+      <div class="field"><label class="label-text">Spotpris (NOK/gram)</label><input class="input-field" type="number" id="gull-spot" value="960" step="10" oninput="calcGull()"><p class="hint">Aktuell spotpris ca. 960 NOK/g (april 2025)</p></div>
+      <div class="field"><label class="label-text">Vekt (gram)</label><input class="input-field" type="number" id="gull-vekt" value="10" step="0.1" oninput="calcGull()"></div>
+      <div class="field"><label class="label-text">Karathet</label>
+        <select class="input-field" id="gull-karat" onchange="calcGull()">
+          <option value="0.9999">999.9 — 24 karat (rent gull)</option>
+          <option value="0.916">916 — 22 karat</option>
+          <option value="0.750" selected>750 — 18 karat</option>
+          <option value="0.585">585 — 14 karat</option>
+          <option value="0.375">375 — 9 karat</option>
+        </select>
       </div>
-      <div class="input-group">
-        <label for="vol-start">Startvolum vann (ml)</label>
-        <input type="number" id="vol-start" step="0.1" placeholder="f.eks. 50.0">
+      <div class="field"><label class="label-text">Forhandlermargin (%)</label><input class="input-field" type="number" id="gull-margin" value="5" step="0.5" min="0" max="50" oninput="calcGull()"><p class="hint">Typisk 3–8 % over spotpris ved privat kjøp</p></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div class="result-card highlight"><div class="result-label">Markedsverdi (spotpris)</div><div class="result-number" id="gull-spot-val">—</div><div class="result-sub">Ren metallverdi</div></div>
+      <div class="result-card"><div class="result-label">Pris inkl. margin</div><div class="result-number" id="gull-margin-val">—</div><div class="result-sub" id="gull-margin-label">—</div></div>
+      <div class="result-card"><div class="result-label">Gullinnhold</div><div class="result-number" id="gull-innhold">—</div><div class="result-sub" id="gull-karat-label">—</div></div>
+      <div class="result-card"><div class="result-label">Pris per gram rent gull</div><div class="result-number" id="gull-per-gram">—</div></div>
+    </div>
+  </div>
+
+  <div class="info-box" style="margin-bottom:12px"><strong>💡 Slik bruker du kalkulatoren</strong>Sjekk spotprisen på gull.no eller bullionvault.com. Mer enn 10 % over spotpris er dyrt for investeringsgull.</div>
+  <div class="warn-box" style="margin-bottom:32px"><strong>⚠️ Privatmarkedet</strong>Ekte gull selges aldri langt under spotpris. Tilbud på 30–50 % under markedspris er nesten alltid svindel.</div>
+
+  <div class="section-label">Verifiseringssjekkliste</div>
+  <div class="progress-banner">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
+      <div style="flex:1;min-width:220px">
+        <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:4px">
+          <span class="progress-big" id="gcl-done">0</span>
+          <span style="color:var(--muted2);font-size:0.85rem">av 24 punkter sjekket</span>
+        </div>
+        <div class="progress-bg"><div class="progress-fill" id="gcl-bar" style="width:0%"></div></div>
+        <div style="display:flex;gap:16px;flex-wrap:wrap">
+          <span class="stat-chip" style="color:var(--green)"><i data-lucide="check"></i><span id="gcl-ok">0</span> OK</span>
+          <span class="stat-chip" style="color:var(--amber)"><i data-lucide="alert-triangle"></i><span id="gcl-unsure">0</span> usikker</span>
+          <span class="stat-chip" style="color:var(--red)"><i data-lucide="x"></i><span id="gcl-bad">0</span> problem</span>
+        </div>
       </div>
-      <div class="input-group">
-        <label for="vol-end">Sluttvolum vann (ml)</label>
-        <input type="number" id="vol-end" step="0.1" placeholder="f.eks. 51.6">
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-sm" onclick="resetGullCL()"><i data-lucide="rotate-ccw" style="width:14px;height:14px"></i> Nullstill</button>
       </div>
-      <button class="calc-btn" onclick="calcDensity()">Beregn tetthet</button>
-      <div class="result" id="densityResult"></div>
     </div>
-
-    <h3>Referansetettheter</h3>
-    <div class="table-wrap"><table>
-      <tr><th>Materiale</th><th>Tetthet (g/cm³)</th><th>Kommentar</th></tr>
-      <tr><td>Rent gull (999)</td><td>19,32</td><td>Referanse</td></tr>
-      <tr><td>22 karat (916)</td><td>17,7–17,9</td><td>Mynter som Krugerrand</td></tr>
-      <tr><td>18 karat (750)</td><td>15,2–15,9</td><td>Avhenger av legering</td></tr>
-      <tr><td>14 karat (585)</td><td>12,9–14,6</td><td>Varierer mye</td></tr>
-      <tr><td>9 karat (375)</td><td>11,0–12,7</td><td>Smykkegull</td></tr>
-      <tr><td style="color:var(--danger)">Wolfram</td><td style="color:var(--danger)">19,25</td><td>Farlig likt gull!</td></tr>
-      <tr><td>Bly</td><td>11,34</td><td>For lett</td></tr>
-      <tr><td>Sølv</td><td>10,49</td><td>For lett</td></tr>
-      <tr><td>Messing</td><td>8,4–8,7</td><td>For lett</td></tr>
-    </table></div>
-
-    <div class="warning-box">
-      <strong>Viktig om wolfram:</strong> Wolfram har tetthet 19,25 g/cm³ – nesten identisk med gull. Wolframkjernede gullbarrer kan passere tetthetstest. For større barrer (100 g+) kreves ultralyd, røntgenfluorescens (XRF) eller boretest hos profesjonell.
+  </div>
+  <div id="gcl-cats"></div>
+  <div class="card" style="background:linear-gradient(135deg,rgba(59,130,246,0.1),rgba(139,92,246,0.08));border-color:rgba(59,130,246,0.25);margin-top:8px">
+    <h3 style="margin-bottom:16px">Sammendrag</h3>
+    <div class="summary-grid">
+      <div style="text-align:center"><div class="summary-val" style="color:var(--green)" id="gsum-ok">0</div><div style="font-size:0.75rem;color:var(--muted);margin-top:4px;text-transform:uppercase;letter-spacing:.05em;font-weight:600">OK</div></div>
+      <div style="text-align:center"><div class="summary-val" style="color:var(--amber)" id="gsum-unsure">0</div><div style="font-size:0.75rem;color:var(--muted);margin-top:4px;text-transform:uppercase;letter-spacing:.05em;font-weight:600">Usikker</div></div>
+      <div style="text-align:center"><div class="summary-val" style="color:var(--red)" id="gsum-bad">0</div><div style="font-size:0.75rem;color:var(--muted);margin-top:4px;text-transform:uppercase;letter-spacing:.05em;font-weight:600">Problem</div></div>
     </div>
+    <p id="gsum-warn" style="display:none;margin-top:16px;font-size:0.85rem;color:var(--red)"></p>
+  </div>
+</div>
 
-    <div class="caution-box">
-      <strong>Presisjonskrav:</strong> For en 1 oz (31,1 g) gullmynt gir 0,1 ml feilmåling ca. 0,06 g/cm³ avvik. Bruk en tynn målesylinder for små gjenstander, og mål flere ganger.
+<!-- ══ BILLÅN ══ -->
+<div class="page" id="page-billan">
+  <div class="page-eyebrow">Billånkalkulator</div>
+  <h1 style="font-size:2rem;margin-bottom:6px">Beregn billånet ditt</h1>
+  <p class="page-desc">Månedsbetaling, total kostnad, effektiv rente og full nedbetalingsplan.</p>
+
+  <div class="card" style="margin-bottom:20px">
+    <div class="section-label">Låneparametere</div>
+    <div class="grid2" style="gap:18px">
+      <div class="field"><label class="label-text">Bilpris (NOK)</label><input class="input-field" type="number" id="bl-pris" value="350000" step="1000" oninput="calcBillan()"></div>
+      <div class="field"><label class="label-text">Egenkapital (NOK)</label><input class="input-field" type="number" id="bl-ek" value="70000" step="1000" oninput="calcBillan()"><p class="hint">Finanstilsynet anbefaler min. 20 %</p></div>
+      <div class="field"><label class="label-text">Nominell rente (% p.a.)</label><input class="input-field" type="number" id="bl-rente" value="6.5" step="0.1" oninput="calcBillan()"></div>
+      <div class="field"><label class="label-text">Nedbetalingstid (år)</label><input class="input-field" type="number" id="bl-ar" value="5" step="1" min="1" max="10" oninput="calcBillan()"><p class="hint">Maks 8 år brukt bil, 10 år ny bil</p></div>
+      <div class="field" style="grid-column:1/-1"><label class="label-text">Termingebyr (NOK/mnd)</label><input class="input-field" type="number" id="bl-gebyr" value="65" step="5" oninput="calcBillan()"></div>
     </div>
+  </div>
 
-    <div class="nav-buttons">
-      <button onclick="goStep(2)">← Tilbake</button>
-      <button onclick="goStep(4)">Videre til visuell inspeksjon →</button>
+  <div class="grid2" style="margin-bottom:20px">
+    <div class="result-card highlight"><div class="result-label">Månedlig betaling</div><div class="result-number" id="bl-mnd">—</div><div class="result-sub" id="bl-mnd-sub">—</div></div>
+    <div class="result-card"><div class="result-label">Totalt å betale</div><div class="result-number" id="bl-total">—</div><div class="result-sub" id="bl-total-sub">—</div></div>
+    <div class="result-card"><div class="result-label">Totale rentekostnader</div><div class="result-number" id="bl-renter">—</div><div class="result-sub" id="bl-renter-sub" style="color:var(--red)">—</div></div>
+    <div class="result-card"><div class="result-label">Effektiv rente</div><div class="result-number" id="bl-eff">—</div><div class="result-sub">Inkl. gebyrer</div></div>
+    <div class="result-card"><div class="result-label">Lånebeløp</div><div class="result-number" id="bl-lan">—</div><div class="result-sub" id="bl-lan-sub">—</div></div>
+    <div class="result-card"><div class="result-label">Egenkapital</div><div class="result-number" id="bl-ek-r">—</div><div class="result-sub" id="bl-ek-sub">—</div></div>
+  </div>
+
+  <div class="card" style="margin-bottom:14px">
+    <div class="section-label">Avdrag vs. renter per år</div>
+    <div id="bl-chart"></div>
+    <div style="display:flex;gap:20px;margin-top:14px;font-size:0.75rem;color:var(--muted2)">
+      <span style="display:flex;align-items:center;gap:6px"><span style="width:10px;height:10px;background:linear-gradient(135deg,#3B82F6,#6366F1);border-radius:3px;display:inline-block"></span>Avdrag</span>
+      <span style="display:flex;align-items:center;gap:6px"><span style="width:10px;height:10px;background:linear-gradient(135deg,#F59E0B,#EF4444);border-radius:3px;display:inline-block"></span>Renter</span>
     </div>
-  </section>
+  </div>
 
-  <!-- STEG 4: VISUELL INSPEKSJON -->
-  <section class="step" id="step4">
-    <h2><span class="step-number">4</span> Visuell og taktil inspeksjon</h2>
-    <p>Ekte gull har karakteristiske egenskaper du kan vurdere med øyet, lupen og hendene.</p>
-
-    <div class="illustration">
-      <svg viewBox="0 0 480 200" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="gold24" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#ffd700"/><stop offset="100%" stop-color="#c59312"/></linearGradient>
-          <linearGradient id="gold18" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#e8c547"/><stop offset="100%" stop-color="#a8871f"/></linearGradient>
-          <linearGradient id="gold14" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#d4b847"/><stop offset="100%" stop-color="#8f731f"/></linearGradient>
-          <linearGradient id="gold9" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#c4a847"/><stop offset="100%" stop-color="#806728"/></linearGradient>
-          <linearGradient id="rose" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#f4b59a"/><stop offset="100%" stop-color="#b8765c"/></linearGradient>
-          <linearGradient id="white" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#f0f0f0"/><stop offset="100%" stop-color="#aaa"/></linearGradient>
-        </defs>
-        <!-- Row of ring samples showing color differences -->
-        <g transform="translate(30, 60)">
-          <ellipse cx="0" cy="0" rx="28" ry="10" fill="none" stroke="url(#gold24)" stroke-width="9"/>
-          <text x="0" y="50" text-anchor="middle" fill="#d4af37" font-size="10" font-weight="bold">24K</text>
-          <text x="0" y="65" text-anchor="middle" fill="#b0b0b0" font-size="8">dyp, varm gul</text>
-        </g>
-        <g transform="translate(110, 60)">
-          <ellipse cx="0" cy="0" rx="28" ry="10" fill="none" stroke="url(#gold18)" stroke-width="9"/>
-          <text x="0" y="50" text-anchor="middle" fill="#d4af37" font-size="10" font-weight="bold">18K</text>
-          <text x="0" y="65" text-anchor="middle" fill="#b0b0b0" font-size="8">rik gul</text>
-        </g>
-        <g transform="translate(190, 60)">
-          <ellipse cx="0" cy="0" rx="28" ry="10" fill="none" stroke="url(#gold14)" stroke-width="9"/>
-          <text x="0" y="50" text-anchor="middle" fill="#d4af37" font-size="10" font-weight="bold">14K</text>
-          <text x="0" y="65" text-anchor="middle" fill="#b0b0b0" font-size="8">lysere gul</text>
-        </g>
-        <g transform="translate(270, 60)">
-          <ellipse cx="0" cy="0" rx="28" ry="10" fill="none" stroke="url(#gold9)" stroke-width="9"/>
-          <text x="0" y="50" text-anchor="middle" fill="#d4af37" font-size="10" font-weight="bold">9K</text>
-          <text x="0" y="65" text-anchor="middle" fill="#b0b0b0" font-size="8">svak gullfarge</text>
-        </g>
-        <g transform="translate(350, 60)">
-          <ellipse cx="0" cy="0" rx="28" ry="10" fill="none" stroke="url(#rose)" stroke-width="9"/>
-          <text x="0" y="50" text-anchor="middle" fill="#d4af37" font-size="10" font-weight="bold">Rødt</text>
-          <text x="0" y="65" text-anchor="middle" fill="#b0b0b0" font-size="8">kobber-legering</text>
-        </g>
-        <g transform="translate(430, 60)">
-          <ellipse cx="0" cy="0" rx="28" ry="10" fill="none" stroke="url(#white)" stroke-width="9"/>
-          <text x="0" y="50" text-anchor="middle" fill="#d4af37" font-size="10" font-weight="bold">Hvitt</text>
-          <text x="0" y="65" text-anchor="middle" fill="#b0b0b0" font-size="8">rhodiumbelagt</text>
-        </g>
-        <!-- Title above -->
-        <text x="240" y="20" text-anchor="middle" fill="#f4e4a1" font-size="12" font-weight="bold">Fargeforskjeller mellom karatgrader</text>
-      </svg>
-      <p class="illustration-caption">Fargen varierer med karat og tilsetningsmetall. Sammenlign med kjent referanse.</p>
+  <div class="card" style="padding:0;overflow:hidden">
+    <button class="amort-toggle" id="bl-toggle" onclick="toggleAmort()">Fullstendig nedbetalingsplan<i data-lucide="chevron-down"></i></button>
+    <div id="bl-amort" style="display:none;overflow-x:auto;max-height:340px;overflow-y:auto">
+      <table class="amort-table"><thead><tr><th>Måned</th><th>Avdrag</th><th>Renter</th><th>Total</th><th>Restgjeld</th></tr></thead><tbody id="bl-amort-body"></tbody></table>
     </div>
+  </div>
+</div>
 
-    <h3>Farge og glans</h3>
-    <div class="info-box">
-      Ekte gull har en <strong>varm, dyp gul glød</strong> – ikke skarp eller messingaktig. 14 karat er lysere, 18 karat er varmere, 24 karat har dyp appelsingult skjær. Messing har grønngul tone; gullbelagt nikkel kan virke "plastikkaktig".
+<!-- ══ BOLIGLÅN ══ -->
+<div class="page" id="page-boliglan">
+  <div class="page-eyebrow">Boliglånkalkulator</div>
+  <h1 style="font-size:2rem;margin-bottom:6px">Beregn boliglånet ditt</h1>
+  <p class="page-desc">Månedsbetaling, belåningsgrad og stresstest etter norske krav.</p>
+
+  <div class="card" style="margin-bottom:20px">
+    <div class="section-label">Låneparametere</div>
+    <div class="grid2" style="gap:18px">
+      <div class="field"><label class="label-text">Boligpris (NOK)</label><input class="input-field" type="number" id="bo-pris" value="4500000" step="10000" oninput="calcBoliglan()"></div>
+      <div class="field"><label class="label-text">Egenkapital (NOK)</label><input class="input-field" type="number" id="bo-ek" value="900000" step="10000" oninput="calcBoliglan()"><p class="hint">Min. 15 % (10 % for førstegangskjøpere i Oslo)</p></div>
+      <div class="field"><label class="label-text">Nominell rente (% p.a.)</label><input class="input-field" type="number" id="bo-rente" value="5.3" step="0.1" oninput="calcBoliglan()"></div>
+      <div class="field"><label class="label-text">Nedbetalingstid (år)</label><input class="input-field" type="number" id="bo-ar" value="25" step="1" min="5" max="30" oninput="calcBoliglan()"><p class="hint">Maks 30 år etter norske regler</p></div>
+      <div class="field"><label class="label-text">Ekstra månedlig innbetaling (NOK)</label><input class="input-field" type="number" id="bo-ekstra" value="0" step="500" oninput="calcBoliglan()"></div>
+      <div class="field"><label class="label-text">Termingebyr (NOK/mnd)</label><input class="input-field" type="number" id="bo-gebyr" value="50" step="5" oninput="calcBoliglan()"></div>
     </div>
+  </div>
 
-    <h3>Se etter slitasje</h3>
-    <p>Undersøk kanter, hjørner, og områder som gnis mye (ringskulder, låseklinker). Gullbelegg slites ned og avslører underliggende metall – sølvfarget nikkel, kobberrødt eller grått stål.</p>
+  <div class="grid2" style="margin-bottom:20px">
+    <div class="result-card highlight"><div class="result-label">Månedlig betaling</div><div class="result-number" id="bo-mnd">—</div><div class="result-sub" id="bo-mnd-sub">—</div></div>
+    <div class="result-card"><div class="result-label">Totalt å betale</div><div class="result-number" id="bo-total">—</div></div>
+    <div class="result-card"><div class="result-label">Totale rentekostnader</div><div class="result-number" id="bo-renter">—</div></div>
+    <div class="result-card"><div class="result-label">Belåningsgrad</div><div class="result-number" id="bo-grad">—</div><div class="result-sub" id="bo-grad-sub">—</div></div>
+    <div class="result-card"><div class="result-label">Stresstest (+5 %)</div><div class="result-number" id="bo-stress">—</div><div class="result-sub">Finanstilsynets krav</div></div>
+    <div class="result-card"><div class="result-label" id="bo-spare-label">Spart med ekstra innbetaling</div><div class="result-number" id="bo-spare">—</div><div class="result-sub" id="bo-spare-sub">—</div></div>
+  </div>
+  <div class="info-box"><strong>📋 Norsk boliglånsregelverk</strong>Maks 5× bruttoinntekt. Egenkapitalkrav 15 % (10 % i Oslo). Finanstilsynet krever at du tåler 5 prosentpoeng renteøkning.</div>
+</div>
 
-    <h3>Sjekk med lupe (10×)</h3>
-    <ul class="checklist">
-      <li><input type="checkbox"><span>Er stempelet skarpt og jevnt, ikke utydelig eller skjevt preget?</span></li>
-      <li><input type="checkbox"><span>Er det synlige skjøter eller sømmer (kan indikere hul konstruksjon)?</span></li>
-      <li><input type="checkbox"><span>Er overflatebehandlingen jevn (ingen bobler eller flassing)?</span></li>
-      <li><input type="checkbox"><span>Er loddingen ren og har samme farge som resten av gullet (loddemetall er ofte en annen legering og kan lyse svakt gjennom)?</span></li>
-      <li><input type="checkbox"><span>Er eventuell innfatning festet solid og profesjonelt?</span></li>
-    </ul>
+<!-- ══ INVESTERING ══ -->
+<div class="page" id="page-investering">
+  <div class="page-eyebrow">Investeringskalkulator</div>
+  <h1 style="font-size:2rem;margin-bottom:6px">Beregn avkastningen din</h1>
+  <p class="page-desc">Se hvordan pengene vokser over tid med sammensatt rente og månedlig sparing.</p>
 
-    <h3>Vekt-i-hånd-test</h3>
-    <p>Ekte gull føles <strong>tungt for sin størrelse</strong>. En 1 oz gullmynt (31,1 g) virker overraskende massiv. Har den riktig størrelse, men føles lett? Rødt flagg.</p>
-
-    <h3>Lyd</h3>
-    <p>Slipp en gullmynt på et hardt underlag – rent gull gir en <strong>lys, klingende, lang tone</strong> (som en liten bjelle). Uedle legeringer gir dump, kort klang. Denne testen krever øvelse med kjent referanse.</p>
-
-    <div class="warning-box">
-      <strong>Bittetest – IKKE ANBEFALT:</strong> Ideen om å "bite i gull" for å sjekke mykhet er en gammel myte. Det kan skade tennene, ødelegge mynten, og bly er faktisk <em>enda mykere</em> enn gull. Ikke gjør dette.
+  <div class="card" style="margin-bottom:20px">
+    <div class="section-label">Parametere</div>
+    <div class="grid2" style="gap:18px">
+      <div class="field"><label class="label-text">Startbeløp (NOK)</label><input class="input-field" type="number" id="inv-start" value="50000" step="1000" oninput="calcInv()"></div>
+      <div class="field"><label class="label-text">Månedlig sparing (NOK)</label><input class="input-field" type="number" id="inv-mnd" value="3000" step="500" oninput="calcInv()"></div>
+      <div class="field"><label class="label-text">Forventet årsavkastning (%)</label><input class="input-field" type="number" id="inv-rente" value="7" step="0.5" oninput="calcInv()"><p class="hint">Historisk snitt Oslo Børs: ca. 9 %. Globalt indeksfond: ca. 7–8 %</p></div>
+      <div class="field"><label class="label-text">Investeringshorisont (år)</label><input class="input-field" type="number" id="inv-ar" value="20" step="1" min="1" max="50" oninput="calcInv()"></div>
+      <div class="field"><label class="label-text">Skatt på gevinst (%)</label><input class="input-field" type="number" id="inv-skatt" value="37.84" step="0.1" oninput="calcInv()"><p class="hint">ASK: utsatt skatt til uttak</p></div>
+      <div class="field"><label class="label-text">Inflasjon (% p.a.)</label><input class="input-field" type="number" id="inv-inflasjon" value="2.5" step="0.1" oninput="calcInv()"></div>
     </div>
+  </div>
 
-    <div class="nav-buttons">
-      <button onclick="goStep(3)">← Tilbake</button>
-      <button onclick="goStep(5)">Videre til proff-analyse →</button>
+  <div class="grid2" style="margin-bottom:20px">
+    <div class="result-card highlight"><div class="result-label">Totalverdi</div><div class="result-number" id="inv-total">—</div><div class="result-sub" id="inv-total-sub">—</div></div>
+    <div class="result-card"><div class="result-label">Avkastning (gevinst)</div><div class="result-number" id="inv-gevinst">—</div><div class="result-sub" id="inv-gevinst-sub">—</div></div>
+    <div class="result-card"><div class="result-label">Innbetalt totalt</div><div class="result-number" id="inv-innbetalt">—</div></div>
+    <div class="result-card"><div class="result-label">Etter skatt</div><div class="result-number" id="inv-etterskatt">—</div><div class="result-sub" id="inv-etterskatt-sub">—</div></div>
+  </div>
+
+  <div class="card">
+    <div class="section-label">Vekst år for år</div>
+    <div style="display:flex;align-items:flex-end;gap:3px;height:140px;margin-bottom:10px" id="inv-chart"></div>
+    <div style="display:flex;gap:16px;font-size:0.75rem;color:var(--muted2)">
+      <span style="display:flex;align-items:center;gap:6px"><span style="width:10px;height:10px;background:var(--blue);border-radius:2px;display:inline-block"></span>Innbetalt</span>
+      <span style="display:flex;align-items:center;gap:6px"><span style="width:10px;height:10px;background:var(--green);border-radius:2px;display:inline-block"></span>Avkastning</span>
     </div>
-  </section>
+  </div>
+</div>
 
-  <!-- STEG 5: PROFF-ANALYSE -->
-  <section class="step" id="step5">
-    <h2><span class="step-number">5</span> Profesjonell analyse</h2>
-    <p>For verdier over noen tusen kroner – eller når noe "føles feil" – er profesjonell verifisering billig forsikring.</p>
+<!-- ══ STRØM ══ -->
+<div class="page" id="page-strom">
+  <div class="page-eyebrow">Strømkalkulator</div>
+  <h1 style="font-size:2rem;margin-bottom:6px">Beregn årlig strømforbruk</h1>
+  <p class="page-desc">Estimat for norsk privathusholdning basert på boligstørrelse, oppvarming, antall personer og strømpris.</p>
 
-    <div class="illustration">
-      <svg viewBox="0 0 480 200" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="xrfDev" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stop-color="#4a5568"/>
-            <stop offset="100%" stop-color="#1a202c"/>
-          </linearGradient>
-          <linearGradient id="xrfBeam" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stop-color="#ff6b35" stop-opacity="0.9"/>
-            <stop offset="100%" stop-color="#ff6b35" stop-opacity="0.1"/>
-          </linearGradient>
-          <radialGradient id="goldSamp" cx="35%" cy="30%">
-            <stop offset="0%" stop-color="#fff6cc"/>
-            <stop offset="60%" stop-color="#d4af37"/>
-            <stop offset="100%" stop-color="#8a6d17"/>
-          </radialGradient>
-        </defs>
-        <!-- XRF device body -->
-        <g transform="translate(50, 40)">
-          <!-- Handle -->
-          <path d="M 20,90 L 20,140 Q 20,160 40,160 L 80,160 Q 100,160 100,140 L 100,90" fill="url(#xrfDev)" stroke="#1a202c" stroke-width="2"/>
-          <!-- Body -->
-          <rect x="0" y="30" width="140" height="70" rx="10" fill="url(#xrfDev)" stroke="#1a202c" stroke-width="2"/>
-          <!-- Screen -->
-          <rect x="15" y="45" width="70" height="40" rx="3" fill="#1a202c" stroke="#d4af37" stroke-width="1"/>
-          <text x="50" y="60" text-anchor="middle" fill="#4caf50" font-size="7" font-family="monospace">Au: 75.0%</text>
-          <text x="50" y="70" text-anchor="middle" fill="#4caf50" font-size="7" font-family="monospace">Ag: 12.5%</text>
-          <text x="50" y="80" text-anchor="middle" fill="#4caf50" font-size="7" font-family="monospace">Cu: 12.5%</text>
-          <!-- Trigger -->
-          <rect x="45" y="105" width="50" height="8" rx="2" fill="#c0392b"/>
-          <!-- Muzzle -->
-          <rect x="140" y="55" width="20" height="20" fill="#2c3e50" stroke="#1a202c" stroke-width="1.5"/>
-          <circle cx="160" cy="65" r="4" fill="#ff6b35"/>
-        </g>
-        <!-- XRF beam to sample -->
-        <path d="M 210,105 L 320,105" stroke="url(#xrfBeam)" stroke-width="4" opacity="0.7"/>
-        <g>
-          <path d="M 230,100 L 240,110 M 260,100 L 270,110 M 290,100 L 300,110" stroke="#ff6b35" stroke-width="1.5" opacity="0.8"/>
-        </g>
-        <!-- Sample (gold ring) -->
-        <g transform="translate(380, 105)">
-          <ellipse cx="0" cy="0" rx="40" ry="14" fill="none" stroke="url(#goldSamp)" stroke-width="12"/>
-          <ellipse cx="0" cy="-3" rx="38" ry="12" fill="none" stroke="#fff6cc" stroke-width="1.5" opacity="0.4"/>
-        </g>
-        <text x="130" y="190" text-anchor="middle" fill="#f4e4a1" font-size="10" font-weight="bold">XRF-analysator</text>
-        <text x="380" y="175" text-anchor="middle" fill="#f4e4a1" font-size="10" font-weight="bold">Prøveobjekt</text>
-        <text x="265" y="95" text-anchor="middle" fill="#ff6b35" font-size="8">Røntgenstråle</text>
-      </svg>
-      <p class="illustration-caption">XRF (røntgenfluorescens) gir eksakt sammensetning uten å skade gullet</p>
+  <div class="card" style="margin-bottom:16px">
+    <div class="section-label">🏠 Bolig</div>
+    <div class="grid2" style="gap:18px">
+      <div class="field"><label class="label-text">Boligareal (m²)</label><input class="input-field" type="number" id="strom-areal" value="120" step="5" oninput="calcStrom()"></div>
+      <div class="field"><label class="label-text">Antall personer</label><input class="input-field" type="number" id="strom-personer" value="2" step="1" min="1" max="10" oninput="calcStrom()"></div>
+      <div class="field"><label class="label-text">Byggeår / isolasjonsstandard</label>
+        <select class="input-field" id="strom-isolasjon" onchange="calcStrom()">
+          <option value="1.35">Før 1985 — dårlig isolert</option>
+          <option value="1.0" selected>1985–2010 — normal standard</option>
+          <option value="0.75">2010–2017 — TEK10</option>
+          <option value="0.55">2017+ — TEK17 / godt isolert</option>
+          <option value="0.35">Passivhus / nesten nullenergi</option>
+        </select>
+      </div>
+      <div class="field"><label class="label-text">Oppvarmingstype</label>
+        <select class="input-field" id="strom-oppvarming" onchange="calcStrom()">
+          <option value="120">Panelovner / direktevarme</option>
+          <option value="55" selected>Luft-til-luft varmepumpe</option>
+          <option value="38">Luft-til-vann varmepumpe</option>
+          <option value="12">Fjernvarme (kun el til pumper)</option>
+          <option value="18">Vedovn + el-topp</option>
+        </select>
+      </div>
     </div>
+  </div>
 
-    <h3>Metoder hos gullsmed / raffineri</h3>
-    <div class="table-wrap"><table>
-      <tr><th>Metode</th><th>Virkemåte</th><th>Nøyaktighet</th></tr>
-      <tr><td>XRF (røntgenfluorescens)</td><td>Ikke-destruktiv; analyserer overflaten</td><td>Meget god (overflate)</td></tr>
-      <tr><td>Ultralyd</td><td>Avdekker wolframkjerner i barrer</td><td>Utmerket for barrer</td></tr>
-      <tr><td>Syretest (streketest)</td><td>Reaksjon mellom salpetersyre og metall på probestein</td><td>God for karat</td></tr>
-      <tr><td>Elektronisk gulltester (Sigma)</td><td>Måler elektrisk ledningsevne gjennom tverrsnittet</td><td>Utmerket mot wolfram</td></tr>
-      <tr><td>Smelteprøve (ildprøve / cupellation)</td><td>Gullstandard, men destruktiv</td><td>Mest nøyaktig</td></tr>
-    </table></div>
-
-    <h3>Norske aktører å vurdere</h3>
-    <div class="info-box">
-      <ul style="padding-left: 20px;">
-        <li><strong>Autoriserte gullsmeder</strong> (søk via Norges Gullsmedforbund)</li>
-        <li><strong>K.A. Rasmussen</strong> – etablert norsk edelmetallforhandler med analyse</li>
-        <li><strong>Scandinavian Bullion</strong> – kjøper og tester gull i Oslo</li>
-        <li><strong>Pantelånere</strong> – har testutstyr, men gir ofte lav verdivurdering</li>
-      </ul>
-      Ta alltid med kvittering fra kjøpet og be om skriftlig rapport fra analysen.
+  <div class="card" style="margin-bottom:16px">
+    <div class="section-label">⚡ Forbruk og utstyr</div>
+    <div class="grid2" style="gap:18px">
+      <div class="field"><label class="label-text">Varmtvann</label>
+        <select class="input-field" id="strom-varmtvann" onchange="calcStrom()">
+          <option value="1" selected>Elektrisk varmtvannsbereder</option>
+          <option value="0.3">Varmepumpe-bereder</option>
+          <option value="0.1">Fjernvarme / gass</option>
+        </select>
+      </div>
+      <div class="field"><label class="label-text">Elbil — kjørelengde per år (km)</label><input class="input-field" type="number" id="strom-elbil" value="0" step="1000" min="0" oninput="calcStrom()"><p class="hint">La stå 0 hvis du ikke har elbil</p></div>
+      <div class="field"><label class="label-text">Basseng / boblebad</label>
+        <select class="input-field" id="strom-pool" onchange="calcStrom()">
+          <option value="0" selected>Nei</option>
+          <option value="3000">Utendørs basseng</option>
+          <option value="5500">Innendørs basseng</option>
+          <option value="2000">Boblebad / jacuzzi</option>
+        </select>
+      </div>
+      <div class="field"><label class="label-text">Hjemmekontor (dager/uke)</label><input class="input-field" type="number" id="strom-hjemmekontor" value="0" step="1" min="0" max="7" oninput="calcStrom()"></div>
     </div>
+  </div>
 
-    <h3>Hva en analyse bør inkludere</h3>
-    <ul class="checklist">
-      <li><input type="checkbox"><span>Oppmålt finhet (i tusendeler)</span></li>
-      <li><input type="checkbox"><span>Vekt i gram (brutto og netto hvis sten/innlegg)</span></li>
-      <li><input type="checkbox"><span>Hvilken metode som ble brukt</span></li>
-      <li><input type="checkbox"><span>Ultralyd eller Sigma for barrer/mynter over 10 g</span></li>
-      <li><input type="checkbox"><span>Skriftlig rapport med logo og signatur</span></li>
-    </ul>
-
-    <div class="caution-box">
-      <strong>Før du handler privat:</strong> Avtal at kjøpet betinges av en profesjonell verifisering innen 24-48 timer. Ærlige selgere vil akseptere dette. Nei-svar = rødt flagg.
+  <div class="card" style="margin-bottom:20px">
+    <div class="section-label">💰 Strømpris</div>
+    <div class="grid2" style="gap:18px">
+      <div class="field"><label class="label-text">Strømpris inkl. avgifter (NOK/kWh)</label><input class="input-field" type="number" id="strom-pris" value="1.20" step="0.05" min="0" oninput="calcStrom()"><p class="hint">Snitt 2024: ca. 0,80–1,50 NOK/kWh</p></div>
+      <div class="field"><label class="label-text">Nettleie (NOK/kWh)</label><input class="input-field" type="number" id="strom-nettleie" value="0.45" step="0.05" min="0" oninput="calcStrom()"><p class="hint">Typisk 0,35–0,60 NOK/kWh</p></div>
     </div>
+  </div>
 
-    <div class="nav-buttons">
-      <button onclick="goStep(4)">← Tilbake</button>
-      <button onclick="goStep(6)">Videre til svindelmetoder →</button>
-    </div>
-  </section>
+  <div class="grid2" style="margin-bottom:20px">
+    <div class="result-card highlight"><div class="result-label">Estimert årlig forbruk</div><div class="result-number" id="strom-kwh">—</div><div class="result-sub" id="strom-kwh-sub">—</div></div>
+    <div class="result-card"><div class="result-label">Årlig strømkostnad</div><div class="result-number" id="strom-arskost">—</div><div class="result-sub" id="strom-arskost-sub">—</div></div>
+    <div class="result-card"><div class="result-label">Månedlig gjennomsnitt</div><div class="result-number" id="strom-mndkost">—</div><div class="result-sub" id="strom-mndkwh">—</div></div>
+    <div class="result-card"><div class="result-label">vs. norsk snitt (16 000 kWh)</div><div class="result-number" id="strom-snitt">—</div><div class="result-sub" id="strom-snitt-sub">—</div></div>
+  </div>
 
-  <!-- STEG 6: SVINDELMETODER -->
-  <section class="step" id="step6">
-    <h2><span class="step-number">6</span> Vanlige svindelmetoder</h2>
-    <p>Kjenn fienden. Disse er de hyppigst rapporterte metodene ved privat gullsalg.</p>
+  <div class="card">
+    <div class="section-label">Fordeling av forbruk</div>
+    <div id="strom-breakdown"></div>
+    <div class="info-box" style="margin-top:16px"><strong>ℹ️ Om estimatet</strong>Dette er et estimat. Faktisk forbruk varierer med vaner, klima og husets tekniske tilstand. For nøyaktig analyse, les av strømmåleren månedlig eller bruk AMS-målerdata fra nettselskapet.</div>
+  </div>
+</div>
 
-    <div class="illustration">
-      <svg viewBox="0 0 480 200" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="fakeGold" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#f4e4a1"/>
-            <stop offset="50%" stop-color="#d4af37"/>
-            <stop offset="100%" stop-color="#a8871f"/>
-          </linearGradient>
-          <linearGradient id="tungsten" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#7f8c8d"/>
-            <stop offset="100%" stop-color="#34495e"/>
-          </linearGradient>
-          <marker id="arrow" markerWidth="10" markerHeight="10" refX="5" refY="3" orient="auto">
-            <path d="M 0,0 L 6,3 L 0,6 Z" fill="#f44336"/>
-          </marker>
-        </defs>
+</div><!-- /content -->
+</main>
 
-        <!-- Real bar on left -->
-        <g transform="translate(30, 60)">
-          <rect x="0" y="0" width="160" height="80" rx="5" fill="url(#fakeGold)" stroke="#8a6d17" stroke-width="2"/>
-          <rect x="0" y="0" width="160" height="30" rx="5" fill="#fff6cc" opacity="0.3"/>
-          <text x="80" y="30" text-anchor="middle" fill="#6d5413" font-size="9" font-weight="bold" font-family="serif">FINE GOLD</text>
-          <text x="80" y="48" text-anchor="middle" fill="#6d5413" font-size="8" font-family="serif">999.9</text>
-          <text x="80" y="150" text-anchor="middle" fill="#4caf50" font-size="11" font-weight="bold">Ekte barre</text>
-          <text x="80" y="165" text-anchor="middle" fill="#b0b0b0" font-size="8">massivt gull gjennom hele</text>
-        </g>
-
-        <!-- Fake bar cross-section on right -->
-        <g transform="translate(260, 60)">
-          <!-- Gold outer shell -->
-          <rect x="0" y="0" width="160" height="80" rx="5" fill="url(#fakeGold)" stroke="#8a6d17" stroke-width="2"/>
-          <rect x="0" y="0" width="160" height="30" rx="5" fill="#fff6cc" opacity="0.3"/>
-          <!-- Tungsten core exposed (cut-away) -->
-          <path d="M 30,12 L 160,12 L 160,68 L 30,68 Z" fill="url(#tungsten)" stroke="#2c3e50" stroke-width="1"/>
-          <!-- Gold thin coating visible on the cut edge -->
-          <rect x="30" y="10" width="130" height="3" fill="url(#fakeGold)"/>
-          <rect x="30" y="67" width="130" height="3" fill="url(#fakeGold)"/>
-          <rect x="27" y="10" width="3" height="60" fill="url(#fakeGold)"/>
-          <!-- Tungsten texture -->
-          <g fill="#95a5a6" opacity="0.4">
-            <circle cx="60" cy="30" r="2"/>
-            <circle cx="90" cy="45" r="2"/>
-            <circle cx="120" cy="35" r="2"/>
-            <circle cx="75" cy="55" r="2"/>
-            <circle cx="140" cy="55" r="2"/>
-          </g>
-          <text x="100" y="45" text-anchor="middle" fill="#ecf0f1" font-size="10" font-weight="bold">WOLFRAMKJERNE</text>
-          <!-- Arrow pointing to the issue -->
-          <path d="M 15,40 L 5,40" stroke="#f44336" stroke-width="1.5" marker-end="url(#arrow)"/>
-          <text x="80" y="150" text-anchor="middle" fill="#f44336" font-size="11" font-weight="bold">Forfalsket barre</text>
-          <text x="80" y="165" text-anchor="middle" fill="#b0b0b0" font-size="8">tynn gullbelegg over wolframkjerne</text>
-        </g>
-      </svg>
-      <p class="illustration-caption">Wolframkjernede falske barrer passerer magnettest og tetthetstest – krever XRF/ultralyd</p>
-    </div>
-
-    <h3>Wolframkjernede barrer</h3>
-    <div class="warning-box">
-      En kjerne av wolfram (tetthet 19,25) dekket med et tynt gull-lag. Passerer magnettest, visuell test og tetthetstest. <strong>Eneste sikre metoder: ultralyd, XRF på kuttet snitt, eller smelteprøve.</strong> Mest vanlig på barrer 100 g+.
-    </div>
-
-    <h3>Gullbelagt stempel</h3>
-    <div class="warning-box">
-      Uedel metall med autentisk-utseende stempel. Slitasjepunkter og kanter avslører ofte bedrag. Lupe er din venn.
-    </div>
-
-    <h3>Falsk produsentforpakning</h3>
-    <div class="warning-box">
-      Forfalskede blisterpakker fra PAMP Suisse, Valcambi osv. Kontroller: serienummer i <strong>Veriscan-app</strong> (PAMP), hologram, preging, CertiPAMP/Assay-kort. Ekte forpakninger er notorisk vanskelig å forfalske perfekt, men ikke umulig.
-    </div>
-
-    <h3>"Halv-gull"-smykker</h3>
-    <div class="warning-box">
-      Hul kjede eller ring med gullfolie og messing/bly inni. Lett vekt, dump klang, ofte "klirrer" ved risting. Vei og sammenlign med forventet for volum.
-    </div>
-
-    <h3>Hastverk og pres</h3>
-    <div class="warning-box">
-      "Jeg må selge i dag, kona mi er syk, du får det halv pris." Klassisk sosial manipulasjon. Ekte gull har alltid en markedspris – hvis tilbudet er for godt til å være sant, er det sannsynligvis falskt <em>eller</em> stjålet (og begge deler er ditt problem).
-    </div>
-
-    <h3>Skittent gull / tvilsom opprinnelse</h3>
-    <div class="caution-box">
-      Kjøp av stjålet gull er <strong>heleri</strong> og straffbart etter strl. § 332. Spør alltid om opprinnelse og kvittering. Ved tvil: ikke kjøp. Seriøse selgere kan dokumentere arv, tidligere kjøp eller opprinnelse.
-    </div>
-
-    <h3>Bytting i siste øyeblikk</h3>
-    <div class="warning-box">
-      Du tester gullet. Selger pakker det ned i en eske "mens du teller pengene". Esken du går hjem med inneholder noe helt annet. <strong>Aldri la gullet ut av syne mellom verifisering og betaling.</strong> Pakk det selv.
-    </div>
-
-    <div class="nav-buttons">
-      <button onclick="goStep(5)">← Tilbake</button>
-      <button onclick="goStep(7)">Se samlet sjekkliste →</button>
-    </div>
-  </section>
-
-  <!-- STEG 7: SJEKKLISTE -->
-  <section class="step" id="step7">
-    <h2><span class="step-number">7</span> Komplett sjekkliste</h2>
-    <p>Kryss av etter hvert som du gjennomfører. Du bør ha flertallet av boksene krysset før du handler.</p>
-
-    <div class="illustration">
-      <svg viewBox="0 0 480 120" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="clipboard" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stop-color="#2c2416"/>
-            <stop offset="100%" stop-color="#1a1a1a"/>
-          </linearGradient>
-          <linearGradient id="checkGold" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#f4e4a1"/>
-            <stop offset="100%" stop-color="#d4af37"/>
-          </linearGradient>
-          <radialGradient id="sCoin" cx="35%" cy="30%"><stop offset="0%" stop-color="#fff6cc"/><stop offset="60%" stop-color="#d4af37"/><stop offset="100%" stop-color="#8a6d17"/></radialGradient>
-        </defs>
-        <!-- Clipboard -->
-        <rect x="140" y="20" width="200" height="90" rx="6" fill="url(#clipboard)" stroke="#d4af37" stroke-width="2"/>
-        <rect x="200" y="10" width="80" height="18" rx="3" fill="#d4af37"/>
-        <rect x="225" y="6" width="30" height="8" rx="2" fill="#8a6d17"/>
-        <!-- Lines with checkmarks -->
-        <g>
-          <circle cx="160" cy="45" r="6" fill="url(#checkGold)"/>
-          <path d="M 156,45 L 159,48 L 164,42" stroke="#1a1a1a" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          <line x1="175" y1="45" x2="320" y2="45" stroke="#f4e4a1" stroke-width="1.5" opacity="0.7"/>
-        </g>
-        <g>
-          <circle cx="160" cy="65" r="6" fill="url(#checkGold)"/>
-          <path d="M 156,65 L 159,68 L 164,62" stroke="#1a1a1a" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          <line x1="175" y1="65" x2="320" y2="65" stroke="#f4e4a1" stroke-width="1.5" opacity="0.7"/>
-        </g>
-        <g>
-          <circle cx="160" cy="85" r="6" fill="url(#checkGold)"/>
-          <path d="M 156,85 L 159,88 L 164,82" stroke="#1a1a1a" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          <line x1="175" y1="85" x2="320" y2="85" stroke="#f4e4a1" stroke-width="1.5" opacity="0.7"/>
-        </g>
-        <!-- Small gold coin on side -->
-        <g transform="translate(70, 65)">
-          <circle cx="0" cy="0" r="28" fill="url(#sCoin)" stroke="#8a6d17" stroke-width="1.5"/>
-          <circle cx="0" cy="0" r="22" fill="none" stroke="#8a6d17" stroke-width="0.6"/>
-          <text x="0" y="4" text-anchor="middle" fill="#6d5413" font-size="10" font-weight="bold">Au</text>
-        </g>
-        <!-- Decorative sparkle -->
-        <g transform="translate(400, 50)" fill="#f4e4a1" opacity="0.8">
-          <path d="M 0,-10 L 2,-2 L 10,0 L 2,2 L 0,10 L -2,2 L -10,0 L -2,-2 Z"/>
-        </g>
-      </svg>
-    </div>
-
-    <h3>Før møtet</h3>
-    <ul class="checklist">
-      <li><input type="checkbox"><span>Sjekket dagens gullpris (hent fra Norges Bank eller internasjonal spotpris)</span></li>
-      <li><input type="checkbox"><span>Beregnet forventet pris basert på vekt, karat og markedspris</span></li>
-      <li><input type="checkbox"><span>Avtalt møte på trygt sted (bank, gullsmed, offentlig lokale)</span></li>
-      <li><input type="checkbox"><span>Informert noen om møtet (for egen sikkerhet)</span></li>
-      <li><input type="checkbox"><span>Pakket verktøy: magnet, vekt, målesylinder, lupe</span></li>
-    </ul>
-
-    <h3>Dokumentasjon fra selger</h3>
-    <ul class="checklist">
-      <li><input type="checkbox"><span>Kvittering fra opprinnelig kjøp</span></li>
-      <li><input type="checkbox"><span>Eventuelt assay-sertifikat</span></li>
-      <li><input type="checkbox"><span>ID-kontroll av selger (ved høy verdi)</span></li>
-      <li><input type="checkbox"><span>Skriftlig kjøpekontrakt med begge parters signatur</span></li>
-    </ul>
-
-    <h3>Fysisk testing</h3>
-    <ul class="checklist">
-      <li><input type="checkbox"><span>Kontrollert stempel med lupe (tydelig og skarpt)</span></li>
-      <li><input type="checkbox"><span>Utført magnettest (ingen tiltrekning)</span></li>
-      <li><input type="checkbox"><span>Målt vekt på presisjonsvekt</span></li>
-      <li><input type="checkbox"><span>Beregnet tetthet (innenfor referanseområdet)</span></li>
-      <li><input type="checkbox"><span>Visuell inspeksjon av kanter, slitasje og farge</span></li>
-      <li><input type="checkbox"><span>Vurdert "vekt-i-hånd"-følelse</span></li>
-      <li><input type="checkbox"><span>Klangtest (hvis mynt)</span></li>
-    </ul>
-
-    <h3>Ved høy verdi (over 10 000 NOK)</h3>
-    <ul class="checklist">
-      <li><input type="checkbox"><span>Profesjonell XRF-analyse</span></li>
-      <li><input type="checkbox"><span>Ultralyd eller Sigma-test (barrer)</span></li>
-      <li><input type="checkbox"><span>Verifiseringsapp (Veriscan o.l.) sjekket</span></li>
-      <li><input type="checkbox"><span>Skriftlig rapport fra gullsmed mottatt</span></li>
-    </ul>
-
-    <h3>Røde flagg – stopp handelen hvis</h3>
-    <ul class="checklist">
-      <li><input type="checkbox"><span>Selger presser på tidsfrist</span></li>
-      <li><input type="checkbox"><span>Pris er 20 %+ under markedsverdi uten god forklaring</span></li>
-      <li><input type="checkbox"><span>Selger nekter profesjonell verifisering</span></li>
-      <li><input type="checkbox"><span>Ingen dokumentasjon på opprinnelse</span></li>
-      <li><input type="checkbox"><span>Stempel er utydelig eller mangler</span></li>
-      <li><input type="checkbox"><span>Tetthet avviker fra forventet</span></li>
-      <li><input type="checkbox"><span>Selger insisterer på kontanter uten kvittering</span></li>
-    </ul>
-
-    <div class="success-box">
-      <strong>Alt klart?</strong> Gratulerer – du har gått gjennom hele veilederen. Husk: gull er en langsiktig investering. Ta deg tid, vær skeptisk, og gå alltid til profesjonell vurdering ved tvil.
-    </div>
-
-    <div class="nav-buttons">
-      <button onclick="goStep(6)">← Tilbake</button>
-      <button onclick="resetAll()">Start på nytt</button>
-    </div>
-  </section>
-
-  <footer>
-    <p>Gullverifiseringsveileder · Informasjon til privat bruk · Ikke juridisk eller investeringsrådgivning</p>
-    <p>Ved tvil: konsulter en autorisert gullsmed eller norsk edelmetallforhandler</p>
-  </footer>
+<!-- Mobile nav -->
+<div class="mobile-nav">
+  <div class="mobile-nav-inner">
+    <button class="mnav-item" data-page="hjem" onclick="go('hjem')"><i data-lucide="home"></i>Hjem</button>
+    <button class="mnav-item" data-page="bruktbil" onclick="go('bruktbil')"><i data-lucide="car"></i>Bruktbil</button>
+    <button class="mnav-item" data-page="gull" onclick="go('gull')"><i data-lucide="coins"></i>Gull</button>
+    <button class="mnav-item" data-page="billan" onclick="go('billan')"><i data-lucide="car-front"></i>Billån</button>
+    <button class="mnav-item" data-page="boliglan" onclick="go('boliglan')"><i data-lucide="building-2"></i>Boliglån</button>
+    <button class="mnav-item" data-page="investering" onclick="go('investering')"><i data-lucide="trending-up"></i>Investering</button>
+    <button class="mnav-item" data-page="strom" onclick="go('strom')"><i data-lucide="zap"></i>Strøm</button>
+  </div>
 </div>
 
 <script>
-  const totalSteps = 8;
-  let currentStep = 0;
-  const visited = new Set([0]);
+// ── ROUTING ──
+function go(page) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('[data-page]').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+  document.querySelectorAll('[data-page="'+page+'"]').forEach(b=>b.classList.add('active'));
+  window.scrollTo(0,0);
+  lucide.createIcons();
+}
+go('hjem');
 
-  function goStep(n) {
-    document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
-    document.getElementById('step' + n).classList.add('active');
-    currentStep = n;
-    visited.add(n);
-    updateNav();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
+// ── BRUKTBIL CHECKLIST ──
+const CATS=[
+  {id:'ext',icon:'🚗',title:'Eksterior',items:[
+    {id:'e1',label:'Rust under dører og tersler',sev:'critical'},
+    {id:'e2',label:'Rust under og bak hjulbuer',sev:'critical'},
+    {id:'e3',label:'Lik lakk-farge og finish overalt (tegn på ombygning)',sev:'warning'},
+    {id:'e4',label:'Ingen sprekker, bulker eller riper i karosseriet',sev:'normal'},
+    {id:'e5',label:'Dører, hjelm og bagasjerom åpner/lukker jevnt',sev:'warning'},
+    {id:'e6',label:'Ruter og vinduer uten sprekker',sev:'normal'},
+    {id:'e7',label:'Undersiden: rust, lekkasjer, skader (bruk lommelykt)',sev:'critical'},
+    {id:'e8',label:'Reservehjul og verktøy til stede',sev:'normal'}
+  ]},
+  {id:'mot',icon:'🔧',title:'Motor og motorrom',items:[
+    {id:'m1',label:'Kald oppstart — lytter etter unormal lyd',sev:'critical'},
+    {id:'m2',label:'Motoroljenivå og -farge (svart = lenge siden skifte)',sev:'warning'},
+    {id:'m3',label:'Kjølevæskenivå og -farge sjekket',sev:'warning'},
+    {id:'m4',label:'Oljeflekker under bilen etter parkering',sev:'critical'},
+    {id:'m5',label:'Ingen hvit røyk fra eksosen',sev:'critical'},
+    {id:'m6',label:'Servostyring og bremsevæske innenfor min/max',sev:'normal'}
+  ]},
+  {id:'int',icon:'💺',title:'Interiør og elektronikk',items:[
+    {id:'i1',label:'Alle knapper, spaker og brytere fungerer',sev:'normal'},
+    {id:'i2',label:'Klimaanlegg kjøler ned (test 2 min)',sev:'warning'},
+    {id:'i3',label:'Infotainment / skjerm og backup-kamera fungerer',sev:'normal'},
+    {id:'i4',label:'Alle elektriske vinduer fungerer',sev:'normal'},
+    {id:'i5',label:'Seter og setebelte-låser i orden',sev:'normal'},
+    {id:'i6',label:'Ingen varsellamper på dashbordet',sev:'critical'},
+    {id:'i7',label:'Ingen muggen eller fuktig lukt (tegn på vannskade)',sev:'warning'}
+  ]},
+  {id:'dek',icon:'⭕',title:'Dekk og hjul',items:[
+    {id:'d1',label:'Mønsterdybde min. 4 mm sommer / 5 mm vinter',sev:'critical'},
+    {id:'d2',label:'Dekkenes produksjonsdato under 6 år gammel',sev:'warning'},
+    {id:'d3',label:'Jevn slitasje (ujevn = feil hjulstilling)',sev:'warning'},
+    {id:'d4',label:'Felger uten skader eller sprekker',sev:'normal'}
+  ]},
+  {id:'doc',icon:'📋',title:'Dokumentasjon',items:[
+    {id:'doc1',label:'Servicebok til stede med stempler som stemmer',sev:'critical'},
+    {id:'doc2',label:'EU-kontroll gyldig og uten alvorlige anmerkninger',sev:'critical'},
+    {id:'doc3',label:'Kjøretøyhistorikk sjekket på vegvesen.no',sev:'critical'},
+    {id:'doc4',label:'Ingen heftelser (pant i bilen) på Vegvesen',sev:'critical'},
+    {id:'doc5',label:'Importert bil? VIN-opprinnelse sjekket',sev:'warning'}
+  ]},
+  {id:'pro',icon:'🛣️',title:'Prøvekjøring',items:[
+    {id:'p1',label:'Gir glir inn jevnt (manuelt) / mykt skifte (automat)',sev:'warning'},
+    {id:'p2',label:'Bremser gir jevn, rett stopp uten banking',sev:'critical'},
+    {id:'p3',label:'Ratt vibrerer ikke ved høyere hastighet',sev:'warning'},
+    {id:'p4',label:'Ingen unormale lyder over ujevnt underlag',sev:'warning'},
+    {id:'p5',label:'ESP og ABS-lys slukkes etter oppstart',sev:'critical'},
+    {id:'p6',label:'Klimaanlegg, varme og defrosters under kjøring',sev:'normal'}
+  ]}
+];
+const SEV_LABEL={normal:'Normal',warning:'Viktig',critical:'Kritisk'};
+const SEV_CLASS={normal:'badge-normal',warning:'badge-warning',critical:'badge-critical'};
 
-  function updateNav() {
-    document.querySelectorAll('nav.steps button').forEach((btn, i) => {
-      btn.classList.remove('active', 'completed');
-      if (i === currentStep) btn.classList.add('active');
-      else if (visited.has(i)) btn.classList.add('completed');
-    });
-    const pct = ((visited.size) / totalSteps) * 100;
-    document.getElementById('progressFill').style.width = pct + '%';
-  }
+function clLoad(){return JSON.parse(localStorage.getItem('av:cl:v1')||'{"s":{},"n":{}}')}
+function clSave(d){localStorage.setItem('av:cl:v1',JSON.stringify(d))}
 
-  document.querySelectorAll('nav.steps button').forEach(btn => {
-    btn.addEventListener('click', () => goStep(parseInt(btn.dataset.step)));
+function buildCL(){
+  const d=clLoad();
+  const c=document.getElementById('cl-cats');
+  c.innerHTML='';
+  CATS.forEach(cat=>{
+    const done=cat.items.filter(i=>d.s[i.id]).length;
+    const div=document.createElement('div');
+    div.className='cat-card';
+    div.innerHTML=`<div class="cat-header"><span class="cat-icon">${cat.icon}</span><h3 class="cat-title">${cat.title}</h3><span class="cat-prog">${done}/${cat.items.length}</span></div>${cat.items.map(item=>{const s=d.s[item.id]||null;return`<div class="cl-item"><div class="cl-item-text">${item.label}<span class="badge ${SEV_CLASS[item.sev]}" style="margin-left:7px">${SEV_LABEL[item.sev]}</span></div><div class="cl-btns"><button class="cl-btn ok-btn ${s==='ok'?'active-ok':''}" onclick="setStatus('${item.id}','ok')" title="OK"><i data-lucide="check"></i></button><button class="cl-btn warn-btn ${s==='unsure'?'active-warn':''}" onclick="setStatus('${item.id}','unsure')" title="Usikker"><i data-lucide="alert-triangle"></i></button><button class="cl-btn bad-btn ${s==='bad'?'active-bad':''}" onclick="setStatus('${item.id}','bad')" title="Problem"><i data-lucide="x"></i></button></div></div>`}).join('')}<div class="cat-notes"><label><i data-lucide="sticky-note"></i>Notater</label><textarea placeholder="Skriv observasjoner her..." onchange="saveNote('${cat.id}',this.value)">${d.n[cat.id]||''}</textarea></div>`;
+    c.appendChild(div);
   });
+  updateCLStats();
+  lucide.createIcons();
+}
+function setStatus(id,status){const d=clLoad();d.s[id]=d.s[id]===status?null:status;clSave(d);buildCL()}
+function saveNote(catId,val){const d=clLoad();d.n[catId]=val;clSave(d)}
+function resetCL(){if(confirm('Tilbakestille hele sjekklisten?')){clSave({s:{},n:{}});buildCL()}}
+function updateCLStats(){
+  const d=clLoad();const vals=Object.values(d.s).filter(Boolean);
+  const ok=vals.filter(v=>v==='ok').length,unsure=vals.filter(v=>v==='unsure').length,bad=vals.filter(v=>v==='bad').length,done=vals.length;
+  document.getElementById('cl-done').textContent=done;
+  document.getElementById('cl-bar').style.width=Math.round(done/36*100)+'%';
+  ['ok','unsure','bad'].forEach(k=>document.getElementById('cl-'+k).textContent=k==='ok'?ok:k==='unsure'?unsure:bad);
+  ['ok','unsure','bad'].forEach(k=>document.getElementById('sum-'+k).textContent=k==='ok'?ok:k==='unsure'?unsure:bad);
+  const sw=document.getElementById('sum-warn');
+  if(bad>0){sw.style.display='block';sw.textContent=`⚠ Du har ${bad} problem-markering(er). Vurder om disse er avtalebrytere eller grunnlag for prisforhandling.`}else sw.style.display='none';
+}
+buildCL();
 
-  document.addEventListener('click', e => {
-    const li = e.target.closest('.checklist li');
-    if (!li) return;
-    const cb = li.querySelector('input[type="checkbox"]');
-    if (e.target !== cb) cb.checked = !cb.checked;
-    li.classList.toggle('checked', cb.checked);
+// ── GULL CHECKLIST ──
+const GULL_CATS=[
+  {id:'gst',icon:'🔍',title:'Stempelkontroll',items:[
+    {id:'gs1',label:'Finhetsstemmel funnet: 999, 916, 750, 585 eller 375',sev:'critical'},
+    {id:'gs2',label:'Stempelet er skarpt og jevnt preget — ikke utydelig eller manipulert',sev:'critical'},
+    {id:'gs3',label:'Ingen GF, GP, HGE eller RGP-merking (disse er ikke massivt gull)',sev:'critical'},
+    {id:'gs4',label:'Produsentstempel / ansvarsmerke til stede',sev:'warning'},
+    {id:'gs5',label:'Serienummer til stede (obligatorisk på LBMA-barrer fra 1g+)',sev:'warning'},
+    {id:'gs6',label:'Stempelet sitter riktig: innsiden av ring, bunnflate på barre, låsmekanisme',sev:'warning'}
+  ]},
+  {id:'gmag',icon:'🧲',title:'Magnettest',items:[
+    {id:'gm1',label:'Testet med sterk neodym-magnet (ikke kjøleskapmagnet)',sev:'critical'},
+    {id:'gm2',label:'Ingen magnetisk tiltrekning observert',sev:'critical'},
+    {id:'gm3',label:'Ingen sakking eller bremsing når magneten glir langs overflaten',sev:'warning'}
+  ]},
+  {id:'gtet',icon:'⚖️',title:'Tetthetstest',items:[
+    {id:'gt1',label:'Gjenstanden veid tørr på presisjonsvekt (0,01 g nøyaktighet)',sev:'warning'},
+    {id:'gt2',label:'Volum målt via vannfortrengning i målesylinder',sev:'warning'},
+    {id:'gt3',label:'Beregnet tetthet stemmer med oppgitt karatgrad (±0,3 g/cm³)',sev:'critical'},
+    {id:'gt4',label:'Tetthet ikke mistenkelig lik wolfram (19,25 g/cm³) for barrer',sev:'critical'}
+  ]},
+  {id:'gvis',icon:'👁️',title:'Visuell inspeksjon',items:[
+    {id:'gv1',label:'Fargen stemmer med karatgraden (24K = dyp varm gul, 9K = lysere)',sev:'warning'},
+    {id:'gv2',label:'Ingen grønn misfarging eller kobberfarging ved slitepunkter',sev:'critical'},
+    {id:'gv3',label:'Ingen synlige slitasjemerker som avslører annet metall under',sev:'critical'},
+    {id:'gv4',label:'Overflaten er ensartet — ingen synlige sveiser eller reparasjoner',sev:'warning'},
+    {id:'gv5',label:'Undersøkt med lupe (10× forstørrelse) i godt dagslys',sev:'normal'}
+  ]},
+  {id:'gkjop',icon:'🤝',title:'Kjøpssituasjon og svindel',items:[
+    {id:'gk1',label:'Prisen er realistisk ift. spotpris — ikke mer enn 15 % under markedspris',sev:'critical'},
+    {id:'gk2',label:'Selger kan fremvise dokumentasjon og opprinnelse for gullet',sev:'critical'},
+    {id:'gk3',label:'Selger er villig til å vente på profesjonell verifisering (gullsmed/XRF)',sev:'warning'},
+    {id:'gk4',label:'Betaling skjer ikke kontant til ukjent person uten kvittering',sev:'critical'},
+    {id:'gk5',label:'Ingen tidspress fra selger ("selges i dag", "siste sjanse", o.l.)',sev:'warning'},
+    {id:'gk6',label:'Handelen skjer hjemme hos selger, ikke på parkeringsplass',sev:'warning'}
+  ]}
+];
+const GULL_TOTAL=GULL_CATS.reduce((s,c)=>s+c.items.length,0);
+function gullLoad(){return JSON.parse(localStorage.getItem('av:gull:v1')||'{"s":{},"n":{}}')}
+function gullSave(d){localStorage.setItem('av:gull:v1',JSON.stringify(d))}
+function buildGullCL(){
+  const d=gullLoad();const c=document.getElementById('gcl-cats');if(!c)return;c.innerHTML='';
+  GULL_CATS.forEach(cat=>{
+    const done=cat.items.filter(i=>d.s[i.id]).length;
+    const div=document.createElement('div');div.className='cat-card';
+    div.innerHTML=`<div class="cat-header"><span class="cat-icon">${cat.icon}</span><h3 class="cat-title">${cat.title}</h3><span class="cat-prog">${done}/${cat.items.length}</span></div>${cat.items.map(item=>{const s=d.s[item.id]||null;return`<div class="cl-item"><div class="cl-item-text">${item.label}<span class="badge ${SEV_CLASS[item.sev]}" style="margin-left:7px">${SEV_LABEL[item.sev]}</span></div><div class="cl-btns"><button class="cl-btn ok-btn ${s==='ok'?'active-ok':''}" onclick="setGullStatus('${item.id}','ok')" title="OK"><i data-lucide="check"></i></button><button class="cl-btn warn-btn ${s==='unsure'?'active-warn':''}" onclick="setGullStatus('${item.id}','unsure')" title="Usikker"><i data-lucide="alert-triangle"></i></button><button class="cl-btn bad-btn ${s==='bad'?'active-bad':''}" onclick="setGullStatus('${item.id}','bad')" title="Problem"><i data-lucide="x"></i></button></div></div>`}).join('')}<div class="cat-notes"><label><i data-lucide="sticky-note"></i>Notater</label><textarea placeholder="Skriv observasjoner her..." onchange="saveGullNote('${cat.id}',this.value)">${d.n[cat.id]||''}</textarea></div>`;
+    c.appendChild(div);
   });
+  updateGullStats();lucide.createIcons();
+}
+function setGullStatus(id,status){const d=gullLoad();d.s[id]=d.s[id]===status?null:status;gullSave(d);buildGullCL()}
+function saveGullNote(catId,val){const d=gullLoad();d.n[catId]=val;gullSave(d)}
+function resetGullCL(){if(confirm('Tilbakestille gull-sjekklisten?')){gullSave({s:{},n:{}});buildGullCL()}}
+function updateGullStats(){
+  const d=gullLoad();const vals=Object.values(d.s).filter(Boolean);
+  const ok=vals.filter(v=>v==='ok').length,unsure=vals.filter(v=>v==='unsure').length,bad=vals.filter(v=>v==='bad').length,done=vals.length;
+  document.getElementById('gcl-done').textContent=done;
+  document.getElementById('gcl-bar').style.width=Math.round(done/GULL_TOTAL*100)+'%';
+  ['ok','unsure','bad'].forEach(k=>document.getElementById('gcl-'+k).textContent=k==='ok'?ok:k==='unsure'?unsure:bad);
+  ['ok','unsure','bad'].forEach(k=>document.getElementById('gsum-'+k).textContent=k==='ok'?ok:k==='unsure'?unsure:bad);
+  const sw=document.getElementById('gsum-warn');
+  if(bad>0){sw.style.display='block';sw.textContent=`⚠ Du har ${bad} problem-markering(er). Krev profesjonell verifisering (XRF-test / gullsmed).`}else sw.style.display='none';
+}
+buildGullCL();
 
-  function calcDensity() {
-    const w = parseFloat(document.getElementById('weight').value);
-    const vs = parseFloat(document.getElementById('vol-start').value);
-    const ve = parseFloat(document.getElementById('vol-end').value);
-    const result = document.getElementById('densityResult');
-    result.className = 'result show';
+// ── FORMATTERS ──
+const kr=v=>'kr '+Math.round(v).toLocaleString('no-NO');
+const pct=v=>v.toFixed(2).replace('.',',')+' %';
 
-    if (!w || !vs || !ve || ve <= vs) {
-      result.className = 'result show warn';
-      result.innerHTML = '<strong>Ugyldige verdier.</strong> Sørg for at sluttvolum er større enn startvolum og at alle felt er utfylt.';
-      return;
-    }
-    const volume = ve - vs;
-    const density = w / volume;
+// ── GULL KALKULATOR ──
+function calcGull(){
+  const spot=+document.getElementById('gull-spot').value||0,vekt=+document.getElementById('gull-vekt').value||0,karat=+document.getElementById('gull-karat').value||0,margin=+document.getElementById('gull-margin').value||0;
+  const innhold=vekt*karat,markedsverdi=innhold*spot,medMargin=markedsverdi*(1+margin/100);
+  document.getElementById('gull-spot-val').textContent=kr(markedsverdi);
+  document.getElementById('gull-margin-val').textContent=kr(medMargin);
+  document.getElementById('gull-margin-label').textContent=`+${margin} % over spotpris`;
+  document.getElementById('gull-innhold').textContent=innhold.toFixed(3)+' g';
+  document.getElementById('gull-karat-label').textContent=`${(karat*100).toFixed(1)} % rent gull`;
+  document.getElementById('gull-per-gram').textContent=vekt>0?kr(medMargin/vekt)+'/g':'—';
+}
+calcGull();
 
-    let match = null;
-    let quality = 'bad';
-    let note = '';
+// ── LOAN ──
+function loanCalc(P,rateAnnual,years,fee){
+  const r=rateAnnual/100/12,n=years*12;
+  const base=r===0?P/n:P*r*Math.pow(1+r,n)/(Math.pow(1+r,n)-1),mnd=base+fee;
+  let plan=[],bal=P;
+  for(let i=1;i<=n;i++){const interest=bal*r,principal=base-interest;bal=Math.max(0,bal-principal);plan.push({m:i,avdrag:principal,renter:interest,total:mnd,rest:bal})}
+  const totalPaid=mnd*n,totalFees=fee*n,totalInterest=totalPaid-P-totalFees;
+  return{mnd,totalPaid,totalInterest,totalFees,effRate:rateAnnual+(fee*12*100/P),plan};
+}
 
-    if (density > 19.6) {
-      match = 'Urealistisk høy tetthet – måling sannsynligvis feil';
-      quality = 'bad';
-      note = 'Ingen metall som normalt brukes i gull har tetthet over 19,6 g/cm³. Vanlige feilkilder: luftbobler fjernet ikke helt, for liten vannmengde, eller unøyaktig volum-avlesning. Gjenta målingen med større målesylinder og sørg for at gjenstanden er helt nedsenket uten bobler.';
-    }
-    else if (density >= 19.0 && density <= 19.6) { match = 'Rent gull (999) eller mulig wolfram-forfalskning'; quality = 'warn'; note = 'OBS: Wolfram har tetthet 19,25 – ikke skill fra gull. Krever XRF eller ultralyd ved høy verdi.'; }
-    else if (density >= 17.5 && density < 19.0) { match = '22 karat (916) – f.eks. Krugerrand'; quality = 'good'; }
-    else if (density >= 15.0 && density < 17.5) { match = '18 karat (750)'; quality = 'good'; }
-    else if (density >= 12.8 && density < 15.0) { match = '14 karat (585)'; quality = 'good'; }
-    else if (density >= 11.0 && density < 12.8) { match = '9 karat (375) eller mulig blandingsmateriale'; quality = 'warn'; note = 'Bly har tetthet 11,3 – sjekk nøye med stempel og visuell inspeksjon.'; }
-    else if (density < 11.0) { match = 'Ikke gull'; quality = 'bad'; note = 'Tettheten er for lav for alle gulltyper. Kan være messing, sølv, bly eller legering.'; }
-    else { match = 'Uvanlig verdi'; quality = 'warn'; note = 'Dobbeltsjekk målingene.'; }
+function calcBillan(){
+  const pris=+document.getElementById('bl-pris').value||0,ek=+document.getElementById('bl-ek').value||0,rente=+document.getElementById('bl-rente').value||0,ar=Math.max(1,+document.getElementById('bl-ar').value||5),gebyr=+document.getElementById('bl-gebyr').value||0;
+  const lan=Math.max(0,pris-ek),res=loanCalc(lan,rente,ar,gebyr);
+  document.getElementById('bl-mnd').textContent=kr(res.mnd);
+  document.getElementById('bl-mnd-sub').textContent=`Inkl. termingebyr (${kr(gebyr)}/mnd)`;
+  document.getElementById('bl-total').textContent=kr(res.totalPaid);
+  document.getElementById('bl-total-sub').textContent=`Over ${ar*12} måneder`;
+  document.getElementById('bl-renter').textContent=kr(res.totalInterest);
+  document.getElementById('bl-renter-sub').textContent=`Gebyrer: ${kr(res.totalFees)}`;
+  document.getElementById('bl-eff').textContent=pct(res.effRate);
+  document.getElementById('bl-lan').textContent=kr(lan);
+  const belgrad=pris>0?lan/pris*100:0;
+  document.getElementById('bl-lan-sub').textContent=belgrad.toFixed(1)+' % av bilpris';
+  document.getElementById('bl-ek-r').textContent=kr(ek);
+  const ekSub=document.getElementById('bl-ek-sub');
+  if(pris>0&&ek/pris<0.2){ekSub.style.color='var(--red)';ekSub.textContent='⚠ Under 20 % — vurder høyere'}
+  else{ekSub.style.color='var(--green)';ekSub.textContent='✓ Over anbefalt 20 %'}
+  const yearly=[];
+  for(let y=0;y<ar;y++){const rows=res.plan.slice(y*12,(y+1)*12);const avd=rows.reduce((s,r)=>s+r.avdrag,0),rn=rows.reduce((s,r)=>s+r.renter,0);yearly.push({y:y+1,avd,rn,rest:rows[rows.length-1]?.rest||0})}
+  const maxSum=Math.max(...yearly.map(y=>y.avd+y.rn),1);
+  document.getElementById('bl-chart').innerHTML=yearly.map(y=>{const avdPct=y.avd/(y.avd+y.rn)*100,widPct=(y.avd+y.rn)/maxSum*100;return`<div class="bar-row"><div class="bar-labels"><span>År ${y.y}</span><span>Restgjeld: ${kr(y.rest)}</span></div><div class="bar-track" style="width:${Math.max(widPct,30)}%"><div class="bar-avdrag" style="width:${avdPct}%"><span class="bar-inner-label">Avdrag ${kr(y.avd)}</span></div><div class="bar-renter"><span class="bar-inner-label">Renter ${kr(y.rn)}</span></div></div></div>`}).join('');
+  document.getElementById('bl-amort-body').innerHTML=res.plan.map(r=>`<tr><td>${r.m}</td><td>${kr(r.avdrag)}</td><td>${kr(r.renter)}</td><td>${kr(r.total)}</td><td>${kr(r.rest)}</td></tr>`).join('');
+}
+calcBillan();
 
-    result.classList.add(quality);
-    result.innerHTML = `
-      <strong>Volum:</strong> ${volume.toFixed(2)} cm³<br>
-      <strong>Tetthet:</strong> ${density.toFixed(2)} g/cm³<br>
-      <strong>Mest sannsynlig:</strong> ${match}
-      ${note ? '<br><br><em>' + note + '</em>' : ''}
-    `;
-  }
+function toggleAmort(){
+  const el=document.getElementById('bl-amort'),btn=document.getElementById('bl-toggle');
+  el.style.display=el.style.display==='none'?'block':'none';
+  btn.classList.toggle('open');lucide.createIcons();
+}
 
-  function resetAll() {
-    document.querySelectorAll('.checklist input[type="checkbox"]').forEach(cb => {
-      cb.checked = false;
-      cb.closest('li').classList.remove('checked');
-    });
-    document.querySelectorAll('.calculator input').forEach(i => i.value = '');
-    document.getElementById('densityResult').className = 'result';
-    visited.clear();
-    visited.add(0);
-    goStep(0);
-  }
+function calcBoliglan(){
+  const pris=+document.getElementById('bo-pris').value||0,ek=+document.getElementById('bo-ek').value||0,rente=+document.getElementById('bo-rente').value||0,ar=Math.max(5,+document.getElementById('bo-ar').value||25),ekstra=+document.getElementById('bo-ekstra').value||0,gebyr=+document.getElementById('bo-gebyr').value||50;
+  const lan=Math.max(0,pris-ek),res=loanCalc(lan,rente,ar,gebyr),resStress=loanCalc(lan,rente+5,ar,gebyr);
+  document.getElementById('bo-mnd').textContent=kr(res.mnd);
+  document.getElementById('bo-mnd-sub').textContent=`Inkl. termingebyr (${kr(gebyr)}/mnd)`;
+  document.getElementById('bo-total').textContent=kr(res.totalPaid);
+  document.getElementById('bo-renter').textContent=kr(res.totalInterest);
+  const grad=pris>0?lan/pris*100:0;
+  document.getElementById('bo-grad').textContent=grad.toFixed(1)+' %';
+  const gs=document.getElementById('bo-grad-sub');
+  if(grad>85){gs.style.color='var(--red)';gs.textContent='⚠ Over 85 % — over grensen'}
+  else if(grad>80){gs.style.color='var(--amber)';gs.textContent='Over anbefalt 80 %'}
+  else{gs.style.color='var(--green)';gs.textContent='✓ Under 80 %'}
+  document.getElementById('bo-stress').textContent=kr(resStress.mnd);
+  if(ekstra>0){document.getElementById('bo-spare').textContent=kr(ekstra*ar*12*0.4);document.getElementById('bo-spare-sub').textContent=`~${Math.round(ar*0.15)} år spart`;document.getElementById('bo-spare-label').textContent='Estimert rentesparing'}
+  else{document.getElementById('bo-spare').textContent='—';document.getElementById('bo-spare-sub').textContent='Legg til ekstra betaling';document.getElementById('bo-spare-label').textContent='Spart med ekstra innbetaling'}
+}
+calcBoliglan();
 
-  updateNav();
+function calcInv(){
+  const start=+document.getElementById('inv-start').value||0,mnd=+document.getElementById('inv-mnd').value||0,rente=+document.getElementById('inv-rente').value||0,ar=Math.max(1,+document.getElementById('inv-ar').value||20),skatt=+document.getElementById('inv-skatt').value||0,inflasjon=+document.getElementById('inv-inflasjon').value||0;
+  const r=rente/100/12,n=ar*12;
+  const fv=start*Math.pow(1+r,n)+(r>0?mnd*(Math.pow(1+r,n)-1)/r:mnd*n);
+  const innbetalt=start+mnd*n,gevinst=fv-innbetalt,etterskatt=innbetalt+gevinst*(1-skatt/100),realFV=fv/Math.pow(1+inflasjon/100,ar);
+  document.getElementById('inv-total').textContent=kr(fv);
+  document.getElementById('inv-total-sub').textContent=`Realverdi: ${kr(realFV)} (etter inflasjon)`;
+  document.getElementById('inv-gevinst').textContent=kr(gevinst);
+  document.getElementById('inv-gevinst-sub').textContent=gevinst>0?`${((gevinst/innbetalt)*100).toFixed(0)} % avkastning`:'';
+  document.getElementById('inv-innbetalt').textContent=kr(innbetalt);
+  document.getElementById('inv-etterskatt').textContent=kr(etterskatt);
+  document.getElementById('inv-etterskatt-sub').textContent=`${skatt} % skatt på gevinst`;
+  const maxSteps=Math.min(ar,30),step=ar/maxSteps,pts=[];
+  for(let i=1;i<=maxSteps;i++){const yr=i*step,nm=yr*12,val=start*Math.pow(1+r,nm)+(r>0?mnd*(Math.pow(1+r,nm)-1)/r:mnd*nm),inn=start+mnd*nm;pts.push({val,inn})}
+  const maxVal=Math.max(...pts.map(p=>p.val),1);
+  document.getElementById('inv-chart').innerHTML=pts.map(p=>{const totalH=Math.round(p.val/maxVal*130),innH=Math.round(p.inn/maxVal*130),gainH=totalH-innH;return`<div style="flex:1;display:flex;flex-direction:column;align-items:stretch;height:130px;justify-content:flex-end"><div style="height:${gainH}px;background:var(--green);border-radius:3px 3px 0 0;min-height:${gainH>0?2:0}px"></div><div style="height:${innH}px;background:var(--blue);min-height:2px"></div></div>`}).join('');
+}
+calcInv();
+
+function calcStrom(){
+  const areal=+document.getElementById('strom-areal').value||0,personer=+document.getElementById('strom-personer').value||1,isolasjon=+document.getElementById('strom-isolasjon').value||1,oppvKwh=+document.getElementById('strom-oppvarming').value||55,vvFaktor=+document.getElementById('strom-varmtvann').value||1,elbilKm=+document.getElementById('strom-elbil').value||0,pool=+document.getElementById('strom-pool').value||0,hjemme=+document.getElementById('strom-hjemmekontor').value||0,pris=+document.getElementById('strom-pris').value||1.2,nettleie=+document.getElementById('strom-nettleie').value||0.45;
+  const varme=areal*oppvKwh*isolasjon,varmtvann=(800+personer*450)*vvFaktor,basis=1800+personer*550,elbil=elbilKm*0.18,poolKwh=pool,hjemmeKwh=hjemme*1.5*52;
+  const total=Math.round(varme+varmtvann+basis+elbil+poolKwh+hjemmeKwh),totalPris=pris+nettleie,arskost=Math.round(total*totalPris),mndkost=Math.round(arskost/12),mndkwh=Math.round(total/12),snittDiff=total-16000;
+  document.getElementById('strom-kwh').textContent=total.toLocaleString('no-NO')+' kWh';
+  document.getElementById('strom-kwh-sub').textContent=`${mndkwh.toLocaleString('no-NO')} kWh per måned i snitt`;
+  document.getElementById('strom-arskost').textContent=kr(arskost);
+  document.getElementById('strom-arskost-sub').textContent=`Ved ${pris.toFixed(2).replace('.',',')} + ${nettleie.toFixed(2).replace('.',',')} NOK/kWh`;
+  document.getElementById('strom-mndkost').textContent=kr(mndkost);
+  document.getElementById('strom-mndkwh').textContent=`${mndkwh.toLocaleString('no-NO')} kWh/mnd`;
+  const sEl=document.getElementById('strom-snitt'),sSub=document.getElementById('strom-snitt-sub');
+  if(snittDiff>0){sEl.textContent='+'+snittDiff.toLocaleString('no-NO')+' kWh';sEl.style.color='var(--red)';sSub.style.color='var(--red)';sSub.textContent=`Over norsk snitt (${Math.round(snittDiff/160)}%)`}
+  else if(snittDiff<0){sEl.textContent=snittDiff.toLocaleString('no-NO')+' kWh';sEl.style.color='var(--green)';sSub.style.color='var(--green)';sSub.textContent=`Under norsk snitt (${Math.abs(Math.round(snittDiff/160))}% lavere)`}
+  else{sEl.textContent='På snitt';sEl.style.color='var(--text)';sSub.textContent='Lik norsk gjennomsnitt'}
+  const parts=[
+    {label:'🌡️ Oppvarming',kwh:Math.round(varme),color:'linear-gradient(90deg,#3B82F6,#6366F1)'},
+    {label:'🚿 Varmtvann',kwh:Math.round(varmtvann),color:'linear-gradient(90deg,#06B6D4,#3B82F6)'},
+    {label:'🏠 Belysning og hvitevarer',kwh:Math.round(basis),color:'linear-gradient(90deg,#8B5CF6,#A855F7)'},
+    {label:'🚗 Elbil lading',kwh:Math.round(elbil),color:'linear-gradient(90deg,#10B981,#34D399)'},
+    {label:'🏊 Basseng / boblebad',kwh:Math.round(poolKwh),color:'linear-gradient(90deg,#F59E0B,#FBBF24)'},
+    {label:'💻 Hjemmekontor',kwh:Math.round(hjemmeKwh),color:'linear-gradient(90deg,#EC4899,#F472B6)'},
+  ].filter(p=>p.kwh>0);
+  document.getElementById('strom-breakdown').innerHTML=parts.map(p=>{const pc=Math.round(p.kwh/total*100),cost=Math.round(p.kwh*totalPris);return`<div style="margin-bottom:14px"><div style="display:flex;justify-content:space-between;font-size:0.83rem;margin-bottom:6px"><span style="font-weight:500;color:var(--text)">${p.label}</span><span style="color:var(--muted2)">${p.kwh.toLocaleString('no-NO')} kWh · ${kr(cost)} · ${pc}%</span></div><div style="height:8px;background:var(--surface3);border-radius:4px;overflow:hidden"><div style="height:100%;width:${pc}%;background:${p.color};border-radius:4px;transition:width .4s;box-shadow:0 0 8px rgba(59,130,246,0.3)"></div></div></div>`}).join('');
+}
+calcStrom();
 </script>
 </body>
 </html>
