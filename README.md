@@ -1,4 +1,3 @@
-[README.md](https://github.com/user-attachments/files/27040296/README.md)
 # Allverktøy.no
 
 Gratis norske kalkulatorer og kjøpsguider — bygget for å gi trygghet ved store økonomiske beslutninger. Ingen registrering, ingen tracking, ingen skjulte kostnader.
