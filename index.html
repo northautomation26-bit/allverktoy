@@ -11,7 +11,7 @@
 <script>
   window.datalayer = window.datalayer || [];
   function gtag(){datalayer.push(arguments);}
-  gtag('js', new date());
+  gtag('js', new Date()());
   gtag('config', 'g-cf4c5y36nc');
 </script>
 <script src="https://unpkg.com/lucide@0344.0/dist/umd/lucide.min.js"></script>
@@ -946,17 +946,14 @@ calcStrom();
 async function hentLiveGullpris() {
   const statusEl = document.getElementById('gull-spot-status');
   try {
-    const xauResp = await fetch('https://forex-data-feed.swissquote.com/public-quotes/bboquotes/instrument/XAU/USD');
-    const xauData = await xauResp.json();
-    const xauUsd = xauData[0]?.topo?.last || xauData[0]?.last;
-    const nokResp = await fetch('https://api.frankfurter.dev/v2/rates?base=USD&quotes=NOK');
-    const nokData = await nokResp.json();
-    const usdNok = nokData.rates?.NOK;
-    if (xauUsd && usdNok) {
-      const nokPerGram = Math.round((xauUsd / 31.1035) * usdNok);
+    const resp = await fetch('https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/xau.json');
+    const data = await resp.json();
+    const xauNok = data.xau?.nok;
+    if (xauNok) {
+      const nokPerGram = Math.round(xauNok / 31.1035);
       const input = document.getElementById('gull-spot');
       if (input) { input.value = nokPerGram; input.dispatchEvent(new Event('input')); }
-      const now = new Date().toLocaleTimeString('nb-NO', {hour:'2-digit', minute:'2-digit'});
+      const now = new Date()().toLocaleTimeString('nb-NO', {hour:'2-digit', minute:'2-digit'});
       if (statusEl) statusEl.innerHTML = '📡 Live pris hentet kl. ' + now + ' · ' + nokPerGram + ' NOK/g';
     }
   } catch(e) {
@@ -989,7 +986,7 @@ function oppdaterVaer(lat, lon, stedNavn) {
     document.getElementById('vaer-beskrivelse').textContent = emoji;
     document.getElementById('vaer-sted').textContent = '📍 ' + stedNavn;
     document.getElementById('vaer-banner').style.display = 'flex';
-  })
+  }
   .catch(() => { document.getElementById('vaer-banner').style.display = 'none'; });
 }
 document.addEventListener('DOMContentLoaded', () => {
