@@ -6,14 +6,6 @@
 <title>Allverktøy.no — Smarte verktøy for norske forbrukere</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<!-- google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=g-cf4c5y36nc"></script>
-<script>
-  window.datalayer = window.datalayer || [];
-  function gtag(){datalayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'g-cf4c5y36nc');
-</script>
 <script src="https://unpkg.com/lucide@0.344.0/dist/umd/lucide.min.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -72,6 +64,27 @@ nav{flex:1;padding:12px;display:flex;flex-direction:column;gap:2px}
 .nav-item.active{color:#fff;background:var(--grad);box-shadow:0 4px 20px rgba(59,130,246,0.35)}
 .nav-item.active svg{color:#fff}
 .nav-footer{padding:16px 20px;border-top:1px solid var(--border);font-size:0.72rem;color:var(--muted)}
+
+/* ── FINANS NAV GROUP ── */
+.nav-group-header{display:flex;align-items:center;gap:11px;padding:11px 14px;border-radius:12px;font-size:0.875rem;font-weight:500;color:var(--muted2);cursor:pointer;border:none;background:none;text-align:left;width:100%;transition:all 0.2s;font-family:inherit}
+.nav-group-header:hover{color:var(--text);background:var(--surface2)}
+.nav-group-header svg{width:17px;height:17px;flex-shrink:0}
+.nav-group-header .chevron{width:14px;height:14px;margin-left:auto;color:var(--muted);transition:transform 0.2s;flex-shrink:0}
+.nav-group-header.open .chevron{transform:rotate(180deg)}
+.nav-group-items{overflow:hidden}
+.nav-subitem{display:flex;align-items:center;gap:11px;padding:9px 14px 9px 30px;border-radius:10px;font-size:0.82rem;font-weight:500;color:var(--muted2);cursor:pointer;border:none;background:none;text-align:left;width:100%;transition:all 0.2s;font-family:inherit}
+.nav-subitem svg{width:15px;height:15px;flex-shrink:0}
+.nav-subitem:hover{color:var(--text);background:var(--surface2)}
+.nav-subitem.active{color:#fff;background:var(--grad);box-shadow:0 4px 20px rgba(59,130,246,0.35)}
+
+/* ── FINANS MOBILE DRAWER ── */
+.finans-backdrop{position:fixed;inset:0;z-index:40;background:rgba(0,0,0,0.5);display:none}
+.finans-backdrop.open{display:block}
+.finans-drawer{position:fixed;bottom:0;left:0;right:0;z-index:45;background:rgba(8,12,20,0.98);backdrop-filter:blur(24px);border-top:1px solid var(--border2);border-radius:20px 20px 0 0;padding:16px 16px 40px;transform:translateY(100%);transition:transform 0.25s ease}
+.finans-drawer.open{transform:translateY(0)}
+.finans-drawer-item{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:12px;border:none;background:none;color:var(--muted2);font-size:0.9rem;font-weight:500;font-family:inherit;cursor:pointer;width:100%;text-align:left;transition:all 0.15s}
+.finans-drawer-item:hover{background:var(--surface2);color:var(--text)}
+.finans-drawer-item svg{width:20px;height:20px;flex-shrink:0}
 
 /* ── MAIN ── */
 main{flex:1;min-width:0;overflow-y:auto;position:relative;z-index:1}
@@ -255,15 +268,24 @@ select.input-field{cursor:pointer}
 <aside id="sidebar">
   <div class="logo">
     <div class="logo-name">Allverktøy<span>.no</span></div>
+    <div class="logo-sub">Smarte verktøy for norske forbrukere</div>
   </div>
   <nav>
     <button class="nav-item" data-page="hjem" onclick="go('hjem')"><i data-lucide="home"></i>Hjem</button>
     <button class="nav-item" data-page="bruktbil" onclick="go('bruktbil')"><i data-lucide="car"></i>Kjøp bruktbil</button>
     <button class="nav-item" data-page="gull" onclick="go('gull')"><i data-lucide="coins"></i>Kjøp gull</button>
-    <button class="nav-item" data-page="billan" onclick="go('billan')"><i data-lucide="car-front"></i>Billånkalkulator</button>
-    <button class="nav-item" data-page="boliglan" onclick="go('boliglan')"><i data-lucide="building-2"></i>Boliglånkalkulator</button>
-    <button class="nav-item" data-page="investering" onclick="go('investering')"><i data-lucide="trending-up"></i>Investeringskalkulator</button>
+    <div>
+      <button class="nav-group-header open" id="finans-group-btn" onclick="toggleFinans()">
+        <i data-lucide="landmark"></i>Finans<i data-lucide="chevron-down" class="chevron"></i>
+      </button>
+      <div class="nav-group-items" id="finans-group-items">
+        <button class="nav-subitem" data-page="billan" onclick="go('billan')"><i data-lucide="car-front"></i>Billånkalkulator</button>
+        <button class="nav-subitem" data-page="boliglan" onclick="go('boliglan')"><i data-lucide="building-2"></i>Boliglånkalkulator</button>
+        <button class="nav-subitem" data-page="investering" onclick="go('investering')"><i data-lucide="trending-up"></i>Investeringskalkulator</button>
+      </div>
+    </div>
     <button class="nav-item" data-page="strom" onclick="go('strom')"><i data-lucide="zap"></i>Strømkalkulator</button>
+    <button class="nav-item" data-page="helse" onclick="go('helse')"><i data-lucide="heart"></i>Helse og velvære</button>
   </nav>
   <div class="nav-footer">© 2025 Allverktøy.no</div>
 </aside>
@@ -298,6 +320,22 @@ select.input-field{cursor:pointer}
         <p>Gullverdikalkulator og 24-punkts verifiseringssjekkliste for privat gullkjøp.</p>
         <div class="tool-arrow">Åpne <i data-lucide="arrow-right" style="width:13px;height:13px"></i></div>
       </div>
+      <div class="tool-card" onclick="go('strom')">
+        <div class="tool-icon" style="background:linear-gradient(135deg,rgba(234,179,8,0.2),rgba(234,179,8,0.05))"><i data-lucide="zap" style="color:#EAB308"></i></div>
+        <h3>Strømkalkulator</h3>
+        <p>Estimat for årlig strømforbruk og kostnad basert på bolig, oppvarming og utstyr.</p>
+        <div class="tool-arrow">Åpne <i data-lucide="arrow-right" style="width:13px;height:13px"></i></div>
+      </div>
+      <div class="tool-card" onclick="go('helse')">
+        <div class="tool-icon" style="background:linear-gradient(135deg,rgba(236,72,153,0.2),rgba(236,72,153,0.05))"><i data-lucide="heart" style="color:#EC4899"></i></div>
+        <h3>Helse og velvære</h3>
+        <p>BMI-kalkulator, idealvekt med Devine/Robinson-formel og fargekodet BMI-skala etter WHO-standard.</p>
+        <div class="tool-arrow">Åpne <i data-lucide="arrow-right" style="width:13px;height:13px"></i></div>
+      </div>
+    </div>
+
+    <div class="section-label" style="margin-top:32px"><i data-lucide="landmark" style="width:13px;height:13px"></i> Finans</div>
+    <div class="tools-grid">
       <div class="tool-card" onclick="go('billan')">
         <div class="tool-icon" style="background:linear-gradient(135deg,rgba(6,182,212,0.2),rgba(6,182,212,0.05))"><i data-lucide="car-front" style="color:#06B6D4"></i></div>
         <h3>Billånkalkulator</h3>
@@ -314,12 +352,6 @@ select.input-field{cursor:pointer}
         <div class="tool-icon" style="background:linear-gradient(135deg,rgba(139,92,246,0.2),rgba(139,92,246,0.05))"><i data-lucide="trending-up" style="color:#8B5CF6"></i></div>
         <h3>Investeringskalkulator</h3>
         <p>Sammensatt rente, månedlig sparing, skatt og inflasjonsjustert avkastning.</p>
-        <div class="tool-arrow">Åpne <i data-lucide="arrow-right" style="width:13px;height:13px"></i></div>
-      </div>
-      <div class="tool-card" onclick="go('strom')">
-        <div class="tool-icon" style="background:linear-gradient(135deg,rgba(234,179,8,0.2),rgba(234,179,8,0.05))"><i data-lucide="zap" style="color:#EAB308"></i></div>
-        <h3>Strømkalkulator</h3>
-        <p>Estimat for årlig strømforbruk og kostnad basert på bolig, oppvarming og utstyr.</p>
         <div class="tool-arrow">Åpne <i data-lucide="arrow-right" style="width:13px;height:13px"></i></div>
       </div>
     </div>
@@ -397,8 +429,7 @@ select.input-field{cursor:pointer}
 
   <div class="grid2" style="margin-bottom:20px">
     <div class="card" style="display:flex;flex-direction:column;gap:18px">
-      <div class="field"><label class="label-text">Spotpris (NOK/gram)</label><input class="input-field" type="number" id="gull-spot" value="960" step="10" oninput="calcGull()">
-<div id="gull-spot-status" style="font-size:12px;color:var(--muted);margin-top:4px;min-height:18px;padding:2px 0"></div><p class="hint">Aktuell spotpris ca. 960 NOK/g (april 2025)</p></div>
+      <div class="field"><label class="label-text">Spotpris (NOK/gram)</label><input class="input-field" type="number" id="gull-spot" value="960" step="10" oninput="calcGull()"><p class="hint">Aktuell spotpris ca. 960 NOK/g (april 2025)</p></div>
       <div class="field"><label class="label-text">Vekt (gram)</label><input class="input-field" type="number" id="gull-vekt" value="10" step="0.1" oninput="calcGull()"></div>
       <div class="field"><label class="label-text">Karathet</label>
         <select class="input-field" id="gull-karat" onchange="calcGull()">
@@ -638,6 +669,193 @@ select.input-field{cursor:pointer}
   </div>
 </div>
 
+<!-- ══ HELSE OG VELVÆRE – HUB ══ -->
+<div class="page" id="page-helse">
+  <div class="page-eyebrow">Helse og velvære</div>
+  <h1 style="font-size:2rem;margin-bottom:6px">Helse og velvære</h1>
+  <p class="page-desc">Gratis helse- og velværekalkulatorer på norsk — basert på vitenskapelige metoder og anerkjente retningslinjer.</p>
+  <div class="tools-grid">
+    <div class="tool-card" onclick="go('bmi')">
+      <div class="tool-icon" style="background:linear-gradient(135deg,rgba(236,72,153,0.2),rgba(236,72,153,0.05))"><i data-lucide="heart" style="color:#EC4899"></i></div>
+      <h3>BMI og idealvekt</h3>
+      <p>Beregn BMI etter WHO-standard, normalvektspenn og idealvekt med Devine/Robinson-formel.</p>
+      <div class="tool-arrow">Åpne <i data-lucide="arrow-right" style="width:13px;height:13px"></i></div>
+    </div>
+    <div class="tool-card" onclick="go('stress')">
+      <div class="tool-icon" style="background:linear-gradient(135deg,rgba(239,68,68,0.2),rgba(239,68,68,0.05))"><i data-lucide="brain" style="color:#EF4444"></i></div>
+      <h3>Stresskalkulator (PSS-10)</h3>
+      <p>Mål opplevd stressnivå med det vitenskapelig validerte PSS-10-skjemaet (Sheldon Cohen, 1983).</p>
+      <div class="tool-arrow">Åpne <i data-lucide="arrow-right" style="width:13px;height:13px"></i></div>
+    </div>
+    <div class="tool-card" onclick="go('sovn')">
+      <div class="tool-icon" style="background:linear-gradient(135deg,rgba(139,92,246,0.2),rgba(139,92,246,0.05))"><i data-lucide="moon" style="color:#8B5CF6"></i></div>
+      <h3>Søvnkalkulator</h3>
+      <p>Optimal legge- og oppvåkningstid basert på søvnsykluser, søvnbehov etter alder og søvneffektivitet.</p>
+      <div class="tool-arrow">Åpne <i data-lucide="arrow-right" style="width:13px;height:13px"></i></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ BMI ══ -->
+<div class="page" id="page-bmi">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+    <button onclick="go('helse')" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:0.8rem;padding:0;display:flex;align-items:center;gap:4px;font-family:inherit"><i data-lucide="arrow-left" style="width:14px;height:14px"></i>Helse og velvære</button>
+  </div>
+  <h1 style="font-size:2rem;margin-bottom:6px">BMI og idealvekt</h1>
+  <p class="page-desc">Beregn din kroppsmasseindeks (BMI) og idealvekt basert på høyde, vekt og kjønn — etter WHO-standard.</p>
+
+  <div class="card" style="margin-bottom:20px">
+    <div class="section-label">Dine mål</div>
+    <div class="grid2" style="gap:18px">
+      <div class="field"><label class="label-text">Høyde (cm)</label><input class="input-field" type="number" id="bmi-hoyde" value="175" min="100" max="250" step="1" oninput="calcBMI()"></div>
+      <div class="field"><label class="label-text">Vekt (kg)</label><input class="input-field" type="number" id="bmi-vekt" value="75" min="20" max="300" step="0.5" oninput="calcBMI()"></div>
+      <div class="field" style="grid-column:1/-1"><label class="label-text">Kjønn</label>
+        <select class="input-field" id="bmi-kjonn" onchange="calcBMI()">
+          <option value="alle">Ønsker ikke å oppgi</option>
+          <option value="mann">Mann</option>
+          <option value="kvinne">Kvinne</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="card card-glow" style="margin-bottom:20px">
+    <div class="section-label">BMI-resultat</div>
+    <div style="text-align:center;margin-bottom:28px">
+      <div id="bmi-tall" style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:4.5rem;line-height:1;transition:color 0.3s">—</div>
+      <div id="bmi-kategori" style="font-size:1.1rem;font-weight:600;margin-top:10px;transition:color 0.3s">—</div>
+      <div id="bmi-normalspenn" style="font-size:0.82rem;color:var(--muted2);margin-top:6px">—</div>
+    </div>
+    <div style="position:relative;margin-bottom:10px">
+      <div style="display:flex;height:18px;border-radius:9px;overflow:hidden;gap:2px">
+        <div style="flex:8.5;background:#3B82F6;border-radius:9px 0 0 9px"></div>
+        <div style="flex:6.5;background:#10B981"></div>
+        <div style="flex:5;background:#F59E0B"></div>
+        <div style="flex:5;background:#F97316"></div>
+        <div style="flex:5;background:#EF4444"></div>
+        <div style="flex:5;background:#991B1B;border-radius:0 9px 9px 0"></div>
+      </div>
+      <div id="bmi-marker" style="position:absolute;top:-5px;transform:translateX(-50%);width:4px;height:28px;background:#fff;border-radius:2px;box-shadow:0 0 10px rgba(255,255,255,0.9);left:50%;transition:left 0.4s ease;display:none"></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;font-size:0.65rem;color:var(--muted);padding:0 1px;margin-bottom:12px">
+      <span>10</span><span>18,5</span><span>25</span><span>30</span><span>35</span><span>40</span><span>45+</span>
+    </div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap">
+      <span style="font-size:0.68rem;padding:3px 9px;border-radius:20px;background:rgba(59,130,246,0.15);color:#3B82F6;font-weight:600">Undervektig &lt;18,5</span>
+      <span style="font-size:0.68rem;padding:3px 9px;border-radius:20px;background:rgba(16,185,129,0.15);color:#10B981;font-weight:600">Normalvektig 18,5–24,9</span>
+      <span style="font-size:0.68rem;padding:3px 9px;border-radius:20px;background:rgba(245,158,11,0.15);color:#F59E0B;font-weight:600">Overvektig 25–29,9</span>
+      <span style="font-size:0.68rem;padding:3px 9px;border-radius:20px;background:rgba(249,115,22,0.15);color:#F97316;font-weight:600">Fedme I 30–34,9</span>
+      <span style="font-size:0.68rem;padding:3px 9px;border-radius:20px;background:rgba(239,68,68,0.15);color:#EF4444;font-weight:600">Fedme II 35–39,9</span>
+      <span style="font-size:0.68rem;padding:3px 9px;border-radius:20px;background:rgba(153,27,27,0.2);color:#FCA5A5;font-weight:600">Fedme III ≥40</span>
+    </div>
+  </div>
+
+  <div class="grid2" style="margin-bottom:20px">
+    <div class="result-card"><div class="result-label">Normalvekt for din høyde</div><div class="result-number" id="bmi-normalkg" style="font-size:1.35rem">—</div><div class="result-sub">WHO: BMI 18,5–24,9</div></div>
+    <div class="result-card"><div class="result-label">Helserisiko</div><div class="result-number" id="bmi-risiko" style="font-size:1.35rem">—</div><div class="result-sub" id="bmi-risiko-sub"></div></div>
+  </div>
+
+  <div class="card" style="margin-bottom:20px">
+    <div class="section-label">Idealvekt</div>
+    <div id="bmi-idealvekt-innhold"><p style="font-size:0.875rem;color:var(--muted2)">Fyll inn høyde og vekt for å beregne idealvekt.</p></div>
+  </div>
+
+  <div style="background:rgba(245,158,11,0.05);border:1px solid rgba(245,158,11,0.2);border-radius:var(--r);padding:16px 20px;font-size:0.78rem;color:var(--muted);line-height:1.7">
+    <div style="display:flex;gap:10px;align-items:flex-start"><span style="flex-shrink:0;margin-top:1px">⚠️</span><div><strong style="display:block;margin-bottom:5px;color:var(--muted2);font-size:0.8rem">Viktig informasjon</strong>Denne kalkulatoren er kun ment som generell veiledning og informasjon. Resultatene tar ikke hensyn til individuelle faktorer som muskelmasse, kroppssammensetning, alder, etnisitet eller eventuelle medisinske tilstander. BMI og idealvekt er ikke diagnostiske verktøy og skal ikke brukes som erstatning for råd fra lege eller annet kvalifisert helsepersonell. Kontakt alltid en helseprofesjonell ved spørsmål om din helse.</div></div>
+  </div>
+</div>
+
+<!-- ══ STRESS (PSS-10) ══ -->
+<div class="page" id="page-stress">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+    <button onclick="go('helse')" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:0.8rem;padding:0;display:flex;align-items:center;gap:4px;font-family:inherit"><i data-lucide="arrow-left" style="width:14px;height:14px"></i>Helse og velvære</button>
+  </div>
+  <h1 style="font-size:2rem;margin-bottom:6px">Stresskalkulator – PSS-10</h1>
+  <p class="page-desc">Mål ditt opplevde stressnivå med PSS-10 (Perceived Stress Scale), det mest brukte og vitenskapelig validerte stressmålingsverktøyet i verden (Sheldon Cohen, 1983).</p>
+
+  <div class="info-box" style="margin-bottom:20px"><strong>📅 Siste 4 uker</strong>Svar på hvert spørsmål basert på hvordan du har opplevd ting i løpet av de <strong>siste fire ukene</strong>.</div>
+
+  <div class="card" style="margin-bottom:20px">
+    <div class="section-label">Spørreskjema — 10 spørsmål</div>
+    <div id="pss-form"></div>
+    <button class="btn btn-primary" style="margin-top:24px;width:100%;justify-content:center" onclick="calcPSS()">Beregn stressnivå <i data-lucide="arrow-right" style="width:16px;height:16px"></i></button>
+  </div>
+
+  <div id="pss-result" style="display:none;margin-bottom:20px">
+    <div class="card card-glow" style="margin-bottom:20px">
+      <div class="section-label">Ditt resultat</div>
+      <div style="text-align:center;margin-bottom:24px">
+        <div id="pss-score-tall" style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:4.5rem;line-height:1">—</div>
+        <div style="font-size:0.82rem;color:var(--muted2);margin-top:4px">av maks 40 poeng</div>
+        <div id="pss-kategori" style="font-size:1.1rem;font-weight:600;margin-top:10px">—</div>
+        <div id="pss-desc" style="font-size:0.85rem;color:var(--muted2);margin-top:6px;max-width:400px;margin-left:auto;margin-right:auto">—</div>
+      </div>
+      <div style="margin-bottom:8px">
+        <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--muted);margin-bottom:6px"><span>0 — Lavt</span><span>14</span><span>27</span><span>40 — Høyt</span></div>
+        <div style="height:12px;background:var(--surface3);border-radius:6px;overflow:hidden;position:relative">
+          <div style="height:100%;background:linear-gradient(90deg,#10B981,#F59E0B,#EF4444);border-radius:6px;width:100%;opacity:0.35"></div>
+          <div id="pss-bar-marker" style="position:absolute;top:0;height:100%;width:4px;background:#fff;border-radius:2px;box-shadow:0 0 8px rgba(255,255,255,0.8);transition:left 0.5s ease;left:0"></div>
+        </div>
+      </div>
+    </div>
+    <div id="pss-tips" style="margin-bottom:20px"></div>
+  </div>
+
+  <div style="background:rgba(245,158,11,0.05);border:1px solid rgba(245,158,11,0.2);border-radius:var(--r);padding:16px 20px;font-size:0.78rem;color:var(--muted);line-height:1.7">
+    <div style="display:flex;gap:10px;align-items:flex-start"><span style="flex-shrink:0;margin-top:1px">⚠️</span><div><strong style="display:block;margin-bottom:5px;color:var(--muted2);font-size:0.8rem">Viktig informasjon</strong>Denne kalkulatoren er kun ment som generell veiledning og informasjon, og er ikke et diagnostisk verktøy. Resultatene måler subjektivt opplevd stress og kan ikke brukes til å stille diagnoser eller erstatte profesjonell psykologisk eller medisinsk vurdering. PSS-10 er et standardisert forskningsverktøy og brukes her utelukkende til informasjonsformål. Opplever du vedvarende eller alvorlig stress, anbefales det å ta kontakt med fastlege, psykolog eller annen kvalifisert helseprofesjonell.</div></div>
+  </div>
+</div>
+
+<!-- ══ SØVN ══ -->
+<div class="page" id="page-sovn">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+    <button onclick="go('helse')" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:0.8rem;padding:0;display:flex;align-items:center;gap:4px;font-family:inherit"><i data-lucide="arrow-left" style="width:14px;height:14px"></i>Helse og velvære</button>
+  </div>
+  <h1 style="font-size:2rem;margin-bottom:6px">Søvnkalkulator</h1>
+  <p class="page-desc">Finn optimal legge- og oppvåkningstid basert på søvnsykluser, se ditt søvnbehov etter alder, og sjekk søvneffektiviteten din.</p>
+
+  <!-- Modul A -->
+  <div class="card" style="margin-bottom:20px">
+    <div class="section-label">🌙 Modul A — Optimal søvntid</div>
+    <div style="display:flex;gap:8px;margin-bottom:20px">
+      <button id="sovn-tab1" class="btn btn-primary" style="flex:1;justify-content:center;font-size:0.82rem" onclick="sovnTab(1)">Jeg vet når jeg må stå opp ☀️</button>
+      <button id="sovn-tab2" class="btn btn-secondary" style="flex:1;justify-content:center;font-size:0.82rem" onclick="sovnTab(2)">Jeg vet når jeg legger meg 🌙</button>
+    </div>
+    <div id="sovn-panel1">
+      <div class="field"><label class="label-text">Ønsket oppvåkningstid ☀️</label><input class="input-field" type="time" id="sovn-oppvakn" value="07:00" oninput="calcSovnFraTid()"></div>
+    </div>
+    <div id="sovn-panel2" style="display:none">
+      <div class="field"><label class="label-text">Planlagt leggetid 🌙</label><input class="input-field" type="time" id="sovn-legge" value="23:00" oninput="calcSovnFraLegge()"></div>
+    </div>
+    <div id="sovn-syklus-result" style="margin-top:20px"></div>
+  </div>
+
+  <!-- Modul B -->
+  <div class="card" style="margin-bottom:20px">
+    <div class="section-label">📊 Modul B — Søvnbehov etter alder</div>
+    <div class="field" style="margin-bottom:16px"><label class="label-text">Din alder</label><input class="input-field" type="number" id="sovn-alder" placeholder="f.eks. 32" min="1" max="120" oninput="calcAlderSovn()"></div>
+    <div id="sovn-alder-result"><p style="font-size:0.875rem;color:var(--muted2)">Fyll inn alder for å se anbefalt søvnmengde.</p></div>
+  </div>
+
+  <!-- Modul C -->
+  <div class="card" style="margin-bottom:20px;padding:0;overflow:hidden">
+    <button class="amort-toggle" id="sovn-eff-toggle" onclick="toggleSovnEff()">🔬 Avansert: Søvneffektivitet<i data-lucide="chevron-down"></i></button>
+    <div id="sovn-eff-panel" style="display:none;padding:20px 24px">
+      <div class="grid2" style="gap:16px;margin-bottom:16px">
+        <div class="field"><label class="label-text">Tidspunkt i seng 🌙</label><input class="input-field" type="time" id="sovn-iseng" value="23:00" oninput="calcSovnEff()"></div>
+        <div class="field"><label class="label-text">Tidspunkt ute av seng ☀️</label><input class="input-field" type="time" id="sovn-utseng" value="07:00" oninput="calcSovnEff()"></div>
+        <div class="field"><label class="label-text">Faktisk sovetid (timer)</label><input class="input-field" type="number" id="sovn-faktisk-t" value="6" min="0" max="24" step="1" oninput="calcSovnEff()"></div>
+        <div class="field"><label class="label-text">Faktisk sovetid (minutter)</label><input class="input-field" type="number" id="sovn-faktisk-m" value="30" min="0" max="59" step="5" oninput="calcSovnEff()"></div>
+      </div>
+      <div id="sovn-eff-result"></div>
+    </div>
+  </div>
+
+  <div style="background:rgba(245,158,11,0.05);border:1px solid rgba(245,158,11,0.2);border-radius:var(--r);padding:16px 20px;font-size:0.78rem;color:var(--muted);line-height:1.7">
+    <div style="display:flex;gap:10px;align-items:flex-start"><span style="flex-shrink:0;margin-top:1px">⚠️</span><div><strong style="display:block;margin-bottom:5px;color:var(--muted2);font-size:0.8rem">Viktig informasjon</strong>Denne kalkulatoren er kun ment som generell veiledning og informasjon. Anbefalingene er basert på gjennomsnittlige søvnbehov og kan variere betydelig fra person til person. Individuelle faktorer som helse, livsstil, medisiner og eventuelle søvnforstyrrelser påvirker søvnbehovet. Kalkulatoren er ikke et diagnostisk verktøy og erstatter ikke råd fra lege eller søvnspesialist. Opplever du vedvarende søvnproblemer, anbefales det å ta kontakt med helsepersonell.</div></div>
+  </div>
+</div>
+
 </div><!-- /content -->
 </main>
 
@@ -647,24 +865,57 @@ select.input-field{cursor:pointer}
     <button class="mnav-item" data-page="hjem" onclick="go('hjem')"><i data-lucide="home"></i>Hjem</button>
     <button class="mnav-item" data-page="bruktbil" onclick="go('bruktbil')"><i data-lucide="car"></i>Bruktbil</button>
     <button class="mnav-item" data-page="gull" onclick="go('gull')"><i data-lucide="coins"></i>Gull</button>
-    <button class="mnav-item" data-page="billan" onclick="go('billan')"><i data-lucide="car-front"></i>Billån</button>
-    <button class="mnav-item" data-page="boliglan" onclick="go('boliglan')"><i data-lucide="building-2"></i>Boliglån</button>
-    <button class="mnav-item" data-page="investering" onclick="go('investering')"><i data-lucide="trending-up"></i>Investering</button>
+    <button class="mnav-item" id="mnav-finans" onclick="openFinansDrawer()"><i data-lucide="landmark"></i>Finans</button>
     <button class="mnav-item" data-page="strom" onclick="go('strom')"><i data-lucide="zap"></i>Strøm</button>
+    <button class="mnav-item" data-page="helse" onclick="go('helse')"><i data-lucide="heart"></i>Helse</button>
   </div>
 </div>
 
+<!-- Finans drawer (mobil) -->
+<div class="finans-backdrop" id="finans-backdrop" onclick="closeFinansDrawer()"></div>
+<div class="finans-drawer" id="finans-drawer">
+  <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:14px;padding:0 4px;display:flex;align-items:center;gap:8px"><i data-lucide="landmark" style="width:13px;height:13px"></i>Finans</div>
+  <button class="finans-drawer-item" onclick="go('billan');closeFinansDrawer()"><i data-lucide="car-front"></i>Billånkalkulator</button>
+  <button class="finans-drawer-item" onclick="go('boliglan');closeFinansDrawer()"><i data-lucide="building-2"></i>Boliglånkalkulator</button>
+  <button class="finans-drawer-item" onclick="go('investering');closeFinansDrawer()"><i data-lucide="trending-up"></i>Investeringskalkulator</button>
+</div>
+
 <script>
+const FINANS_PAGES = ['billan','boliglan','investering'];
+let finansOpen = true;
+
 // ── ROUTING ──
 function go(page) {
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('[data-page]').forEach(b=>b.classList.remove('active'));
   document.getElementById('page-'+page).classList.add('active');
   document.querySelectorAll('[data-page="'+page+'"]').forEach(b=>b.classList.add('active'));
+  const mnavFinans = document.getElementById('mnav-finans');
+  if (mnavFinans) mnavFinans.classList.toggle('active', FINANS_PAGES.includes(page));
   window.scrollTo(0,0);
   lucide.createIcons();
 }
 go('hjem');
+
+// ── FINANS NAV GROUP ──
+function toggleFinans() {
+  finansOpen = !finansOpen;
+  const items = document.getElementById('finans-group-items');
+  const btn = document.getElementById('finans-group-btn');
+  items.style.display = finansOpen ? 'block' : 'none';
+  btn.classList.toggle('open', finansOpen);
+}
+
+function openFinansDrawer() {
+  document.getElementById('finans-backdrop').classList.add('open');
+  document.getElementById('finans-drawer').classList.add('open');
+  lucide.createIcons();
+}
+
+function closeFinansDrawer() {
+  document.getElementById('finans-backdrop').classList.remove('open');
+  document.getElementById('finans-drawer').classList.remove('open');
+}
 
 // ── BRUKTBIL CHECKLIST ──
 const CATS=[
@@ -938,30 +1189,303 @@ function calcStrom(){
   document.getElementById('strom-breakdown').innerHTML=parts.map(p=>{const pc=Math.round(p.kwh/total*100),cost=Math.round(p.kwh*totalPris);return`<div style="margin-bottom:14px"><div style="display:flex;justify-content:space-between;font-size:0.83rem;margin-bottom:6px"><span style="font-weight:500;color:var(--text)">${p.label}</span><span style="color:var(--muted2)">${p.kwh.toLocaleString('no-NO')} kWh · ${kr(cost)} · ${pc}%</span></div><div style="height:8px;background:var(--surface3);border-radius:4px;overflow:hidden"><div style="height:100%;width:${pc}%;background:${p.color};border-radius:4px;transition:width .4s;box-shadow:0 0 8px rgba(59,130,246,0.3)"></div></div></div>`}).join('');
 }
 calcStrom();
-</script>
-<script>
-// === LIVE GULLPRIS (NOK/gram) ===
-async function hentLiveGullpris() {
-  const statusEl = document.getElementById('gull-spot-status');
-  try {
-    const resp = await fetch('https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/xau.json');
-    const data = await resp.json();
-    const xauNok = data.xau?.nok;
-    if (xauNok) {
-      const nokPerGram = Math.round(xauNok / 31.1035);
-      const input = document.getElementById('gull-spot');
-      if (input) { input.value = nokPerGram; input.dispatchEvent(new Event('input')); }
-      const now = new Date().toLocaleTimeString('nb-NO', {hour:'2-digit', minute:'2-digit'});
-      if (statusEl) statusEl.innerHTML = '📡 Live pris hentet kl. ' + now + ' · ' + nokPerGram + ' NOK/g';
-    }
-  } catch(e) {
-    if (statusEl) statusEl.textContent = '⚠️ Kunne ikke hente live pris';
+
+// ── BMI KALKULATOR ──
+function calcBMI() {
+  const h = parseFloat(document.getElementById('bmi-hoyde').value);
+  const v = parseFloat(document.getElementById('bmi-vekt').value);
+  const kjonn = document.getElementById('bmi-kjonn').value;
+  const tallEl = document.getElementById('bmi-tall');
+  const katEl = document.getElementById('bmi-kategori');
+  const normalEl = document.getElementById('bmi-normalspenn');
+  const markerEl = document.getElementById('bmi-marker');
+  const normalkgEl = document.getElementById('bmi-normalkg');
+  const risikoEl = document.getElementById('bmi-risiko');
+  const risikoSubEl = document.getElementById('bmi-risiko-sub');
+  const idealEl = document.getElementById('bmi-idealvekt-innhold');
+
+  if (!h || !v || h < 100 || h > 250 || v < 20 || v > 300) {
+    tallEl.textContent = '—';
+    tallEl.style.color = '';
+    katEl.textContent = h < 100 && h > 0 ? 'Ugyldig høyde (100–250 cm)' : '—';
+    katEl.style.color = 'var(--red)';
+    markerEl.style.display = 'none';
+    return;
   }
+
+  const hm = h / 100;
+  const bmi = v / (hm * hm);
+  const fmt = n => n.toFixed(1).replace('.', ',');
+
+  tallEl.textContent = fmt(bmi);
+
+  let kat, farge, risiko, risikoSub;
+  if (bmi < 18.5) {
+    kat = 'Undervektig'; farge = '#3B82F6';
+    risiko = 'Økt risiko'; risikoSub = 'Kan indikere underernæring';
+  } else if (bmi < 25) {
+    kat = 'Normalvektig'; farge = '#10B981';
+    risiko = 'Lav risiko'; risikoSub = 'Innenfor WHO anbefalt område';
+  } else if (bmi < 30) {
+    kat = 'Overvektig'; farge = '#F59E0B';
+    risiko = 'Økt risiko'; risikoSub = 'Økt risiko for livsstilssykdommer';
+  } else if (bmi < 35) {
+    kat = 'Fedme klasse I'; farge = '#F97316';
+    risiko = 'Høy risiko'; risikoSub = 'Høy risiko for diabetes og hjertesykdom';
+  } else if (bmi < 40) {
+    kat = 'Fedme klasse II'; farge = '#EF4444';
+    risiko = 'Svært høy risiko'; risikoSub = 'Svært høy risiko – konsulter lege';
+  } else {
+    kat = 'Fedme klasse III'; farge = '#991B1B';
+    risiko = 'Ekstremt høy risiko'; risikoSub = 'Ekstremt høy risiko – kontakt lege';
+  }
+
+  tallEl.style.color = farge;
+  katEl.textContent = kat;
+  katEl.style.color = farge;
+  risikoEl.textContent = risiko;
+  risikoEl.style.color = farge;
+  risikoSubEl.textContent = risikoSub;
+
+  const normalMin = 18.5 * hm * hm;
+  const normalMax = 24.9 * hm * hm;
+  normalEl.textContent = 'Normalvekt for din høyde: ' + fmt(normalMin) + ' – ' + fmt(normalMax) + ' kg';
+  normalkgEl.textContent = fmt(normalMin) + ' – ' + fmt(normalMax) + ' kg';
+
+  const pct = Math.min(Math.max((bmi - 10) / 35 * 100, 1), 99);
+  markerEl.style.left = pct + '%';
+  markerEl.style.display = 'block';
+
+  const cmOver = Math.max(0, h - 152.4);
+  let idealHTML = '';
+  if (kjonn === 'mann') {
+    const ibw = 50 + 0.906 * cmOver;
+    idealHTML = `<div class="grid2">
+      <div class="result-card highlight"><div class="result-label">Idealvekt – Devine (mann)</div><div class="result-number">${fmt(ibw)} kg</div></div>
+      <div class="result-card"><div class="result-label">Sunt vektspenn (±10 %)</div><div class="result-number" style="font-size:1.3rem">${fmt(ibw*0.9)} – ${fmt(ibw*1.1)} kg</div></div>
+    </div>`;
+  } else if (kjonn === 'kvinne') {
+    const ibw = 49 + 0.668 * cmOver;
+    idealHTML = `<div class="grid2">
+      <div class="result-card highlight"><div class="result-label">Idealvekt – Robinson (kvinne)</div><div class="result-number">${fmt(ibw)} kg</div></div>
+      <div class="result-card"><div class="result-label">Sunt vektspenn (±10 %)</div><div class="result-number" style="font-size:1.3rem">${fmt(ibw*0.9)} – ${fmt(ibw*1.1)} kg</div></div>
+    </div>`;
+  } else {
+    const ibwM = 50 + 0.906 * cmOver;
+    const ibwK = 49 + 0.668 * cmOver;
+    idealHTML = `<div class="grid2">
+      <div class="result-card"><div class="result-label">Idealvekt mann (Devine)</div><div class="result-number">${fmt(ibwM)} kg</div><div class="result-sub">Spenn: ${fmt(ibwM*0.9)} – ${fmt(ibwM*1.1)} kg</div></div>
+      <div class="result-card"><div class="result-label">Idealvekt kvinne (Robinson)</div><div class="result-number">${fmt(ibwK)} kg</div><div class="result-sub">Spenn: ${fmt(ibwK*0.9)} – ${fmt(ibwK*1.1)} kg</div></div>
+    </div>`;
+  }
+  idealEl.innerHTML = idealHTML;
 }
-document.addEventListener('DOMContentLoaded', () => {
-  hentLiveGullpris();
-  setInterval(hentLiveGullpris, 5 * 60 * 1000);
-});
+calcBMI();
+
+// ── PSS-10 STRESSKALKULATOR ──
+const PSS_SPORSMAL = [
+  {t:'Hvor ofte har du blitt opprørt over noe som skjedde uventet?', rev:false},
+  {t:'Hvor ofte har du følt at du ikke hadde kontroll over de viktige tingene i livet ditt?', rev:false},
+  {t:'Hvor ofte har du følt deg nervøs og stresset?', rev:false},
+  {t:'Hvor ofte har du håndtert personlige problemer på en god måte?', rev:true},
+  {t:'Hvor ofte har du følt at ting gikk etter planen din?', rev:true},
+  {t:'Hvor ofte har du merket at du ikke klarte å håndtere alt du måtte gjøre?', rev:false},
+  {t:'Hvor ofte har du klart å kontrollere irritasjon i livet ditt?', rev:true},
+  {t:'Hvor ofte har du følt at du hadde kontroll over situasjonen?', rev:true},
+  {t:'Hvor ofte har du blitt sint på grunn av ting som var utenfor din kontroll?', rev:false},
+  {t:'Hvor ofte har du følt at vanskeligheter hopet seg opp så mye at du ikke klarte å overvinne dem?', rev:false}
+];
+const PSS_SVAR = ['Aldri','Nesten aldri','Av og til','Ganske ofte','Veldig ofte'];
+
+function initPSS() {
+  const f = document.getElementById('pss-form');
+  if (!f) return;
+  f.innerHTML = PSS_SPORSMAL.map((q, i) => `
+    <div style="padding:16px 0;border-bottom:1px solid var(--border)">
+      <div style="font-size:0.875rem;font-weight:500;color:var(--text);margin-bottom:12px;line-height:1.5">
+        <span style="color:var(--muted);font-size:0.75rem;font-weight:700;margin-right:8px">${i+1}.</span>${q.t}
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        ${PSS_SVAR.map((s, v) => `<button onclick="setPSS(${i},${v},this)" data-q="${i}" data-v="${v}"
+          style="padding:7px 12px;border-radius:10px;border:1px solid var(--border2);background:var(--surface2);color:var(--muted2);font-size:0.75rem;font-weight:600;cursor:pointer;font-family:inherit;transition:all 0.15s">${v} – ${s}</button>`).join('')}
+      </div>
+    </div>`).join('');
+}
+
+function setPSS(q, v, btn) {
+  document.querySelectorAll(`[data-q="${q}"]`).forEach(b => {
+    b.style.background = 'var(--surface2)';
+    b.style.color = 'var(--muted2)';
+    b.style.borderColor = 'var(--border2)';
+  });
+  btn.style.background = 'var(--blue)';
+  btn.style.color = '#fff';
+  btn.style.borderColor = 'var(--blue)';
+  btn.dataset.selected = '1';
+}
+
+function calcPSS() {
+  let total = 0, missing = [];
+  PSS_SPORSMAL.forEach((q, i) => {
+    const btns = document.querySelectorAll(`[data-q="${i}"][data-selected="1"]`);
+    if (btns.length === 0) { missing.push(i+1); return; }
+    let v = parseInt(btns[0].dataset.v);
+    if (q.rev) v = 4 - v;
+    total += v;
+  });
+  if (missing.length > 0) {
+    alert('Vennligst svar på alle spørsmål. Spørsmål mangler: ' + missing.join(', '));
+    return;
+  }
+  document.getElementById('pss-result').style.display = 'block';
+  document.getElementById('pss-score-tall').textContent = total;
+  const pct = total / 40 * 100;
+  document.getElementById('pss-bar-marker').style.left = Math.min(pct, 97) + '%';
+
+  let kat, farge, desc, tips;
+  if (total <= 13) {
+    kat = '🟢 Lavt stressnivå'; farge = '#10B981';
+    desc = 'Du ser ut til å håndtere stress godt.';
+    tips = ['Oppretthold gode søvnvaner (7–9 timer per natt)','Fortsett med regelmessig fysisk aktivitet','Bruk avslapningsteknikker som mindfulness for å holde stressnivået lavt','Oppretthold sosiale relasjoner — de er viktige buffere mot stress'];
+  } else if (total <= 26) {
+    kat = '🟡 Moderat stressnivå'; farge = '#F59E0B';
+    desc = 'Du opplever et gjennomsnittlig stressnivå.';
+    tips = ['Prøv enkle pusteøvelser: pust inn 4 sekunder, hold 4, pust ut 6','Sett av tid til regelmessig fysisk aktivitet — 30 min gange reduserer stresshormoner','Prioriter søvn og etabler en fast leggetid','Vurder å skrive ned bekymringer i en dagbok for å få oversikt'];
+  } else {
+    kat = '🔴 Høyt stressnivå'; farge = '#EF4444';
+    desc = 'Du opplever et høyt stressnivå. Det kan være lurt å søke støtte.';
+    tips = ['Ta kontakt med fastlege eller psykolog for profesjonell veiledning','Prioriter søvn og hvile — unngå skjerm siste time før leggetid','Prøv progressiv muskelavslapning eller guidede meditasjoner (f.eks. via Headspace eller Calm)','Begrens koffein og alkohol, som kan forsterke stressreaksjoner'];
+  }
+
+  const katEl = document.getElementById('pss-kategori');
+  katEl.textContent = kat; katEl.style.color = farge;
+  document.getElementById('pss-desc').textContent = desc;
+  document.getElementById('pss-score-tall').style.color = farge;
+
+  document.getElementById('pss-tips').innerHTML = `
+    <div class="card"><div class="section-label">Råd og tiltak</div>
+    ${tips.map(t => `<div class="check-item" style="margin-bottom:10px"><i data-lucide="check"></i><span style="font-size:0.875rem;color:var(--muted2);line-height:1.5">${t}</span></div>`).join('')}
+    </div>`;
+  lucide.createIcons();
+  document.getElementById('pss-result').scrollIntoView({behavior:'smooth', block:'start'});
+}
+initPSS();
+
+// ── SØVNKALKULATOR ──
+function sovnTab(t) {
+  document.getElementById('sovn-panel1').style.display = t===1?'block':'none';
+  document.getElementById('sovn-panel2').style.display = t===2?'block':'none';
+  document.getElementById('sovn-tab1').className = t===1?'btn btn-primary':'btn btn-secondary';
+  document.getElementById('sovn-tab1').style.flex='1'; document.getElementById('sovn-tab1').style.justifyContent='center'; document.getElementById('sovn-tab1').style.fontSize='0.82rem';
+  document.getElementById('sovn-tab2').className = t===2?'btn btn-primary':'btn btn-secondary';
+  document.getElementById('sovn-tab2').style.flex='1'; document.getElementById('sovn-tab2').style.justifyContent='center'; document.getElementById('sovn-tab2').style.fontSize='0.82rem';
+  document.getElementById('sovn-syklus-result').innerHTML = '';
+  if (t===1) calcSovnFraTid();
+  else calcSovnFraLegge();
+}
+
+function parseTime(str) {
+  const [h,m] = str.split(':').map(Number); return h*60+m;
+}
+function formatTime(mins) {
+  while(mins<0) mins+=1440; mins=mins%1440;
+  return String(Math.floor(mins/60)).padStart(2,'0')+':'+String(mins%60).padStart(2,'0');
+}
+
+function sovnSykluserHTML(tidspunkter, modus) {
+  const sykluser = [4,5,6,7,8,9];
+  return tidspunkter.map((tid, idx) => {
+    const syk = sykluser[idx];
+    const timer = (syk*90)/60;
+    let badge = '', bStyle = '';
+    if (syk>=5 && syk<=6) { badge='⭐ Anbefalt'; bStyle='background:rgba(16,185,129,0.15);color:#10B981'; }
+    else if (syk===4) { badge='Minimum'; bStyle='background:rgba(245,158,11,0.15);color:#F59E0B'; }
+    const isAmbass = syk>=5&&syk<=6;
+    return `<div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-radius:12px;margin-bottom:8px;border:1px solid ${isAmbass?'rgba(16,185,129,0.3)':'var(--border)'};background:${isAmbass?'rgba(16,185,129,0.06)':'var(--surface)'}">
+      <div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.3rem;color:${isAmbass?'#10B981':'var(--text)'};">${modus==='opp'?'🌙':'☀️'} ${tid}</div>
+        <div style="font-size:0.75rem;color:var(--muted2);margin-top:2px">${syk} sykluser · ${timer} timer søvn</div>
+      </div>
+      ${badge?`<span style="font-size:0.7rem;font-weight:700;padding:4px 10px;border-radius:20px;${bStyle}">${badge}</span>`:''}
+    </div>`;
+  }).join('');
+}
+
+function calcSovnFraTid() {
+  const tidEl = document.getElementById('sovn-oppvakn');
+  if (!tidEl || !tidEl.value) return;
+  const opp = parseTime(tidEl.value);
+  const sykluser = [4,5,6,7,8,9];
+  const leggetider = sykluser.map(s => formatTime(opp - s*90 - 15));
+  document.getElementById('sovn-syklus-result').innerHTML =
+    '<div class="section-label" style="margin-top:0">Anbefalte leggetider 🌙</div>' +
+    sovnSykluserHTML(leggetider, 'opp');
+}
+
+function calcSovnFraLegge() {
+  const tidEl = document.getElementById('sovn-legge');
+  if (!tidEl || !tidEl.value) return;
+  const legge = parseTime(tidEl.value);
+  const sykluser = [4,5,6,7,8,9];
+  const opptider = sykluser.map(s => formatTime(legge + 15 + s*90));
+  document.getElementById('sovn-syklus-result').innerHTML =
+    '<div class="section-label" style="margin-top:0">Anbefalte oppvåkningstider ☀️</div>' +
+    sovnSykluserHTML(opptider, 'legge');
+}
+
+function calcAlderSovn() {
+  const a = parseInt(document.getElementById('sovn-alder').value);
+  const el = document.getElementById('sovn-alder-result');
+  if (!a || a<1 || a>120) { el.innerHTML='<p style="font-size:0.875rem;color:var(--muted2)">Fyll inn en gyldig alder.</p>'; return; }
+  let anbefalt, gruppe;
+  if (a<=5) { anbefalt='10–14 timer'; gruppe='Småbarn (0–5 år)'; }
+  else if (a<=13) { anbefalt='9–11 timer'; gruppe='Skolebarn (6–13 år)'; }
+  else if (a<=17) { anbefalt='8–10 timer'; gruppe='Tenåring (14–17 år)'; }
+  else if (a<=25) { anbefalt='7–9 timer'; gruppe='Ung voksen (18–25 år)'; }
+  else if (a<=64) { anbefalt='7–9 timer'; gruppe='Voksen (26–64 år)'; }
+  else { anbefalt='7–8 timer'; gruppe='Eldre (65+ år)'; }
+  el.innerHTML = `<div class="grid2">
+    <div class="result-card highlight"><div class="result-label">Anbefalt søvnmengde</div><div class="result-number" style="font-size:1.5rem">${anbefalt}</div><div class="result-sub">${gruppe}</div></div>
+    <div class="result-card"><div class="result-label">Kilde</div><div class="result-number" style="font-size:1rem;line-height:1.4">NSF / WHO</div><div class="result-sub">National Sleep Foundation</div></div>
+  </div>`;
+}
+
+function toggleSovnEff() {
+  const p = document.getElementById('sovn-eff-panel');
+  const t = document.getElementById('sovn-eff-toggle');
+  const open = p.style.display !== 'none';
+  p.style.display = open ? 'none' : 'block';
+  t.classList.toggle('open', !open);
+  if (!open) calcSovnEff();
+  lucide.createIcons();
+}
+
+function calcSovnEff() {
+  const iseng = document.getElementById('sovn-iseng').value;
+  const utseng = document.getElementById('sovn-utseng').value;
+  const ft = parseInt(document.getElementById('sovn-faktisk-t').value)||0;
+  const fm = parseInt(document.getElementById('sovn-faktisk-m').value)||0;
+  const el = document.getElementById('sovn-eff-result');
+  if (!iseng || !utseng) return;
+  let totalMin = parseTime(utseng) - parseTime(iseng);
+  if (totalMin <= 0) totalMin += 1440;
+  const faktiskMin = ft*60 + fm;
+  if (faktiskMin <= 0 || faktiskMin > totalMin) { el.innerHTML='<p style="color:var(--red);font-size:0.85rem">Faktisk sovetid må være mellom 0 og total tid i seng.</p>'; return; }
+  const eff = (faktiskMin / totalMin * 100);
+  let farge, kategori, tips;
+  if (eff >= 85) { farge='#10B981'; kategori='🟢 God søvneffektivitet'; tips='Flott! Du bruker sengen effektivt til søvn.'; }
+  else if (eff >= 75) { farge='#F59E0B'; kategori='🟡 Akseptabel søvneffektivitet'; tips='Prøv å unngå å bruke seng til annet enn søvn (f.eks. mobil/TV).'; }
+  else { farge='#EF4444'; kategori='🔴 Lav søvneffektivitet'; tips='Vurder søvnbegrensningsterapi: gå kun til sengs når du er søvnig, og stå opp til fast tid uansett.'; }
+  el.innerHTML = `<div class="result-card" style="margin-bottom:12px"><div class="result-label">Søvneffektivitet</div>
+    <div class="result-number" style="color:${farge}">${eff.toFixed(0)} %</div>
+    <div class="result-sub">${kategori}</div></div>
+    <div style="height:8px;background:var(--surface3);border-radius:4px;overflow:hidden;margin-bottom:12px">
+      <div style="height:100%;width:${Math.min(eff,100)}%;background:${farge};border-radius:4px;transition:width 0.4s"></div>
+    </div>
+    <div class="info-box"><strong>💡 Tips</strong>${tips}</div>`;
+}
+calcSovnFraTid();
+calcAlderSovn();
 </script>
 </body>
 </html>
