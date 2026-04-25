@@ -974,8 +974,7 @@ const VAER_IKONER = {
 function oppdaterVaer(lat, lon, stedNavn) {
   fetch('https://api.met.no/weatherapi/locationforecast/2.0/compact?lat='+lat+'&lon='+lon, {
     headers: { 'User-Agent': 'allverktoy.no kontakt@allverktoy.no' }
-  })
-  .then(r => r.json())
+  })  .then(r => r.json())
   .then(data => {
     const current = data.properties.timeseries[0].data;
     const temp = Math.round(current.instant.details.air_temperature);
@@ -986,7 +985,7 @@ function oppdaterVaer(lat, lon, stedNavn) {
     document.getElementById('vaer-beskrivelse').textContent = emoji;
     document.getElementById('vaer-sted').textContent = '📍 ' + stedNavn;
     document.getElementById('vaer-banner').style.display = 'flex';
-  }
+  })
   .catch(() => { document.getElementById('vaer-banner').style.display = 'none'; });
 }
 document.addEventListener('DOMContentLoaded', () => {
