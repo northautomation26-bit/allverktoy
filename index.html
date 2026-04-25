@@ -11,10 +11,10 @@
 <script>
   window.datalayer = window.datalayer || [];
   function gtag(){datalayer.push(arguments);}
-  gtag('js', new Date()());
+  gtag('js', new Date());
   gtag('config', 'g-cf4c5y36nc');
 </script>
-<script src="https://unpkg.com/lucide@0344.0/dist/umd/lucide.min.js"></script>
+<script src="https://unpkg.com/lucide@0.344.0/dist/umd/lucide.min.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -252,11 +252,9 @@ select.input-field{cursor:pointer}
 <body>
 
 <!-- SIDEBAR -->
-<div id="vaer-banner" style="position:fixed;top:0;left:0;right:0;z-index:1000;background:var(--surface2);border-bottom:1px solid var(--border);padding:6px 16px;display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);display:none"><span id="vaer-temp" style="font-weight:600"></span><span id="vaer-beskrivelse"></span><span id="vaer-sted" style="color:var(--muted);font-size:11px;margin-left:4px"></span></div>
 <aside id="sidebar">
   <div class="logo">
     <div class="logo-name">Allverktøy<span>.no</span></div>
-    <div class="logo-sub">Smarte verktøy for norske forbrukere</div>
   </div>
   <nav>
     <button class="nav-item" data-page="hjem" onclick="go('hjem')"><i data-lucide="home"></i>Hjem</button>
@@ -953,7 +951,7 @@ async function hentLiveGullpris() {
       const nokPerGram = Math.round(xauNok / 31.1035);
       const input = document.getElementById('gull-spot');
       if (input) { input.value = nokPerGram; input.dispatchEvent(new Event('input')); }
-      const now = new Date()().toLocaleTimeString('nb-NO', {hour:'2-digit', minute:'2-digit'});
+      const now = new Date().toLocaleTimeString('nb-NO', {hour:'2-digit', minute:'2-digit'});
       if (statusEl) statusEl.innerHTML = '📡 Live pris hentet kl. ' + now + ' · ' + nokPerGram + ' NOK/g';
     }
   } catch(e) {
@@ -963,39 +961,6 @@ async function hentLiveGullpris() {
 document.addEventListener('DOMContentLoaded', () => {
   hentLiveGullpris();
   setInterval(hentLiveGullpris, 5 * 60 * 1000);
-});
-
-// === LIVE VÆR (MET Norway) ===
-const VAER_IKONER = {
-  clearsky:'☀️', partlycloudy:'⛅', cloudy:'☁️', fog:'🌫️',
-  lightrain:'🌦️', rain:'🌧️', heavyrain:'🌧️', sleet:'🌨️',
-  snow:'❄️', heavysnow:'❄️', thunder:'⛈️'
-};
-function oppdaterVaer(lat, lon, stedNavn) {
-  fetch('https://api.met.no/weatherapi/locationforecast/2.0/compact?lat='+lat+'&lon='+lon, {
-    headers: { 'User-Agent': 'allverktoy.no kontakt@allverktoy.no' }
-  })  .then(r => r.json())
-  .then(data => {
-    const current = data.properties.timeseries[0].data;
-    const temp = Math.round(current.instant.details.air_temperature);
-    const symbol = current.next_1_hours?.summary?.symbol_code || current.next_6_hours?.summary?.symbol_code || 'clearsky_day';
-    const base = symbol.split('_')[0];
-    const emoji = VAER_IKONER[base] || '🌡️';
-    document.getElementById('vaer-temp').textContent = temp + '°C';
-    document.getElementById('vaer-beskrivelse').textContent = emoji;
-    document.getElementById('vaer-sted').textContent = '📍 ' + stedNavn;
-    document.getElementById('vaer-banner').style.display = 'flex';
-  })
-  .catch(() => { document.getElementById('vaer-banner').style.display = 'none'; });
-}
-document.addEventListener('DOMContentLoaded', () => {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(
-      pos => oppdaterVaer(pos.coords.latitude.toFixed(4), pos.coords.longitude.toFixed(4), 'Din posisjon'),
-      () => oppdaterVaer(59.91, 10.75, 'Oslo'),
-      { timeout: 5000 }
-    );
-  } else { oppdaterVaer(59.91, 10.75, 'Oslo'); }
 });
 </script>
 </body>
