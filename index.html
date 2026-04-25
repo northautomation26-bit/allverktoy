@@ -86,6 +86,28 @@ nav{flex:1;padding:12px;display:flex;flex-direction:column;gap:2px}
 .finans-drawer-item:hover{background:var(--surface2);color:var(--text)}
 .finans-drawer-item svg{width:20px;height:20px;flex-shrink:0}
 
+/* ── BEREDSKAPSSPILL ── */
+.game-btn-open{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,#2D6A4F,#52B788);color:#fff;border:none;cursor:pointer;font-family:inherit;font-weight:700;font-size:0.95rem;padding:13px 22px;border-radius:14px;box-shadow:0 4px 24px rgba(45,106,79,0.4);transition:all 0.2s}
+.game-btn-open:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(45,106,79,0.5)}
+#game-overlay{display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,0.88);backdrop-filter:blur(8px);overflow-y:auto;padding:16px 16px 40px}
+.game-box{max-width:640px;margin:0 auto;background:#0D1710;border:1px solid #2D6A4F;border-radius:20px;overflow:hidden}
+.game-hdr{background:linear-gradient(135deg,#162B1C,#0D1710);padding:18px 22px;border-bottom:1px solid rgba(45,106,79,0.4);display:flex;align-items:center;justify-content:space-between}
+.game-close{background:none;border:none;color:#52B788;cursor:pointer;font-size:1.3rem;line-height:1;padding:4px 10px;border-radius:8px;transition:background 0.2s;font-family:inherit}
+.game-close:hover{background:rgba(82,183,136,0.15)}
+.game-screen{padding:22px}
+.game-sc-btn{display:flex;align-items:center;gap:14px;width:100%;background:rgba(45,106,79,0.1);border:1px solid rgba(45,106,79,0.25);border-radius:14px;padding:16px 18px;margin-bottom:10px;cursor:pointer;text-align:left;transition:all 0.2s;font-family:inherit;color:var(--text)}
+.game-sc-btn:hover{background:rgba(45,106,79,0.22);border-color:#52B788;transform:translateX(4px)}
+.game-q-prog{height:5px;background:rgba(45,106,79,0.2);border-radius:3px;margin-bottom:22px;overflow:hidden}
+.game-q-fill{height:100%;background:linear-gradient(90deg,#2D6A4F,#52B788);border-radius:3px;transition:width 0.4s ease}
+.game-opt{display:block;width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:13px 16px;margin-bottom:9px;cursor:pointer;text-align:left;font-family:inherit;font-size:0.875rem;color:var(--text);transition:all 0.2s;line-height:1.4}
+.game-opt:hover:not(:disabled){background:rgba(82,183,136,0.1);border-color:rgba(82,183,136,0.4)}
+.game-opt.correct{background:rgba(16,185,129,0.18);border-color:#10B981;color:#10B981;font-weight:600}
+.game-opt.wrong{background:rgba(239,68,68,0.13);border-color:#EF4444;color:#EF4444}
+.game-opt:disabled{cursor:default}
+.game-exp{background:rgba(45,106,79,0.13);border:1px solid rgba(45,106,79,0.3);border-radius:12px;padding:13px 16px;margin-top:14px;font-size:0.83rem;color:#A7D7B8;line-height:1.65;display:none}
+.game-score-bar{height:8px;background:rgba(45,106,79,0.2);border-radius:4px;overflow:hidden;margin:14px 0}
+.game-score-fill{height:100%;background:linear-gradient(90deg,#2D6A4F,#52B788);border-radius:4px;transition:width 0.8s ease}
+
 /* ── MAIN ── */
 main{flex:1;min-width:0;overflow-y:auto;position:relative;z-index:1}
 .content{max-width:920px;margin:0 auto;padding:48px 40px}
@@ -286,6 +308,7 @@ select.input-field{cursor:pointer}
     </div>
     <button class="nav-item" data-page="strom" onclick="go('strom')"><i data-lucide="zap"></i>Strømkalkulator</button>
     <button class="nav-item" data-page="helse" onclick="go('helse')"><i data-lucide="heart"></i>Helse og velvære</button>
+    <button class="nav-item" onclick="openGame()" style="color:#52B788"><i data-lucide="gamepad-2"></i>Beredskapsspill 🎮</button>
   </nav>
   <div class="nav-footer">© 2025 Allverktøy.no</div>
 </aside>
@@ -356,7 +379,19 @@ select.input-field{cursor:pointer}
       </div>
     </div>
 
-    <div class="card trust-card" style="display:flex;gap:32px;align-items:center;justify-content:space-between;flex-wrap:wrap">
+    <div style="margin-top:32px">
+      <div class="section-label"><i data-lucide="shield" style="width:13px;height:13px"></i> Beredskapsspill</div>
+      <div style="background:linear-gradient(135deg,rgba(45,106,79,0.13),rgba(82,183,136,0.05));border:1px solid rgba(45,106,79,0.28);border-radius:var(--r2);padding:26px 24px;display:flex;gap:20px;align-items:center;flex-wrap:wrap">
+        <div style="flex:1;min-width:200px">
+          <h3 style="margin-bottom:8px;font-size:1.15rem">🎮 Beredt eller Ikke?</h3>
+          <p style="font-size:0.85rem;color:var(--muted2);line-height:1.65;margin-bottom:18px">Test om du overlever 72 timer under strømbrudd, vannskrise eller krig. Quiz basert på DSB og Sivilforsvaret — litt lærerikt, litt morsomt.</p>
+          <button class="game-btn-open" onclick="openGame()"><i data-lucide="gamepad-2" style="width:17px;height:17px"></i>Start spillet</button>
+        </div>
+        <div style="font-size:3.5rem;flex-shrink:0;opacity:0.85">🏕️</div>
+      </div>
+    </div>
+
+    <div class="card trust-card" style="display:flex;gap:32px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-top:20px">
       <div>
         <h3 style="margin-bottom:5px">Bygget for tryggere beslutninger</h3>
         <p style="font-size:0.85rem;color:var(--muted2)">Basert på norsk lov, markedsdata og åpne beregninger.</p>
@@ -1486,6 +1521,187 @@ function calcSovnEff() {
 }
 calcSovnFraTid();
 calcAlderSovn();
+
+// ── BEREDSKAPSSPILL ──
+const SPILL_DATA = {
+  strom:{navn:'Strømbrudd',emoji:'⚡',intro:'Strømmen er borte i hele nabolaget. Det er midt på vinteren og -10°C ute. Klarer du å overleve 72 timer?',
+    sporsmal:[
+      {q:'Strømmen har gått. Hva er det FØRSTE du bør gjøre?',opts:['Sjekke sikringsskapet','Ringe strømleverandøren og klage','Bestille pizza (mens telefonen lever)','Legge seg og håpe det ordner seg'],riktig:0,forklaring:'✅ Sjekk alltid sikringsskapet først — mange «strømbrudd» er bare en utløst sikring!'},
+      {q:'-10°C ute og strømbruddet varer. Hvordan holder du familien VARMEST?',opts:['Åpne vinduene for frisk luft','Tenne kullgrill innendørs for varme','Samle alle i ett rom, ta på varme klær og legg dere under dyne','Løpe på stedet for å holde blodsirkulasjonen oppe'],riktig:2,forklaring:'✅ Samling i ett rom og isolering er nøkkelen! ALDRI kullgrill innendørs — CO-forgiftning kan drepe på minutter.'},
+      {q:'Maten i kjøleskapet — hva er riktig?',opts:['All mat må kastes umiddelbart','Et lukket kjøleskap holder maten trygg i 4–6 timer','Maten er trygg i flere dager uansett','Varm opp maten på stearinlys'],riktig:1,forklaring:'✅ Et lukket kjøleskap holder 4–6 timer. Fryseboks: 24–48 timer. Åpne sjeldnest mulig!'},
+      {q:'Du trenger lys. Hva er det TRYGGESTE valget?',opts:['Stearinlys i alle rom uten tilsyn','Lommelykt med batterier','Tenne bål i stua','Åpne alle vinduer for dagslys'],riktig:1,forklaring:'✅ Lommelykt er alltid tryggere. Stearinlys uten tilsyn er en av de vanligste brannårsakene i Norge!'},
+      {q:'Ingen strøm, ingen internett. Hvordan får du nødinformasjon?',opts:['Sjekker Instagram-feeden','Spør naboen — han vet alltid alt','Batteriradio / DAB-radio med batteri','Bruker tankekraft og håper myndighetene sender telepati'],riktig:2,forklaring:'✅ En batteriradio er din livslinje! Myndighetene sender nødinformasjon på radio når alt annet svikter.'},
+      {q:'Hva bør du ha i en 72-timers beredskapsforsyning?',opts:['Sjokolade, chips og et godt vinkrus','Vann (3L/dag/person), hermetikk, lommelykt, radio og medisiner','Gaming-PC med UPS og ekstra kontroller','En veldig lang nødliste du aldri har kjøpt inn'],riktig:1,forklaring:'✅ DSB anbefaler: 3 liter vann per person per dag, mat for 3 dager, lommelykt, radio og medisiner.'}
+    ]},
+  vann:{navn:'Vannskrise',emoji:'💧',intro:'Kommunen varsler: drikk ikke vannet! Rørbrudd og forurensning i hele distriktet. Hva gjør du de neste 72 timene?',
+    sporsmal:[
+      {q:'Kommunen sier: IKKE drikk kranvannet! Hva gjør du?',opts:['Drikker det likevel — du er norsk og tøff','Koker vannet i minst 1 minutt','Bruker håndsprit som drikkevann','Ringer kommunen og diskuterer i stedet for å handle'],riktig:1,forklaring:'✅ Koking i minimum 1 minutt dreper bakterier og virus. La avkjøle i ren beholder før drikking.'},
+      {q:'Du har ingen vannreserver. Hva er din BESTE nødkilde?',opts:['Flaskevann fra butikken','Vann fra blomstervasen (den har stått lenge)','Brus — det er jo mest vann uansett','Snø direkte fra bakken uten koking'],riktig:0,forklaring:'✅ Flaskevann er tryggest. Bekk/elv kan brukes men MÅ kokes. Smeltet snø MÅ også alltid kokes.'},
+      {q:'Hvor mye vann trenger én person som minimum per dag?',opts:['0,5 liter','1 liter','3 liter','10 liter'],riktig:2,forklaring:'✅ DSB anbefaler minimum 3 liter per person per dag til drikking og matlaging. Ha gjerne mer i reserve.'},
+      {q:'Du vil rense bekkvann. Hva virker IKKE?',opts:['Koking i 1 minutt','Godkjente vannrensingstabletter','La vannet stå i noen timer','Filtrere og deretter koke'],riktig:2,forklaring:'✅ Å la vann stå dreper IKKE bakterier og virus. Kok alltid, bruk tabletter eller godkjent filter.'},
+      {q:'Toalettet fungerer ikke pga vannmangel. Løsning?',opts:['Ignorerer det og venter','Bøtte med plastpose og kattesand/strøsand som nødtoalett','Bruker naboens toalett uten å spørre','Graver hull inne i stua'],riktig:1,forklaring:'✅ En bøtte med plastpose og kattesand fungerer utmerket. Utendørs: grav 20 cm dypt, minst 60 m fra vannkilder.'},
+      {q:'Vannskrise varslet. Hva bør du gjøre UMIDDELBART?',opts:['Ingenting — det ordner seg sikkert','Fylle badekaret og alle rene beholdere med vann nå','Bestille vannlevering (tar gjerne uker)','Kjøpe aksjer i Voss-vann'],riktig:1,forklaring:'✅ Fyll badekaret og rene beholdere NÅ, før trykket faller. Flaskevann til drikking, kranvann (kokt) til vasking.'}
+    ]},
+  krig:{navn:'Krig/Nødsituasjon',emoji:'🚨',intro:'Myndighetene varsler alvorlig nasjonal krisesituasjon. Forberedelse og ro er dine beste våpen.',
+    sporsmal:[
+      {q:'Myndighetene ber deg evakuere NÅ. Hva pakker du?',opts:['Gamingkonsoll og favoritttøyet','ID-dokumenter, vann, mat, medisiner, varme klær, lommelykt og kontanter','Alt du eier — tar det med forsikring','Ingenting — løper bare'],riktig:1,forklaring:'✅ Go-bag: dokumenter, 72t mat/vann, medisiner, varme klær, lommelykt, radio og kontanter. Lag den FØR krisen!'},
+      {q:'Sirenene går. Hva gjør du?',opts:['Det er nok en test — sjekker Instagram','Løp ut for å se hva som skjer','Gå innendørs, lukk vinduer og dører, slå på radio','Ring politiet for å diskutere situasjonen'],riktig:2,forklaring:'✅ Varselsirener = søk dekning innendørs umiddelbart. Lukk alt. Slå på NRK eller batteriradio for instruksjoner.'},
+      {q:'Kontanter — hvorfor er de viktige i en krise?',opts:['De er ikke viktige — Vipps funker alltid','Kredittkort er alltid bedre','Strøm- og nettverksstans gjør kortterminaler ubrukelige','Fordi myndighetene sier det'],riktig:2,forklaring:'✅ Strøm- og nettverksstans gjør kortterminaler ubrukelige. Ha alltid noe kontanter tilgjengelig hjemme.'},
+      {q:'Strøm, internett og mobilnett er borte. Du finner ikke familien. Hva gjør du?',opts:['Poster på Facebook og håper noen ser det','Drar til forhåndsavtalt møtested','Venter hjemme og håper de kommer','Ringer politiet for å anmelde dem savnet'],riktig:1,forklaring:'✅ Ha en familieplan med møtested og kontaktperson utenfor kriseområdet — avtal dette FØR krisen skjer!'},
+      {q:'Du hører en eksplosjon i nærheten. Hva gjør du?',opts:['Løper ut for å se og filme','Søker dekning — legger deg flatt ute eller vekk fra vinduer inne','Ringer venner for å diskutere situasjonen','Åpner vinduet for å lufte ut'],riktig:1,forklaring:'✅ Dekning og lav profil er prioritet. Innendørs: vekk fra vinduer. Utendørs: legg deg flatt. Lytt til myndighetene.'},
+      {q:'Hva bør du IKKE gjøre under en krisesituasjon?',opts:['Følge offisielle myndigheters råd','Spre ubekreftede rykter på sosiale medier','Hjelpe naboer som trenger det','Slå på batteriradio for informasjon'],riktig:1,forklaring:'✅ Rykter skaper panikk og hindrer riktig respons. Stol på: NRK, politiet, DSB og kommunens offisielle kanaler.'},
+      {q:'Hva er DSBs anbefaling for egenforsyning?',opts:['24 timer','48 timer','72 timer (3 dager)','2 uker minimum'],riktig:2,forklaring:'✅ DSBs «72-timers beredskap»: ha mat, vann og utstyr for minst 3 dager. Det tar tid før hjelpen når frem.'}
+    ]}
+};
+
+let spillState={scenario:null,idx:0,poeng:0,maxPoeng:0,besvart:false};
+
+function openGame(){
+  document.getElementById('game-overlay').style.display='block';
+  document.body.style.overflow='hidden';
+  spillVisSkjerm('intro');
+  lucide.createIcons();
+}
+function closeGame(){
+  document.getElementById('game-overlay').style.display='none';
+  document.body.style.overflow='';
+}
+function gameOverlayClick(e){if(e.target===document.getElementById('game-overlay'))closeGame();}
+function spillVisSkjerm(s){
+  ['gs-intro','gs-question','gs-result'].forEach(id=>{document.getElementById(id).style.display='none';});
+  document.getElementById('gs-'+s).style.display='block';
+}
+function startScenario(key){
+  const sc=SPILL_DATA[key];
+  spillState={scenario:key,idx:0,poeng:0,maxPoeng:sc.sporsmal.length*10,besvart:false};
+  spillVisSporsmal();
+}
+function spillVisSporsmal(){
+  const sc=SPILL_DATA[spillState.scenario];
+  const q=sc.sporsmal[spillState.idx];
+  const tot=sc.sporsmal.length;
+  document.getElementById('gs-scenario-name').textContent=sc.emoji+' '+sc.navn;
+  document.getElementById('gs-q-num').textContent=(spillState.idx+1)+' / '+tot;
+  document.getElementById('gs-q-fill').style.width=(spillState.idx/tot*100)+'%';
+  document.getElementById('gs-q-text').textContent=q.q;
+  const expEl=document.getElementById('gs-exp');
+  expEl.style.display='none'; expEl.textContent='';
+  document.getElementById('gs-next-btn').style.display='none';
+  document.getElementById('gs-options').innerHTML=q.opts.map((o,i)=>`<button class="game-opt" onclick="spillSvar(${i})">${String.fromCharCode(65+i)}. ${o}</button>`).join('');
+  spillState.besvart=false;
+  spillVisSkjerm('question');
+}
+function spillSvar(valgt){
+  if(spillState.besvart)return;
+  spillState.besvart=true;
+  const q=SPILL_DATA[spillState.scenario].sporsmal[spillState.idx];
+  const opts=document.querySelectorAll('.game-opt');
+  opts.forEach(b=>b.disabled=true);
+  opts[q.riktig].classList.add('correct');
+  if(valgt!==q.riktig) opts[valgt].classList.add('wrong');
+  else spillState.poeng+=10;
+  const expEl=document.getElementById('gs-exp');
+  expEl.textContent=q.forklaring; expEl.style.display='block';
+  document.getElementById('gs-next-btn').style.display='block';
+}
+function spillNeste(){
+  spillState.idx++;
+  if(spillState.idx>=SPILL_DATA[spillState.scenario].sporsmal.length) spillVisResultat();
+  else spillVisSporsmal();
+}
+function spillVisResultat(){
+  const pct=spillState.poeng/spillState.maxPoeng*100;
+  let rang,txt,farge;
+  if(pct>=90){rang='🏆';txt='Beredskapsekspert!';farge='#52B788';}
+  else if(pct>=70){rang='🥇';txt='God beredskap!';farge='#10B981';}
+  else if(pct>=40){rang='🥈';txt='Grei nok — men det finnes rom for forbedring';farge='#F59E0B';}
+  else{rang='🥉';txt='Trenger øvelse — men nå har du lært noe!';farge='#EF4444';}
+  document.getElementById('gs-rank-badge').textContent=rang;
+  document.getElementById('gs-rank-txt').textContent=txt;
+  document.getElementById('gs-rank-txt').style.color=farge;
+  document.getElementById('gs-score-val').textContent=spillState.poeng+' / '+spillState.maxPoeng+' poeng · '+Math.round(pct)+'%';
+  document.getElementById('gs-score-fill').style.width=Math.min(pct,100)+'%';
+  const hsKey='beredt_hs_'+spillState.scenario;
+  const prev=parseInt(localStorage.getItem(hsKey)||'0');
+  if(spillState.poeng>prev)localStorage.setItem(hsKey,spillState.poeng);
+  document.getElementById('gs-hs').textContent='🏆 Rekord: '+Math.max(prev,spillState.poeng)+' / '+spillState.maxPoeng+' poeng';
+  spillVisSkjerm('result');
+}
+function spillCopyResult(){
+  const sc=SPILL_DATA[spillState.scenario];
+  const pct=Math.round(spillState.poeng/spillState.maxPoeng*100);
+  const txt=`🎮 Beredt eller Ikke? — ${sc.emoji} ${sc.navn}\nJeg fikk ${spillState.poeng}/${spillState.maxPoeng} poeng (${pct}%)!\nTest deg selv på allverktoy.no 🇳🇴`;
+  navigator.clipboard.writeText(txt).then(()=>{
+    const b=document.getElementById('gs-copy-btn');
+    b.textContent='✅ Kopiert!';
+    setTimeout(()=>{b.textContent='📋 Del resultatet';},2000);
+  });
+}
 </script>
+
+<!-- ══ BEREDSKAPSSPILL MODAL ══ -->
+<div id="game-overlay" onclick="gameOverlayClick(event)">
+  <div class="game-box">
+    <div class="game-hdr">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="font-size:1.4rem">🎮</span>
+        <div>
+          <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1rem;color:#52B788">Beredt eller Ikke?</div>
+          <div style="font-size:0.68rem;color:#3D7A58;letter-spacing:0.04em;text-transform:uppercase">72-timers overlevelsesquiz</div>
+        </div>
+      </div>
+      <button class="game-close" onclick="closeGame()">✕</button>
+    </div>
+
+    <!-- INTRO -->
+    <div id="gs-intro" class="game-screen">
+      <p style="font-size:0.85rem;color:var(--muted2);line-height:1.65;margin-bottom:24px">Velg et scenario og test om du overlever 72 timer. Spørsmål basert på <strong style="color:#52B788">DSB og Sivilforsvaret</strong> — litt lærerikt, litt morsomt.</p>
+      <div style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#3D7A58;margin-bottom:12px">Velg scenario</div>
+      <button class="game-sc-btn" onclick="startScenario('strom')">
+        <span style="font-size:2rem">⚡</span>
+        <div><div style="font-weight:700;font-size:0.95rem;margin-bottom:3px">Strømbrudd</div><div style="font-size:0.78rem;color:var(--muted2)">Vinter, -10°C, strøm borte i 72 timer</div></div>
+      </button>
+      <button class="game-sc-btn" onclick="startScenario('vann')">
+        <span style="font-size:2rem">💧</span>
+        <div><div style="font-weight:700;font-size:0.95rem;margin-bottom:3px">Vannskrise</div><div style="font-size:0.78rem;color:var(--muted2)">Rørbrudd og forurensning — ikke drikk vannet</div></div>
+      </button>
+      <button class="game-sc-btn" onclick="startScenario('krig')">
+        <span style="font-size:2rem">🚨</span>
+        <div><div style="font-weight:700;font-size:0.95rem;margin-bottom:3px">Krig/Nødsituasjon</div><div style="font-size:0.78rem;color:var(--muted2)">Nasjonal krisesituasjon — er du forberedt?</div></div>
+      </button>
+      <div style="margin-top:20px;font-size:0.72rem;color:#3D7A58;text-align:center">Basert på DSB · Sivilforsvaret · 72-timers beredskapsguiden</div>
+    </div>
+
+    <!-- SPØRSMÅL -->
+    <div id="gs-question" class="game-screen" style="display:none">
+      <div style="display:flex;justify-content:space-between;font-size:0.72rem;color:#3D7A58;font-weight:700;margin-bottom:8px">
+        <span id="gs-scenario-name"></span><span id="gs-q-num"></span>
+      </div>
+      <div class="game-q-prog"><div class="game-q-fill" id="gs-q-fill" style="width:0%"></div></div>
+      <div id="gs-q-text" style="font-size:1rem;font-weight:600;color:var(--text);line-height:1.5;margin-bottom:18px"></div>
+      <div id="gs-options"></div>
+      <div class="game-exp" id="gs-exp"></div>
+      <button id="gs-next-btn" class="btn btn-primary" style="display:none;margin-top:18px;width:100%;justify-content:center" onclick="spillNeste()">Neste spørsmål <i data-lucide="arrow-right" style="width:15px;height:15px"></i></button>
+    </div>
+
+    <!-- RESULTAT -->
+    <div id="gs-result" class="game-screen" style="display:none">
+      <div style="text-align:center;padding:8px 0 20px">
+        <div id="gs-rank-badge" style="font-size:4rem;line-height:1;margin-bottom:12px"></div>
+        <div id="gs-rank-txt" style="font-size:1.15rem;font-weight:700;margin-bottom:6px"></div>
+        <div id="gs-score-val" style="font-size:0.85rem;color:var(--muted2)"></div>
+        <div class="game-score-bar"><div class="game-score-fill" id="gs-score-fill" style="width:0%"></div></div>
+        <div id="gs-hs" style="font-size:0.78rem;color:#3D7A58;margin-bottom:20px"></div>
+        <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+          <button id="gs-copy-btn" class="btn btn-secondary" onclick="spillCopyResult()">📋 Del resultatet</button>
+          <button class="btn btn-primary" onclick="spillVisSkjerm('intro')">🔄 Spill igjen</button>
+        </div>
+      </div>
+      <div style="background:rgba(45,106,79,0.1);border:1px solid rgba(45,106,79,0.25);border-radius:12px;padding:14px 16px;margin-top:4px;font-size:0.78rem;color:#3D7A58;line-height:1.6;text-align:center">
+        💡 Vil du lære mer? Besøk <strong>dsb.no</strong> og <strong>sikkerhverdag.no</strong> for offisiell beredskapsveiledning.
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 </html>
