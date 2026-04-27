@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tollklarering â Rykkattest Portal</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f0f4f8;
+    color: #2d3748;
+    min-height: 100vh;
+  }
+
+  .site-header {
+    background: linear-gradient(135deg, #003366, #004d99);
+    color: white;
+    padding: 20px 32px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  }
+  .logo-circle {
+    width: 52px; height: 52px;
+    background: white;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 900; font-size: 18px; color: #003366;
+    flex-shrink: 0;
+  }
+  .header-text h1 { font-size: 20px; letter-spacing: 1px; }
+  .header-text p { font-size: 12px; opacity: 0.75; margin-top: 3px; }
+
+  .container { max-width: 780px; margin: 0 auto; padding: 32px 16px; }
+
+  .tabs {
+    display: flex;
+    border-bottom: 2px solid #003366;
+  }
+  .tab-btn {
+    padding: 12px 28px;
+    border: none; background: none;
+    font-size: 15px; font-weight: 600;
+    color: #888; cursor: pointer;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .tab-btn.active { color: #003366; border-bottom-color: #003366; }
+  .tab-btn:hover:not(.active) { color: #004d99; }
+
+  .card {
+    background: white;
+    border-radius: 0 8px 8px 8px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    padding: 32px;
+  }
+
+  .view { display: none; }
+  .view.active { display: block; }
+
+  .section-title {
+    font-size: 16px; font-weight: 700; color: #003366;
+    margin-bottom: 20px; padding-bottom: 10px;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-group.full { grid-column: 1 / -1; }
+  label { font-size: 13px; font-weight: 600; color: #555; }
+  input, textarea {
+    padding: 10px 14px;
+    border: 1.5px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #2d3748;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    font-family: inherit;
+    background: #fff;
+  }
+  input:focus, textarea:focus {
+    outline: none;
+    border-color: #003366;
+    box-shadow: 0 0 0 3px rgba(0,51,102,0.1);
+  }
+  textarea { resize: vertical; min-height: 80px; }
+
+  .form-divider { height: 1px; background: #e2e8f0; grid-column: 1 / -1; margin: 4px 0; }
+
+  .btn {
+    padding: 12px 28px;
+    border: none; border-radius: 6px;
+    font-size: 15px; font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .btn:active { transform: scale(0.98); }
+  .btn-primary { background: #003366; color: white; }
+  .btn-primary:hover { background: #004d99; }
+  .btn-primary:disabled { background: #7a9bbf; cursor: not-allowed; }
+
+  .form-actions { margin-top: 24px; display: flex; gap: 12px; align-items: center; }
+
+  .alert {
+    padding: 14px 18px;
+    border-radius: 8px;
+    font-size: 14px;
+    margin-bottom: 20px;
+    display: none;
+    font-weight: 500;
+  }
+  .alert.show { display: block; }
+  .alert-success { background: #d4edda; color: #155724; border: 1px solid #b8dbc4; }
+  .alert-error   { background: #f8d7da; color: #721c24; border: 1px solid #f0b8bc; }
+
+  .result-box {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 24px;
+    margin-top: 24px;
+    display: none;
+  }
+  .result-box.show { display: block; }
+  .result-header {
+    display: flex; align-items: center; gap: 14px;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  .badge-cleared {
+    background: #28a745; color: white;
+    padding: 6px 16px; border-radius: 20px;
+    font-weight: 700; font-size: 14px;
+    white-space: nowrap;
+  }
+  .result-ref-label { font-weight: 700; color: #003366; font-size: 16px; }
+
+  .result-table { width: 100%; border-collapse: collapse; }
+  .result-table td { padding: 9px 6px; font-size: 14px; border-bottom: 1px solid #eef0f3; vertical-align: top; }
+  .result-table td:first-child { font-weight: 600; color: #003366; width: 44%; }
+
+  .resend-note { margin-top: 16px; font-size: 13px; color: #666; font-style: italic; }
+
+  .spinner {
+    display: none;
+    width: 20px; height: 20px;
+    border: 3px solid #ddd;
+    border-top-color: #003366;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  .spinner.show { display: inline-block; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .footer-note {
+    text-align: center;
+    color: #bbb;
+    font-size: 12px;
+    margin-top: 28px;
+  }
+
+  @media (max-width: 600px) {
+    .form-grid { grid-template-columns: 1fr; }
+    .card { padding: 20px; }
+    .site-header { padding: 16px 20px; }
+    .header-text h1 { font-size: 15px; }
+    .tab-btn { padding: 10px 18px; font-size: 14px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="logo-circle">NL</div>
+  <div class="header-text">
+    <h1>TOLLKLARERING â RYKKATTEST PORTAL</h1>
+    <p>Nor-Log AS &bull; Customs Clearance Management</p>
+  </div>
+</header>
+
+<div class="container">
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('agent')">Agent</button>
+    <button class="tab-btn" onclick="switchTab('client')">Kundeoppslag</button>
+  </div>
+
+  <div class="card">
+
+    <!-- AGENT VIEW -->
+    <div id="view-agent" class="view active">
+      <div class="section-title">Send Rykkattest til klient</div>
+
+      <div id="agent-alert-success" class="alert alert-success"></div>
+      <div id="agent-alert-error" class="alert alert-error"></div>
+
+      <form id="agent-form" onsubmit="submitAgentForm(event)">
+        <div class="form-grid">
+
+          <div class="form-group full">
+            <label for="pin">PIN-kode *</label>
+            <input type="password" id="pin" name="pin" placeholder="â¢â¢â¢â¢â¢â¢""&WV&VBWFö6ö×ÆWFSÒ&öfb"7GÆSÒ&Ö×vGF£#²#à¢ÂöFcà ¢ÆFb6Æ73Ò&f÷&ÒÖFfFW"#ãÂöFcà ¢ÆFb6Æ73Ò&f÷&ÒÖw&÷W#à¢ÆÆ&VÂf÷#Ò'&VfW&ç6VçVÖÖW"#å&VfW&ç6VçVÖÖW"£ÂöÆ&VÃà¢ÆçWBGSÒ'FWB"CÒ'&VfW&ç6VçVÖÖW""æÖSÒ'&VfW&ç6VçVÖÖW""Æ6VöÆFW#Ò&bæV·2â$TbÓ##BÓ"&WV&VCà¢ÂöFcà ¢ÆFb6Æ73Ò&f÷&ÒÖw&÷W#à¢ÆÆ&VÂf÷#Ò'FöÆÆ·fGFW&ær#åFöÆÆ·fGFW&ærç"â£ÂöÆ&VÃà¢ÆçWBGSÒ'FWB"CÒ'FöÆÆ·fGFW&ær"æÖSÒ'FöÆÆ·fGFW&ær"Æ6VöÆFW#Ò&bæV·2âD²Ó#3CSb"&WV&VCà¢ÂöFcà ¢ÆFb6Æ73Ò&f÷&ÒÖw&÷W#à¢ÆÆ&VÂf÷#Ò&¶ÆVçFæfâ#ä¶ÆVçFæfâ£ÂöÆ&VÃà¢ÆçWBGSÒ'FWB"CÒ&¶ÆVçFæfâ"æÖSÒ&¶ÆVçFæfâ"Æ6VöÆFW#Ò$gVÆÇBæfâòf&Öæfâ"&WV&VCà¢ÂöFcà ¢ÆFb6Æ73Ò&f÷&ÒÖw&÷W#à¢ÆÆ&VÂf÷#Ò&¶ÆVçDVÖÂ#ä¶ÆVçFVç2R×÷7FG&W76R£ÂöÆ&VÃà¢ÆçWBGSÒ&VÖÂ"CÒ&¶ÆVçDVÖÂ"æÖSÒ&¶ÆVçDVÖÂ"Æ6VöÆFW#Ò&¶ÆVçDf&Öææò"&WV&VCà¢ÂöFcà ¢ÆFb6Æ73Ò&f÷&ÒÖw&÷WgVÆÂ#à¢ÆÆ&VÂf÷#Ò'f&V&W6·&fVÇ6R#åf&V&W6·&fVÇ6R£ÂöÆ&VÃà¢ÇFWF&VCÒ'f&V&W6·&fVÇ6R"æÖSÒ'f&V&W6·&fVÇ6R"Æ6VöÆFW#Ò$ºåÇSc'B&W6·&fVÇ6Rbf&VæRâââ"&WV&VCãÂ÷FWF&Và¢ÂöFcà ¢ÆFb6Æ73Ò&f÷&ÒÖw&÷W#à¢ÆÆ&VÂf÷#Ò&f÷'FöÆÆæw6FFò#äf÷'FöÆÆæw6FFò£ÂöÆ&VÃà¢ÆçWBGSÒ&FFR"CÒ&f÷'FöÆÆæw6FFò"æÖSÒ&f÷'FöÆÆæw6FFò"&WV&VCà¢ÂöFcà ¢ÆFb6Æ73Ò&f÷&ÒÖw&÷W#à¢ÆÆ&VÂf÷#Ò'6·6&VæFÆW"#å6·6&VæFÆW"£ÂöÆ&VÃà¢ÆçWBGSÒ'FWB"CÒ'6·6&VæFÆW""æÖSÒ'6·6&VæFÆW""Æ6VöÆFW#Ò$æfâÇSSR6·6&VæFÆW""&WV&VCà¢ÂöFcà ¢ÆFb6Æ73Ò&f÷&ÒÖw&÷WgVÆÂ#à¢ÆÆ&VÂf÷#Ò&ÖW&¶æFW"#äÖW&¶æFW"fÆvg&GBÂöÆ&VÃà¢ÇFWF&VCÒ&ÖW&¶æFW""æÖSÒ&ÖW&¶æFW""Æ6VöÆFW#Ò$WfVçGVVÆÆRFÆÆVvw6÷Ç6æævW"âââ#ãÂ÷FWF&Và¢ÂöFcà ¢ÂöFcà ¢ÆFb6Æ73Ò&f÷&ÒÖ7Föç2#à¢Æ'WGFöâGSÒ'7V&ÖB"6Æ73Ò&'Fâ'Fâ×&Ö'"CÒ&vVçB×7V&ÖBÖ'Fâ#å6VæB'¶¶GFW7CÂö'WGFöãà¢ÆFb6Æ73Ò'7ææW""CÒ&vVçB×7ææW"#ãÂöFcà¢ÂöFcà¢Âöf÷&Óà¢ÂöFcà ¢ÂÒÒ4ÄTåBdUrÒÓà¢ÆFbCÒ'fWrÖ6ÆVçB"6Æ73Ò'fWr#à¢ÆFb6Æ73Ò'6V7Föâ×FFÆR#å6ÅÇSSR÷f÷'FöÆÆæw77FGW3ÂöFcà ¢ÆFbCÒ&6ÆVçBÖÆW'BÖW'&÷""6Æ73Ò&ÆW'BÆW'BÖW'&÷"#ãÂöFcà¢ÆFbCÒ&6ÆVçBÖÆW'B×7V66W72"6Æ73Ò&ÆW'BÆW'B×7V66W72#ãÂöFcà ¢Æf÷&ÒCÒ&6ÆVçBÖf÷&Ò"öç7V&ÖCÒ'7V&ÖD6ÆVçDÆöö·WWfVçB"7GÆSÒ&Ö×vGF£S#²#à¢ÆFb6Æ73Ò&f÷&ÒÖw&B"7GÆSÒ&w&B×FV×ÆFRÖ6öÇVÖç3£g#²#à ¢ÆFb6Æ73Ò&f÷&ÒÖw&÷W#à¢ÆÆ&VÂf÷#Ò&Æöö·W×VW'#å&VfW&ç6VçVÖÖW"VÆÆW"FöÆÆ·fGFW&ærç"â£ÂöÆ&VÃà¢ÆçWBGSÒ'FWB"CÒ&Æöö·W×VW'"æÖSÒ'VW'"Æ6VöÆFW#Ò&bæV·2â$TbÓ##BÓVÆÆW"D²Ó#3CSb"&WV&VCà¢ÂöFcà ¢ÆFb6Æ73Ò&f÷&ÒÖw&÷W#à¢ÆÆ&VÂf÷#Ò&Æöö·WÖVÖÂ#äFâR×÷7FG&W76R£ÂöÆ&VÃà¢ÆçWBGSÒ&VÖÂ"CÒ&Æöö·WÖVÖÂ"æÖSÒ&VÖÂ"Æ6VöÆFW#Ò&FäW÷7Bææò"&WV&VCà¢ÂöFcà ¢ÂöFcà¢ÆFb6Æ73Ò&f÷&ÒÖ7Föç2#à¢Æ'WGFöâGSÒ'7V&ÖB"6Æ73Ò&'Fâ'Fâ×&Ö'"CÒ&6ÆVçB×7V&ÖBÖ'Fâ#å5ÇSc²÷Âö'WGFöãà¢ÆFb6Æ73Ò'7ææW""CÒ&6ÆVçB×7ææW"#ãÂöFcà¢ÂöFcà¢Âöf÷&Óà ¢ÆFb6Æ73Ò'&W7VÇBÖ&÷"CÒ'&W7VÇBÖ&÷#à¢ÆFb6Æ73Ò'&W7VÇBÖVFW"#à¢Ç7â6Æ73Ò&&FvRÖ6ÆV&VB#äf÷'FöÆÆWB)É3Â÷7ãà¢Ç7â6Æ73Ò'&W7VÇB×&VbÖÆ&VÂ"CÒ'&W7VÇB×&VbÖÆ&VÂ#ãÂ÷7ãà¢ÂöFcà¢ÇF&ÆR6Æ73Ò'&W7VÇB×F&ÆR#à¢ÇG#ãÇFCå&VfW&ç6VçVÖÖW#Â÷FCãÇFBCÒ'"×&Vb#ãÂ÷FCãÂ÷G#à¢ÇG#ãÇFCåFöÆÆ·fGFW&ærç"ãÂ÷FCãÇFBCÒ'"×FöÆÂ#ãÂ÷FCãÂ÷G#à¢ÇG#ãÇFCä¶ÆVçFæfãÂ÷FCãÇFBCÒ'"Ö¶ÆVçB#ãÂ÷FCãÂ÷G#à¢ÇG#ãÇFCåf&V&W6·&fVÇ6SÂ÷FCãÇFBCÒ'"×f&R#ãÂ÷FCãÂ÷G#à¢ÇG#ãÇFCäf÷'FöÆÆæw6FFóÂ÷FCãÇFBCÒ'"ÖFFò#ãÂ÷FCãÂ÷G#à¢ÇG#ãÇFCå6·6&VæFÆW#Â÷FCãÇFBCÒ'"ÖvVçB#ãÂ÷FCãÂ÷G#à¢ÇG"CÒ'"ÖÖW&²×&÷r"7GÆSÒ&F7Æ¦æöæS²#ãÇFCäÖW&¶æFW#Â÷FCãÇFBCÒ'"ÖÖW&²#ãÂ÷FCãÂ÷G#à¢Â÷F&ÆSà¢Ç6Æ73Ò'&W6VæBÖæ÷FR#å'¶¶GFVâW"6VæGBFÂFâR×÷7FG&W76RÇSSRçGBãÂ÷à¢ÂöFcà ¢ÂöFcà ¢ÂöFcà ¢Ç6Æ73Ò&fö÷FW"Öæ÷FR#äæ÷"ÔÆör2f'VÆÃ²6ÒæÖöÖÖDæ÷"ÖÆörææóÂ÷à£ÂöFcà £Ç67&Cà¢Fö7VÖVçBævWDVÆVÖVçD'Bvf÷'FöÆÆæw6FFòrçfÇVT4FFRÒæWrFFR° ¢gVæ7Föâ7vF6F"F"°¢6öç7B4vVçBÒF"ÓÓÒvvVçBs°¢Fö7VÖVçBçVW'6VÆV7F÷$ÆÂrçF"Ö'Fâræf÷$V6"ÂÓâ°¢"æ6Æ74Æ7BçFövvÆRv7FfRrÂ4vVçBòÓÓÒ¢ÓÓÒ°¢Ò°¢Fö7VÖVçBævWDVÆVÖVçD'BwfWrÖvVçBræ6Æ74Æ7BçFövvÆRv7FfRrÂ4vVçB°¢Fö7VÖVçBævWDVÆVÖVçD'BwfWrÖ6ÆVçBræ6Æ74Æ7BçFövvÆRv7FfRrÂ4vVçB°¢Ð ¢gVæ7Föâ6÷tÆW'BBÂ×6r°¢6öç7BVÂÒFö7VÖVçBævWDVÆVÖVçD'BB°¢VÂçFWD6öçFVçBÒ×6s°¢VÂæ6Æ74Æ7BæFBw6÷rr°¢6WEFÖV÷WBÓâVÂæ6Æ74Æ7Bç&VÖ÷fRw6÷rrÂs°¢Ð ¢gVæ7Föâ6WDÆöFær7ææW$BÂ'FäBÂöâ°¢Fö7VÖVçBævWDVÆVÖVçD'B7ææW$Bæ6Æ74Æ7BçFövvÆRw6÷rrÂöâ°¢b'FäBFö7VÖVçBævWDVÆVÖVçD'B'FäBæF6&ÆVBÒöã°¢Ð ¢7æ2gVæ7Föâ7V&ÖDvVçDf÷&ÒR°¢Rç&WfVçDFVfVÇB°¢6öç7Bf÷&ÒÒRçF&vWC°¢6öç7BFFÒö&¦V7Bæg&öÔVçG&W2æWrf÷&ÔFFf÷&Ò° ¢6WDÆöFærvvVçB×7ææW"rÂvvVçB×7V&ÖBÖ'FârÂG'VR° ¢G'°¢6öç7B&W2ÒvBfWF6röövVçB÷7V&ÖBrÂ°¢ÖWFöC¢uõ5BrÀ¢VFW'3¢²t6öçFVçBÕGRs¢vÆ6Föâö§6öârÒÀ¢&öG¢¥4ôâç7G&ævgFF¢Ò°¢6öç7B§6öâÒvB&W2æ§6öâ° ¢b&W2æö²°¢6÷tÆW'BvvVçBÖÆW'B×7V66W72rÂ'¶¶GFW7B6VæGBFÂG¶FFæ¶ÆVçDVÖÇÒ)I6°¢f÷&Òç&W6WB°¢Fö7VÖVçBævWDVÆVÖVçD'Bvf÷'FöÆÆæw6FFòrçfÇVT4FFRÒæWrFFR°¢ÒVÇ6R°¢6÷tÆW'BvvVçBÖÆW'BÖW'&÷"rÂ§6öâæW'&÷"ÇÂtæöRv¶²vÇBâ%ÇScbv¦Vââr°¢Ð¢Ò6F6°¢6÷tÆW'BvvVçBÖÆW'BÖW'&÷"rÂuFÆ¶ö&Ææw6fVÂâ6¦V¶²6W'fW"ör%ÇScbv¦Vââr°¢ÒfæÆÇ°¢6WDÆöFærvvVçB×7ææW"rÂvvVçB×7V&ÖBÖ'FârÂfÇ6R°¢Ð¢Ð ¢7æ2gVæ7Föâ7V&ÖD6ÆVçDÆöö·WR°¢Rç&WfVçDFVfVÇB°¢6öç7BVW'ÒFö7VÖVçBævWDVÆVÖVçD'BvÆöö·W×VW'rçfÇVRçG&Ò°¢6öç7BVÖÂÒFö7VÖVçBævWDVÆVÖVçD'BvÆöö·WÖVÖÂrçfÇVRçG&Ò° ¢Fö7VÖVçBævWDVÆVÖVçD'Bw&W7VÇBÖ&÷ræ6Æ74Æ7Bç&VÖ÷fRw6÷rr°¢6WDÆöFærv6ÆVçB×7ææW"rÂv6ÆVçB×7V&ÖBÖ'FârÂG'VR° ¢G'°¢6öç7B&W2ÒvBfWF6röö6ÆVçBöÆöö·WrÂ°¢ÖWFöC¢uõ5BrÀ¢VFW'3¢²t6öçFVçBÕGRs¢vÆ6Föâö§6öârÒÀ¢&öG¢¥4ôâç7G&ævg²VW'ÂVÖÂÒ¢Ò°¢6öç7B§6öâÒvB&W2æ§6öâ° ¢b&W2æö²°¢6öç7BVçG'Ò§6öâæVçG'°¢Fö7VÖVçBævWDVÆVÖVçD'Bw"×&VbrçFWD6öçFVçBÒVçG'ç&VfW&ç6VçVÖÖW#°¢Fö7VÖVçBævWDVÆVÖVçD'Bw"×FöÆÂrçFWD6öçFVçBÒVçG'çFöÆÆ·fGFW&æs°¢Fö7VÖVçBævWDVÆVÖVçD'Bw"Ö¶ÆVçBrçFWD6öçFVçBÒVçG'æ¶ÆVçFæfã°¢Fö7VÖVçBævWDVÆVÖVçD'Bw"×f&RrçFWD6öçFVçBÒVçG'çf&V&W6·&fVÇ6S°¢Fö7VÖVçBævWDVÆVÖVçD'Bw"ÖFFòrçFWD6öçFVçBÒVçG'æf÷'FöÆÆæw6FFó°¢Fö7VÖVçBævWDVÆVÖVçD'Bw"ÖvVçBrçFWD6öçFVçBÒVçG'ç6·6&VæFÆW#°¢Fö7VÖVçBævWDVÆVÖVçD'Bw&W7VÇB×&VbÖÆ&VÂrçFWD6öçFVçBÒ&Vc¢G¶VçG'ç&VfW&ç6VçVÖÖW'Ö° ¢6öç7BÖW&µ&÷rÒFö7VÖVçBævWDVÆVÖVçD'Bw"ÖÖW&²×&÷rr°¢bVçG'æÖW&¶æFW"°¢Fö7VÖVçBævWDVÆVÖVçD'Bw"ÖÖW&²rçFWD6öçFVçBÒVçG'æÖW&¶æFW#°¢ÖW&µ&÷rç7GÆRæF7ÆÒrs°¢ÒVÇ6R°¢ÖW&µ&÷rç7GÆRæF7ÆÒvæöæRs°¢Ð ¢Fö7VÖVçBævWDVÆVÖVçD'Bw&W7VÇBÖ&÷ræ6Æ74Æ7BæFBw6÷rr°¢6÷tÆW'Bv6ÆVçBÖÆW'B×7V66W72rÂu'¶¶GFW7B6VæGBFÂFâR×÷7BÇSSRçGBâr°¢ÒVÇ6R°¢6÷tÆW'Bv6ÆVçBÖÆW'BÖW'&÷"rÂ§6öâæW'&÷"ÇÂtævVâG&VfbgVææWBâr°¢Ð¢Ò6F6°¢6÷tÆW'Bv6ÆVçBÖÆW'BÖW'&÷"rÂuFÆ¶ö&Ææw6fVÂâ%ÇScbv¦Vââr°¢ÒfæÆÇ°¢6WDÆöFærv6ÆVçB×7ææW"rÂv6ÆVçB×7V&ÖBÖ'FârÂfÇ6R°¢Ð¢Ð£Â÷67&Cà £Âö&öGà£ÂöFÖÃà
