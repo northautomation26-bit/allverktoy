@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tollklarering – Rykkattest Portal</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f0f4f8;
+    color: #2d3748;
+    min-height: 100vh;
+  }
+
+  .site-header {
+    background: linear-gradient(135deg, #003366, #004d99);
+    color: white;
+    padding: 20px 32px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  }
+  .logo-circle {
+    width: 52px; height: 52px;
+    background: white;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 900; font-size: 18px; color: #003366;
+    flex-shrink: 0;
+  }
+  .header-text h1 { font-size: 20px; letter-spacing: 1px; }
+  .header-text p { font-size: 12px; opacity: 0.75; margin-top: 3px; }
+
+  .container { max-width: 780px; margin: 0 auto; padding: 32px 16px; }
+
+  .tabs {
+    display: flex;
+    border-bottom: 2px solid #003366;
+  }
+  .tab-btn {
+    padding: 12px 28px;
+    border: none; background: none;
+    font-size: 15px; font-weight: 600;
+    color: #888; cursor: pointer;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .tab-btn.active { color: #003366; border-bottom-color: #003366; }
+  .tab-btn:hover:not(.active) { color: #004d99; }
+
+  .card {
+    background: white;
+    border-radius: 0 8px 8px 8px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    padding: 32px;
+  }
+
+  .view { display: none; }
+  .view.active { display: block; }
+
+  .section-title {
+    font-size: 16px; font-weight: 700; color: #003366;
+    margin-bottom: 20px; padding-bottom: 10px;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-group.full { grid-column: 1 / -1; }
+  label { font-size: 13px; font-weight: 600; color: #555; }
+  input, textarea {
+    padding: 10px 14px;
+    border: 1.5px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #2d3748;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    font-family: inherit;
+    background: #fff;
+  }
+  input:focus, textarea:focus {
+    outline: none;
+    border-color: #003366;
+    box-shadow: 0 0 0 3px rgba(0,51,102,0.1);
+  }
+  textarea { resize: vertical; min-height: 80px; }
+
+  .form-divider { height: 1px; background: #e2e8f0; grid-column: 1 / -1; margin: 4px 0; }
+
+  .btn {
+    padding: 12px 28px;
+    border: none; border-radius: 6px;
+    font-size: 15px; font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .btn:active { transform: scale(0.98); }
+  .btn-primary { background: #003366; color: white; }
+  .btn-primary:hover { background: #004d99; }
+  .btn-primary:disabled { background: #7a9bbf; cursor: not-allowed; }
+
+  .form-actions { margin-top: 24px; display: flex; gap: 12px; align-items: center; }
+
+  .alert {
+    padding: 14px 18px;
+    border-radius: 8px;
+    font-size: 14px;
+    margin-bottom: 20px;
+    display: none;
+    font-weight: 500;
+  }
+  .alert.show { display: block; }
+  .alert-success { background: #d4edda; color: #155724; border: 1px solid #b8dbc4; }
+  .alert-error   { background: #f8d7da; color: #721c24; border: 1px solid #f0b8bc; }
+
+  .result-box {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 24px;
+    margin-top: 24px;
+    display: none;
+  }
+  .result-box.show { display: block; }
+  .result-header {
+    display: flex; align-items: center; gap: 14px;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  .badge-cleared {
+    background: #28a745; color: white;
+    padding: 6px 16px; border-radius: 20px;
+    font-weight: 700; font-size: 14px;
+    white-space: nowrap;
+  }
+  .result-ref-label { font-weight: 700; color: #003366; font-size: 16px; }
+
+  .result-table { width: 100%; border-collapse: collapse; }
+  .result-table td { padding: 9px 6px; font-size: 14px; border-bottom: 1px solid #eef0f3; vertical-align: top; }
+  .result-table td:first-child { font-weight: 600; color: #003366; width: 44%; }
+
+  .resend-note { margin-top: 16px; font-size: 13px; color: #666; font-style: italic; }
+
+  .spinner {
+    display: none;
+    width: 20px; height: 20px;
+    border: 3px solid #ddd;
+    border-top-color: #003366;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  .spinner.show { display: inline-block; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .footer-note {
+    text-align: center;
+    color: #bbb;
+    font-size: 12px;
+    margin-top: 28px;
+  }
+
+  @media (max-width: 600px) {
+    .form-grid { grid-template-columns: 1fr; }
+    .card { padding: 20px; }
+    .site-header { padding: 16px 20px; }
+    .header-text h1 { font-size: 15px; }
+    .tab-btn { padding: 10px 18px; font-size: 14px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="logo-circle">NL</div>
+  <div class="header-text">
+    <h1>TOLLKLARERING – RYKKATTEST PORTAL</h1>
+    <p>Nor-Log AS &bull; Customs Clearance Management</p>
+  </div>
+</header>
+
+<div class="container">
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('agent')">Agent</button>
+    <button class="tab-btn" onclick="switchTab('client')">Kundeoppslag</button>
+  </div>
+
+  <div class="card">
+
+    <!-- AGENT VIEW -->
+    <div id="view-agent" class="view active">
+      <div class="section-title">Send Rykkattest til klient</div>
+
+      <div id="agent-alert-success" class="alert alert-success"></div>
+      <div id="agent-alert-error" class="alert alert-error"></div>
+
+      <form id="agent-form" onsubmit="submitAgentForm(event)">
+        <div class="form-grid">
+
+          <div class="form-group full">
+            <label for="pin">PIN-kode *</label>
+            <input type="password" id="pin" name="pin" placeholder="••••••" required autocomplete="off" style="max-width:200px;">
+          </div>
+
+          <div class="form-divider"></div>
+
+          <div class="form-group">
+            <label for="referansenummer">Referansenummer *</label>
+            <input type="text" id="referansenummer" name="referansenummer" placeholder="f.eks. REF-2024-001" required>
+          </div>
+
+          <div class="form-group">
+            <label for="tollkvittering">Tollkvittering nr. *</label>
+            <input type="text" id="tollkvittering" name="tollkvittering" placeholder="f.eks. TK-123456" required>
+          </div>
+
+          <div class="form-group">
+            <label for="klientnavn">Klientnavn *</label>
+            <input type="text" id="klientnavn" name="klientnavn" placeholder="Fullt navn / firmanavn" required>
+          </div>
+
+          <div class="form-group">
+            <label for="klientEmail">Klientens e-postadresse *</label>
+            <input type="email" id="klientEmail" name="klientEmail" placeholder="klient@firma.no" required>
+          </div>
+
+          <div class="form-group full">
+            <label for="varebeskrivelse">Varebeskrivelse *</label>
+            <textarea id="varebeskrivelse" name="varebeskrivelse" placeholder="Kort beskrivelse av varene..." required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="fortollingsdato">Fortollingsdato *</label>
+            <input type="date" id="fortollingsdato" name="fortollingsdato" required>
+          </div>
+
+          <div class="form-group">
+            <label for="saksbehandler">Saksbehandler *</label>
+            <input type="text" id="saksbehandler" name="saksbehandler" placeholder="Navn på saksbehandler" required>
+          </div>
+
+          <div class="form-group full">
+            <label for="merknader">Merknader (valgfritt)</label>
+            <textarea id="merknader" name="merknader" placeholder="Eventuelle tilleggsopplysninger..."></textarea>
+          </div>
+
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary" id="agent-submit-btn">Send Rykkattest</button>
+          <div class="spinner" id="agent-spinner"></div>
+        </div>
+      </form>
+    </div>
+
+    <!-- CLIENT VIEW -->
+    <div id="view-client" class="view">
+      <div class="section-title">Slå opp fortollingstatus</div>
+
+      <div id="client-alert-error" class="alert alert-error"></div>
+      <div id="client-alert-success" class="alert alert-success"></div>
+
+      <form id="client-form" onsubmit="submitClientLookup(event)" style="max-width:520px;">
+        <div class="form-grid" style="grid-template-columns:1fr;">
+
+          <div class="form-group">
+            <label for="lookup-query">Referansenummer eller Tollkvittering nr. *</label>
+            <input type="text" id="lookup-query" name="query" placeholder="f.eks. REF-2024-001 eller TK-123456" required>
+          </div>
+
+          <div class="form-group">
+            <label for="lookup-email">Din e-postadresse *</label>
+            <input type="email" id="lookup-email" name="email" placeholder="din@epost.no" required>
+          </div>
+
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary" id="client-submit-btn">Søk opp</button>
+          <div class="spinner" id="client-spinner"></div>
+        </div>
+      </form>
+
+      <div class="result-box" id="result-box">
+        <div class="result-header">
+          <span class="badge-cleared">Fortollet ✓</span>
+          <span class="result-ref-label" id="result-ref-label"></span>
+        </div>
+        <table class="result-table">
+          <tr><td>Referansenummer</td><td id="r-ref"></td></tr>
+          <tr><td>Tollkvittering nr.</td><td id="r-toll"></td></tr>
+          <tr><td>Klientnavn</td><td id="r-klient"></td></tr>
+          <tr><td>Varebeskrivelse</td><td id="r-vare"></td></tr>
+          <tr><td>Fortollingsdato</td><td id="r-dato"></td></tr>
+          <tr><td>Saksbehandler</td><td id="r-agent"></td></tr>
+          <tr id="r-merk-row" style="display:none;"><td>Merknader</td><td id="r-merk"></td></tr>
+        </table>
+        <p class="resend-note">Rykkatten er sendt til din e-postadresse på nytt.</p>
+      </div>
+
+    </div>
+
+  </div>
+
+  <p class="footer-note">Nor-Log AS &bull; asam.mohammad@nor-log.no</p>
+</div>
+
+<script>
+  document.getElementById('fortollingsdato').valueAsDate = new Date();
+
+  function switchTab(tab) {
+    const isAgent = tab === 'agent';
+    document.querySelectorAll('.tab-btn').forEach((b, i) => {
+      b.classList.toggle('active', isAgent ? i === 0 : i === 1);
+    });
+    document.getElementById('view-agent').classList.toggle('active', isAgent);
+    document.getElementById('view-client').classList.toggle('active', !isAgent);
+  }
+
+  function showAlert(id, msg) {
+    const el = document.getElementById(id);
+    el.textContent = msg;
+    el.classList.add('show');
+    setTimeout(() => el.classList.remove('show'), 7000);
+  }
+
+  function setLoading(spinnerId, btnId, on) {
+    document.getElementById(spinnerId).classList.toggle('show', on);
+    if (btnId) document.getElementById(btnId).disabled = on;
+  }
+
+  async function submitAgentForm(e) {
+    e.preventDefault();
+    const form = e.target;
+    const data = Object.fromEntries(new FormData(form));
+
+    setLoading('agent-spinner', 'agent-submit-btn', true);
+
+    try {
+      const res = await fetch('/api/agent/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      const json = await res.json();
+
+      if (res.ok) {
+        showAlert('agent-alert-success', `Rykkattest sendt til ${data.klientEmail} ✓`);
+        form.reset();
+        document.getElementById('fortollingsdato').valueAsDate = new Date();
+      } else {
+        showAlert('agent-alert-error', json.error || 'Noe gikk galt. Prøv igjen.');
+      }
+    } catch {
+      showAlert('agent-alert-error', 'Tilkoblingsfeil. Sjekk server og prøv igjen.');
+    } finally {
+      setLoading('agent-spinner', 'agent-submit-btn', false);
+    }
+  }
+
+  async function submitClientLookup(e) {
+    e.preventDefault();
+    const query = document.getElementById('lookup-query').value.trim();
+    const email = document.getElementById('lookup-email').value.trim();
+
+    document.getElementById('result-box').classList.remove('show');
+    setLoading('client-spinner', 'client-submit-btn', true);
+
+    try {
+      const res = await fetch('/api/client/lookup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query, email })
+      });
+      const json = await res.json();
+
+      if (res.ok) {
+        const entry = json.entry;
+        document.getElementById('r-ref').textContent    = entry.referansenummer;
+        document.getElementById('r-toll').textContent   = entry.tollkvittering;
+        document.getElementById('r-klient').textContent = entry.klientnavn;
+        document.getElementById('r-vare').textContent   = entry.varebeskrivelse;
+        document.getElementById('r-dato').textContent   = entry.fortollingsdato;
+        document.getElementById('r-agent').textContent  = entry.saksbehandler;
+        document.getElementById('result-ref-label').textContent = `Ref: ${entry.referansenummer}`;
+
+        const merkRow = document.getElementById('r-merk-row');
+        if (entry.merknader) {
+          document.getElementById('r-merk').textContent = entry.merknader;
+          merkRow.style.display = '';
+        } else {
+          merkRow.style.display = 'none';
+        }
+
+        document.getElementById('result-box').classList.add('show');
+        showAlert('client-alert-success', 'Rykkattest sendt til din e-post på nytt.');
+      } else {
+        showAlert('client-alert-error', json.error || 'Ingen treff funnet.');
+      }
+    } catch {
+      showAlert('client-alert-error', 'Tilkoblingsfeil. Prøv igjen.');
+    } finally {
+      setLoading('client-spinner', 'client-submit-btn', false);
+    }
+  }
+</script>
+
+</body>
+</html>
